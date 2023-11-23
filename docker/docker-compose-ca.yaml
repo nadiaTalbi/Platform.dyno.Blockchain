@@ -1,0 +1,47 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: "2.4"
+
+networks:
+  test_network:
+    name: dyno_blockchain_network
+
+services:
+  ca_dyno:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-dyno
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=4400
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:14400
+    ports:
+      - "4400:4400"
+      - "14400:14400"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../organizations/fabric-ca/dyno:/etc/hyperledger/fabric-ca-server
+    container_name: ca_dyno
+    networks:
+      - dyno_blockchain_network
+
+  ca_orderer:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-orderer
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=2200
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:12200
+    ports:
+      - "2200:2200"
+      - "12200:12200"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../organizations/fabric-ca/orderer:/etc/hyperledger/fabric-ca-server
+    container_name: ca_orderer
+    networks:
+      - dyno_blockchain_network
