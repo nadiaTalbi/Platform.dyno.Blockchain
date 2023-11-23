@@ -150,7 +150,7 @@ function createorderer() {
   fabric-ca-client enroll -u https://orderer:ordererpw@localhost:2200 --caname ca-orderer -M ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls --enrollment.profile tls --csr.hosts orderer --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/orderer/tls-cert.pem
 
 
-  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/cacerts/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/ca.crt
+  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/tlscacerts/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/ca.crt
   cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/signcerts/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
   cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/keystore/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.key
 

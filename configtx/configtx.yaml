@@ -8,7 +8,7 @@ Organizations:
     - &OrdererOrg
         Name: OrdererOrg
         ID: OrdererMSP
-        MSPDir: crypto-config/ordererOrganizations/example.com/msp
+        MSPDir: ../organizations/crypto-config/ordererOrganizations/orderer/msp
         Policies:
             Readers:
                 Type: Signature
@@ -20,20 +20,20 @@ Organizations:
                 Type: Signature
                 Rule: "OR('OrdererMSP.admin')"
 
-    - &Org1
-        Name: Org1MSP
-        ID: Org1MSP
-        MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
+    - &Dyno
+        Name: dyno-MSP
+        ID: dyno-MSP
+        MSPDir: ../organizations/crypto-config/peerOrganizations/dyno/msp
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
+                Rule: "OR('dyno-MSP.admin', 'dyno-MSP.peer', 'dyno-MSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin', 'Org1MSP.client')"
+                Rule: "OR('dyno-MSP.admin', 'dyno-MSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin')"
+                Rule: "OR('dyno-MSP.admin')"
 
 Capabilities:
     Channel: &ChannelCapabilities
@@ -68,7 +68,7 @@ Application: &ApplicationDefaults
 Orderer: &OrdererDefaults
     OrdererType: solo
     Addresses:
-        - orderer.example.com:7050
+        - localhost:1100
     BatchTimeout: 2s
     BatchSize:
         MaxMessageCount: 10
@@ -122,14 +122,14 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-                    - *Org1
+                    - *Dyno
     OrgsChannel:
         Consortium: SampleConsortium
         <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *Org1
+                - *Dyno
             Capabilities:
                 <<: *ApplicationCapabilities
 

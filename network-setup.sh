@@ -1,8 +1,7 @@
 
 
-ROOTDIR=$(cd "$(dirname "$0")" && pwd)
-export PATH=${ROOTDIR}/../bin:${PWD}/../bin:$PATH
-export FABRIC_CFG_PATH=${PWD}/configtx
+export PATH=${PWD}/bin:$PATH
+export FABRIC_CFG_PATH=./configtx
 export VERBOSE=false
 
 # push to the required directory & set a trap to go back if needed
@@ -16,11 +15,11 @@ trap "popd > /dev/null" EXIT
 infoln "Using ${CONTAINER_CLI} and ${CONTAINER_CLI_COMPOSE}"
 
 # use this as the default docker-compose yaml definition
-COMPOSE_FILE_BASE=docker-compose-net.yaml
+COMPOSE_FILE_BASE=docker/docker-compose-net.yaml
 # docker-compose.yaml file if you are using couchdb
-COMPOSE_FILE_COUCH=docker-compose-couch.yaml
+COMPOSE_FILE_COUCH=socker/docker-compose-couchdb.yaml
 # certificate authorities compose file
-COMPOSE_FILE_CA=docker-compose-ca.yaml
+COMPOSE_FILE_CA=docker/docker-compose-ca.yaml
 
 
 # Get docker sock path from environment variable
@@ -29,13 +28,8 @@ DOCKER_SOCK="${SOCK##unix://}"
 
 # Bring up the peer and orderer nodes using docker compose.
 function networkUp() {
-  COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_COUCH}"
-  IMAGE_TAG= docker-compose ${COMPOSE_FILES} up -d 2>&1
-
+  IMAGE_TAG= docker-compose -f ${COMPOSE_FILE_COUCH} up -d 2>&1
   docker ps -a
-  if [ $? -ne 0 ]
-    fatalln "Unable to start network"
-  fi
 }
 
 # call the script to create the channel, join the peers of org1 and org2,
@@ -66,26 +60,13 @@ function deployCC() {
 
 # Generate orderer system channle genesis block
 function createOrdererGenesisBlock() {
-  setGlobals 1
-	which configtxgen
-	if [ "$?" -ne 0 ]; then
-		fatalln "configtxgen tool not found."
-	fi
-	set -x
-    configtxgen -profile OrgsOrdererGenesis -outputBlock ./system-genesis-block/genesis.block -channelID $CHANNEL_NAME
-
-	res=$?
-	{ set +x; } 2>/dev/null
-    verifyResult $res "Failed to generate channel configuration transaction..."
+  configtxgen -profile OrgsOrdererGenesis -outputBlock ./system-genesis-block/genesis.block -channelID "mychannel"
 }
 
 function CAServiceUp() {
   IMAGE_TAG= docker-compose -f $COMPOSE_FILE_CA UP -d
 
   docker ps -a
-  if [ $? -ne 0 ]; then
-    fatalln "Unable to start CA service docker"
-  fi
 }
 
 # Parse commandline args
