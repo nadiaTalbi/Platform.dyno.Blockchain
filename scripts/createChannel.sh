@@ -24,7 +24,6 @@ fi
 
 # Generate orderer system channle genesis block
 createChannelGenesisBlock() {
-  setGlobals 1
 	which configtxgen
 	if [ "$?" -ne 0 ]; then
 		fatalln "configtxgen tool not found."
@@ -43,8 +42,8 @@ createChannel() {
 	while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ] ; do
 		sleep $DELAY
 		set -x
-        #. scripts/orderer.sh ${CHANNEL_NAME}> /dev/null 2>&1
-        peer channel create -o localhost:1100 -c $CHANNEL_NAME --orderetTLSHostnameOverride  config.orderers -f ./channel-artifacts/${CHANNEL_NAME}.tx --outputBlock -outputBlock ./system-genesis-block/genesis.block
+        . scripts/orderer.sh ${CHANNEL_NAME}> /dev/null 2>&1
+        #peer channel create -o localhost:1100 -c $CHANNEL_NAME --orderetTLSHostnameOverride  config.orderers -f ./channel-artifacts/${CHANNEL_NAME}.tx --outputBlock -outputBlock ./system-genesis-block/genesis.block
 		res=$?
 		{ set +x; } 2>/dev/null
 		let rc=$res
@@ -56,8 +55,7 @@ createChannel() {
 
 # joinChannel ORG
 joinChannel() {
-  FABRIC_CFG_PATH=$PWD/../config/
-  setGlobals $ORG
+  	FABRIC_CFG_PATH=$PWD/../config/
 	local rc=1
 	local COUNTER=1
 	## Sometimes Join takes time, hence retry
@@ -93,7 +91,7 @@ createChannelGenesisBlock
 
 ## Create channel
 infoln "Creating channel ${CHANNEL_NAME}"
-createChannel $BFT
+createChannel 
 successln "Channel '$CHANNEL_NAME' created"
 
 ## Join all the peers to the channel

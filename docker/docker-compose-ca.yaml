@@ -6,8 +6,8 @@
 version: "2.4"
 
 networks:
-  test_network:
-    name: dyno_blockchain_network
+  dyno_blockchain_network_ca:
+    name: dyno_blockchain_network_ca
 
 services:
   ca_dyno:

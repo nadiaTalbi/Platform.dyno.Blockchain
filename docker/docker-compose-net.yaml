@@ -6,18 +6,19 @@
 version: "2.4"
 
 volumes:
-  orderer1:
-  peer0.org1:
-  peer1.org1:
+  orderer:
+  peer0.dyno:
+  peer1.dyno:
+  peer2.dyno:
 
 
 networks:
-  test_network:
-    name: fabric_test
+  dyno_blockchain_network:
+    name: dyno_blockchain_network
 
 services:
-  orderer1:
-    container_name: orderer1
+  orderer:
+    container_name: orderer
     image: hyperledger/fabric-orderer:latest
     environment:
       - FABRIC_LOGGING_SPEC=INFO
@@ -25,7 +26,7 @@ services:
       - ORDERER_GENERAL_LISTENPORT=1100
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
-      - ORDERER_GENERAL_LOCALMSPID=orderer1-MSP
+      - ORDERER_GENERAL_LOCALMSPID=orderer-MSP
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
       - ORDERER_OPERATIONS_LISTENADDRESS=0.0.0.0:11100
       # enabled TLS
@@ -42,17 +43,17 @@ services:
     command: orderer
     volumes:
       - ../system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - ../consortium/crypto-config/ordererOrganizations/orderer1/config.orderers/msp:/var/hyperledger/orderer/msp
-      - ../consortium/crypto-config/ordererOrganizations/orderer1/config.orderers/tls/:/var/hyperledger/orderer/tls
-      - orderer1:/var/hyperledger/production/orderer
+      - ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/msp:/var/hyperledger/orderer/msp
+      - ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/:/var/hyperledger/orderer/tls
+      - orderer:/var/hyperledger/production/orderer
     ports:
       - 1100:1100
       - 11100:11100
     networks:
-      - test_network
+      - dyno_blockchain_network
 
-  peer0.org1:
-    container_name: peer0.org1
+  peer0.dyno:
+    container_name: peer0.dyno
     image: hyperledger/fabric-peer:latest
     environment:
       #Generic peer variables
@@ -60,7 +61,7 @@ services:
       # the following setting starts chaincode containers on the same
       # bridge network as the peers
       # https://docs.docker.com/compose/networking/
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=test_network
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=dyno_blockchain_network
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=true
@@ -68,14 +69,14 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variabes
-      - CORE_PEER_ID=peer0.org1
-      - CORE_PEER_ADDRESS=peer0.org1:4444
+      - CORE_PEER_ID=peer0.dyno
+      - CORE_PEER_ADDRESS=peer0.dyno:4444
       - CORE_PEER_LISTENADDRESS=0.0.0.0:4444
-      - CORE_PEER_CHAINCODEADDRESS=peer0.org1:4445
+      - CORE_PEER_CHAINCODEADDRESS=peer0.dyno:4445
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:4445
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org1:4454
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1:4444
-      - CORE_PEER_LOCALMSPID=org1msp
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.dyno:4454
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.dyno:4444
+      - CORE_PEER_LOCALMSPID=dyno-MSP
       - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:14444
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
@@ -83,19 +84,19 @@ services:
       - CORE_PEER_EVENTS_ADDRESS=0.0.0.0:4446
     volumes:
       - /var/run/docker.sock:/host/var/run/docker.sock
-      - ../consortium/crypto-config/peerOrganizations/org1/peers/peer0.org1/msp:/etc/hyperledger/fabric/msp
-      - ../consortium/crypto-config/peerOrganizations/org1/peers/peer0.org1/tls:/etc/hyperledger/fabric/tls
-      - peer0.org1:/var/hyperledger/production
+      - ../organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls:/etc/hyperledger/fabric/tls
+      - peer0.dyno:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
       - 4444:4444
       - 14444:14444
     networks:
-      - test_network
+      - dyno_blockchain_network
 
-  peer1.org1:
-    container_name: peer1.org1
+  peer1.dyno:
+    container_name: peer1.dyno
     image: hyperledger/fabric-peer:latest
     environment:
       #Generic peer variables
@@ -103,7 +104,7 @@ services:
       # the following setting starts chaincode containers on the same
       # bridge network as the peers
       # https://docs.docker.com/compose/networking/
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=test_network
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=dyno_blockchain_network
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=true
@@ -111,14 +112,14 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variabes
-      - CORE_PEER_ID=peer1.org1
-      - CORE_PEER_ADDRESS=peer1.org1:4454
+      - CORE_PEER_ID=peer1.dyno
+      - CORE_PEER_ADDRESS=peer1.dyno:4454
       - CORE_PEER_LISTENADDRESS=0.0.0.0:4454
-      - CORE_PEER_CHAINCODEADDRESS=peer1.org1:4455
+      - CORE_PEER_CHAINCODEADDRESS=peer1.dyno:4455
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:4455
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1:4444
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1:4454
-      - CORE_PEER_LOCALMSPID=org1msp
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.dyno:4444
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.dyno:4454
+      - CORE_PEER_LOCALMSPID=dyno-MSP
       - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:14454
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
@@ -126,16 +127,61 @@ services:
       - CORE_PEER_EVENTS_ADDRESS=0.0.0.0:4456
     volumes:
       - /var/run/docker.sock:/host/var/run/docker.sock
-      - ../consortium/crypto-config/peerOrganizations/org1/peers/peer1.org1/msp:/etc/hyperledger/fabric/msp
-      - ../consortium/crypto-config/peerOrganizations/org1/peers/peer1.org1/tls:/etc/hyperledger/fabric/tls
-      - peer1.org1:/var/hyperledger/production
+      - ../organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls:/etc/hyperledger/fabric/tls
+      - peer1.dyno:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
       - 4454:4454
       - 14454:14454
     networks:
-      - test_network
+      - dyno_blockchain_network
+
+  peer2.dyno:
+    container_name: peer2.dyno
+    image: hyperledger/fabric-peer:latest
+    environment:
+      #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      # the following setting starts chaincode containers on the same
+      # bridge network as the peers
+      # https://docs.docker.com/compose/networking/
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=dyno_blockchain_network
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      # Peer specific variabes
+      - CORE_PEER_ID=peer2.dyno
+      - CORE_PEER_ADDRESS=peer2.dyno:4464
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:4464
+      - CORE_PEER_CHAINCODEADDRESS=peer2.dyno:4465
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:4465
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.dyno:4444
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer2.dyno:4464
+      - CORE_PEER_LOCALMSPID=dyno-MSP
+      - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:14464
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_GOSSIP_PVTDATA_PUSHACKTIMEOUT=12s
+      - CORE_PEER_EVENTS_ADDRESS=0.0.0.0:4466
+    volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
+      - ../organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/msp:/etc/hyperledger/fabric/msp
+      - ../organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls:/etc/hyperledger/fabric/tls
+      - peer2.dyno:/var/hyperledger/production
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    ports:
+      - 4464:4464
+      - 14464:14464
+    networks:
+      - dyno_blockchain_network
+
+
 
   cli:
     container_name: cli
@@ -150,13 +196,15 @@ services:
     command: /bin/bash
     volumes:
       - /var/run/:/host/var/run/
-      - ../consortium:/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations
+      - ../organizations:/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations
       - ../scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
     depends_on:
-      - peer0.org1
-      - peer1.org1
+      - peer0.dyno
+      - peer1.dyno
+      - peer2.dyno
     networks:
-      - test_network
+      - dyno_blockchain_network
+
 
 
 
