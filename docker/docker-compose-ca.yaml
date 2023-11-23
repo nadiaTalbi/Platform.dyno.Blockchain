@@ -26,7 +26,7 @@ services:
       - ../organizations/fabric-ca/dyno:/etc/hyperledger/fabric-ca-server
     container_name: ca_dyno
     networks:
-      - dyno_blockchain_network
+      - dyno_blockchain_network_ca
 
   ca_orderer:
     image: hyperledger/fabric-ca:latest
@@ -44,4 +44,4 @@ services:
       - ../organizations/fabric-ca/orderer:/etc/hyperledger/fabric-ca-server
     container_name: ca_orderer
     networks:
-      - dyno_blockchain_network
+      - dyno_blockchain_network_ca
