@@ -94,7 +94,7 @@ function createOrgCertificate() {
   cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp/cacerts/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/ca/ca.dyno-cert.pem
 
   # Generating the user msp
-  fabric-ca-client enroll -u https://user:userpw@localhost:4400 --caname ca-dyno -M ${PWD}/organizations/crypto-config/peerOrganizations/dyno/users/User1@dyno/msp --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
+  fabric-ca-client enroll -u https://user:userpw@localhost:4400 --caname ca-dyno -M ${PWD}/organizations/crypto-config/peerOrganizations/dyno/users/User@dyno/msp --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
 
 
   cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/msp/config.yaml ${PWD}/organizations/crypto-config/peerOrganizations/dyno/users/User@dyno/msp/config.yaml
