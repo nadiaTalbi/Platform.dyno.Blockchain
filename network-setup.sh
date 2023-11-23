@@ -15,8 +15,6 @@ trap "popd > /dev/null" EXIT
 : ${CONTAINER_CLI_COMPOSE:="${CONTAINER_CLI}-compose"}
 infoln "Using ${CONTAINER_CLI} and ${CONTAINER_CLI_COMPOSE}"
 
-. ./network.config
-
 # use this as the default docker-compose yaml definition
 COMPOSE_FILE_BASE=docker-compose-net.yaml
 # docker-compose.yaml file if you are using couchdb
@@ -29,30 +27,9 @@ COMPOSE_FILE_CA=docker-compose-ca.yaml
 SOCK="${DOCKER_HOST:-/var/run/docker.sock}"
 DOCKER_SOCK="${SOCK##unix://}"
 
-# Obtain CONTAINER_IDS and remove them
-# This function is called when you bring a network down
-function clearContainers() {
-}
-
-# Delete any images that were generated as a part of this setup
-# specifically the following images are often left behind:
-# This function is called when you bring the network down
-function removeUnwantedImages() {
-  infoln "Removing generated chaincode docker images"
-  ${CONTAINER_CLI} image rm -f $(${CONTAINER_CLI} images -aq --filter reference='dev-peer*') 2>/dev/null || true
-}
-
-# Versions of fabric known not to work with the test network
-NONWORKING_VERSIONS="^1\.0\. ^1\.1\. ^1\.2\. ^1\.3\. ^1\.4\."
-
 # Bring up the peer and orderer nodes using docker compose.
 function networkUp() {
-  COMPOSE_FILES="-f ${NETWORK_DOCKER}"
-
-  if [ "${DATABASE}" == "couchdb" ]; then
-    COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_COUCH}"
-  fi
-
+  COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_COUCH}"
   IMAGE_TAG= docker-compose ${COMPOSE_FILES} up -d 2>&1
 
   docker ps -a
@@ -85,31 +62,6 @@ function deployCC() {
   if [ $? -ne 0 ]; then 
     fatalln "Deploying chaincode failed"
   fi
-}
-
-## Call the script to deploy a chaincode to the channel
-function deployCCAAS() {
-}
-
-## Call the script to package the chaincode
-function packageChaincode() {
-}
-
-## Call the script to list installed and committed chaincode on a peer
-function listChaincode() {
-}
-
-## Call the script to invoke 
-function invokeChaincode() {
-}
-
-## Call the script to query chaincode 
-function queryChaincode() {
-}
-
-
-# Tear down running network
-function networkDown() {
 }
 
 # Generate orderer system channle genesis block
@@ -170,108 +122,6 @@ if [[ $# -ge 1 ]] ; then
 fi
 
 
-# parse flags
-while [[ $# -ge 1 ]] ; do
-  key="$1"
-  case $key in
-  -h )
-    printHelp $MODE
-    exit 0
-    ;;
-  -c )
-    CHANNEL_NAME="$2"
-    shift
-    ;;
-  -bft )
-    BFT=1
-    ;;
-  -ca )
-    CRYPTO="Certificate Authorities"
-    ;;
-  -cfssl )
-    CRYPTO="cfssl"
-    ;;
-  -r )
-    MAX_RETRY="$2"
-    shift
-    ;;
-  -d )
-    CLI_DELAY="$2"
-    shift
-    ;;
-  -s )
-    DATABASE="$2"
-    shift
-    ;;
-  -ccl )
-    CC_SRC_LANGUAGE="$2"
-    shift
-    ;;
-  -ccn )
-    CC_NAME="$2"
-    shift
-    ;;
-  -ccv )
-    CC_VERSION="$2"
-    shift
-    ;;
-  -ccs )
-    CC_SEQUENCE="$2"
-    shift
-    ;;
-  -ccp )
-    CC_SRC_PATH="$2"
-    shift
-    ;;
-  -ccep )
-    CC_END_POLICY="$2"
-    shift
-    ;;
-  -cccg )
-    CC_COLL_CONFIG="$2"
-    shift
-    ;;
-  -cci )
-    CC_INIT_FCN="$2"
-    shift
-    ;;
-  -ccaasdocker )
-    CCAAS_DOCKER_RUN="$2"
-    shift
-    ;;
-  -verbose )
-    VERBOSE=true
-    ;;
-  -org )
-    ORG="$2"
-    shift
-    ;;
-  -i )
-    IMAGETAG="$2"
-    shift
-    ;;
-  -cai )
-    CA_IMAGETAG="$2"
-    shift
-    ;;
-  -ccic )
-    CC_INVOKE_CONSTRUCTOR="$2"
-    shift
-    ;;
-  -ccqc )
-    CC_QUERY_CONSTRUCTOR="$2"
-    shift
-    ;;    
-  * )
-    errorln "Unknown flag: $key"
-    printHelp
-    exit 1
-    ;;
-  esac
-  shift
-done
-
-
 # Are we generating crypto material with this command?
 if [ ! -d "organizations/peerOrganizations" ]; then
   CRYPTO_MODE="with crypto from '${CRYPTO}'"
@@ -300,14 +150,6 @@ elif [ "$MODE" == "deployCC" ]; then
 elif [ "$MODE" == "deployCCAAS" ]; then
   infoln "deploying chaincode-as-a-service on channel '${CHANNEL_NAME}'"
   deployCCAAS
-elif [ "$MODE" == "cc" ] && [ "$SUBCOMMAND" == "package" ]; then
-  packageChaincode
-elif [ "$MODE" == "cc" ] && [ "$SUBCOMMAND" == "list" ]; then
-  listChaincode
-elif [ "$MODE" == "cc" ] && [ "$SUBCOMMAND" == "invoke" ]; then
-  invokeChaincode
-elif [ "$MODE" == "cc" ] && [ "$SUBCOMMAND" == "query" ]; then
-  queryChaincode
 else
   printHelp
   exit 1
