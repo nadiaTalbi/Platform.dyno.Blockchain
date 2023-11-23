@@ -1,5 +1,9 @@
 #!/bin/bash
 
+source scriptUtils.sh
+export PATH=${PWD}/./bin:$PATH
+
+
 function createOrgCertificate() {
   infoln "Enrolling the CA admin"
   mkdir -p ./organizations/crypto-config/peerOrganizations/dyno/
