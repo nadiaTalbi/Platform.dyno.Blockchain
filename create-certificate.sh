@@ -155,10 +155,10 @@ function createorderer() {
   cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/keystore/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.key
 
   mkdir -p ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/msp/tlscacerts
-  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/cacerts/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/msp/tlscacerts/tlsca-cert.pem
+  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/tlscacerts/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/msp/tlscacerts/tlsca-cert.pem
 
   mkdir -p ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/msp/tlscacerts
-  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/cacerts/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/msp/tlscacerts/tlsca-cert.pem
+  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/tlscacerts/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/msp/tlscacerts/tlsca-cert.pem
 
   # Generating the admin msp
   fabric-ca-client enroll -u https://ordererAdmin:ordererAdminpw@localhost:2200 --caname ca-orderer -M ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/users/Admin@example.com/msp --tls.certfiles ${PWD}/organizations/fabric-ca/orderer/tls-cert.pem
