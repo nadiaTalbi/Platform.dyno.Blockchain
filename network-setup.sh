@@ -1,14 +1,14 @@
 
 
 export PATH=${PWD}/bin:$PATH
-export FABRIC_CFG_PATH=./configtx
+export FABRIC_CFG_PATH=${PWD}/configtx
 export VERBOSE=false
 
 # push to the required directory & set a trap to go back if needed
 push ${ROOTDIR} > /dev/null
 trap "popd > /dev/null" EXIT
 
-. ./scriptUtils.sh
+. scriptUtils.sh
 
 : ${CONTAINER_CLI:="docker"}
 : ${CONTAINER_CLI_COMPOSE:="${CONTAINER_CLI}-compose"}
@@ -53,11 +53,6 @@ function deployCC() {
   if [ $? -ne 0 ]; then 
     fatalln "Deploying chaincode failed"
   fi
-}
-
-# Generate orderer system channle genesis block
-function createOrdererGenesisBlock() {
-  configtxgen -profile OrgsOrdererGenesis -outputBlock ./channel-artifacts/mychannel.block -channelID "mychannel"
 }
 
 function CAServiceUp() {
@@ -109,7 +104,6 @@ fi
 
 if [ "$MODE" == "up" ]; then
   infoln "Starting nodes with CLI timeout of '${MAX_RETRY}' tries and CLI delay of '${CLI_DELAY}' seconds and using database '${DATABASE}' ${CRYPTO_MODE}"
-  createOrdererGenesisBlock
   networkUp
 elif [ "$MODE" == "createChannel" ]; then
   createChannel

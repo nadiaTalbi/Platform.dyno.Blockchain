@@ -26,7 +26,7 @@ createChannelGenesisBlock() {
 		fatalln "configtxgen tool not found."
 	fi
 	set -x
-	peer channel create -o localhsot:1100 -c mychannel -f ../channel-artifacts/mychannel.tx --tls --cafile "$ORDERER_CA"
+	configtxgen -profile OrgsOrdererGenesis -outputBlock ./channel-artifacts/mychannel.block -channelID mychannel
 
 	res=$?
 	{ set +x; } 2>/dev/null
@@ -73,7 +73,11 @@ setAnchorPeer() {
 }
 
 
+## Create channel genesis block
+FABRIC_CFG_PATH=$PWD/../config/
 BLOCKFILE="./channel-artifacts/${CHANNEL_NAME}.block"
+
+infoln "Generating channel genesis block '${CHANNEL_NAME}.block'"
 FABRIC_CFG_PATH=${PWD}/configtx
 
 createChannelGenesisBlock
