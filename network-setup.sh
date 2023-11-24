@@ -17,7 +17,7 @@ infoln "Using ${CONTAINER_CLI} and ${CONTAINER_CLI_COMPOSE}"
 # use this as the default docker-compose yaml definition
 COMPOSE_FILE_BASE=docker/docker-compose-net.yaml
 # docker-compose.yaml file if you are using couchdb
-COMPOSE_FILE_COUCH=socker/docker-compose-couchdb.yaml
+COMPOSE_FILE_COUCH=docker/docker-compose-couchdb.yaml
 # certificate authorities compose file
 COMPOSE_FILE_CA=docker/docker-compose-ca.yaml
 
@@ -28,21 +28,18 @@ DOCKER_SOCK="${SOCK##unix://}"
 
 # Bring up the peer and orderer nodes using docker compose.
 function networkUp() {
-  IMAGE_TAG= docker-compose -f ${COMPOSE_FILE_COUCH} up -d 2>&1
-  docker ps -a
+  COMPOSE_FILES="$-f ${COMPOSE_FILE_BASE}-f ${COMPOSE_FILE_COUCH} -f "
+
+  IMAGE_TAG="docker-compose ${COMPOSE_FILES} up -d"
+
+  $CONTAINER_CLI ps -a
 }
 
 # call the script to create the channel, join the peers of org1 and org2,
 # and then update the anchor peers for each organization
 function createChannel() {
   # Bring up the network if it is not already up.
-
-  if [ ! -d "organizations/crypto-config/peerOrganizations" ]; then 
-    infoln "Bring up network"
-    networkUp
-  fi
-
-  scripts/createChannel.sh $CHANNEL_NAME $CLI_DELAY $MAX_RETRY $VERBOSE
+  scripts/createChannel.sh "mychannel" 3 5 false
   if [ $? -ne 0 ]; then
     fatalln "Create channel failed"
   fi
@@ -115,8 +112,6 @@ if [ "$MODE" == "up" ]; then
   createOrdererGenesisBlock
   networkUp
 elif [ "$MODE" == "createChannel" ]; then
-  infoln "Creating channel '${CHANNEL_NAME}'."
-  infoln "If network is not up, starting nodes with CLI timeout of '${MAX_RETRY}' tries and CLI delay of '${CLI_DELAY}' seconds and using database '${DATABASE} ${CRYPTO_MODE}"
   createChannel
 elif [ "$MODE" == "down" ]; then
   infoln "Stopping network"
