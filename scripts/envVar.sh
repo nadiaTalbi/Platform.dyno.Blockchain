@@ -9,10 +9,10 @@
 # This is a collection of bash functions used by different scripts
 
 # imports
-. ./ScriptUtils.sh
+. ../scriptUtils.sh
 
 export CORE_PEER_TLS_ENABLED=true
-export ORDERER_CA=${PWD}/organizations/ordererOrganizations/orderer/msp/tlscacerts/tlsca-cert.pem
+export ORDERER_CA=${PWD}/organizations/crypto-config/ordererOrganizations/orderer/msp/tlscacerts/tlsca-cert.pem
 export PEER0_DYNO_CA=${PWD}/organizations/crypto-config/peerOrganizations/dyno/tlsca/tlsca.dyno-cert.pem
 
 # Set environment variables for the peer org
@@ -26,7 +26,7 @@ setGlobals() {
   infoln "Using organization ${USING_ORG}"
   export CORE_PEER_LOCALMSPID="dyno-MSP"
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_DYNO_CA
-  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/dyno/users/Admin@dyno/msp
+  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/crypto-config/peerOrganizations/dyno/users/Admin@dyno/msp
   export CORE_PEER_ADDRESS=localhost:4444
     
   if [ "$VERBOSE" == "true" ]; then
