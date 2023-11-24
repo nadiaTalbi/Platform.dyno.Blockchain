@@ -26,10 +26,7 @@ createChannelGenesisBlock() {
 		fatalln "configtxgen tool not found."
 	fi
 	set -x
-
-	configtxgen -profile OrgsChannel -outputBlock ./channel-artifacts/mychannel.block -channelID mychannel
-
-	peer channel create -o localhsot:1100 -c mychannel -f ./channel-artifacts/mychannel.tx --tls --cafile "$ORDERER_CA"
+	peer channel create -o localhsot:1100 -c mychannel -f ../channel-artifacts/mychannel.tx --tls --cafile "$ORDERER_CA"
 
 	res=$?
 	{ set +x; } 2>/dev/null
@@ -39,10 +36,10 @@ createChannelGenesisBlock() {
 createChannel() {
 	local rc=1
 	local COUNTER=1
-	while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ] ; do
+	while [ $rc -ne 0 -a $COUNTER -lt 5 ] ; do
 		sleep $DELAY
 		set -x
-        . scripts/orderer.sh ${CHANNEL_NAME}> /dev/null 2>&1
+        . scripts/orderer.sh mychannel > /dev/null 2>&1
 		res=$?
 		{ set +x; } 2>/dev/null
 		let rc=$res
@@ -79,7 +76,7 @@ setAnchorPeer() {
 BLOCKFILE="./channel-artifacts/${CHANNEL_NAME}.block"
 FABRIC_CFG_PATH=${PWD}/configtx
 
-
+createChannelGenesisBlock
 ## Create channel
 infoln "Creating channel ${CHANNEL_NAME}"
 createChannel 

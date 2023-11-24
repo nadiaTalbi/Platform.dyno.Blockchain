@@ -5,7 +5,7 @@ export FABRIC_CFG_PATH=./configtx
 export VERBOSE=false
 
 # push to the required directory & set a trap to go back if needed
-pushd ${ROOTDIR} > /dev/null
+push ${ROOTDIR} > /dev/null
 trap "popd > /dev/null" EXIT
 
 . ./scriptUtils.sh
@@ -30,7 +30,7 @@ DOCKER_SOCK="${SOCK##unix://}"
 function networkUp() {
   COMPOSE_FILES="$-f ${COMPOSE_FILE_BASE}-f ${COMPOSE_FILE_COUCH} -f "
 
-  IMAGE_TAG="docker-compose ${COMPOSE_FILES} up -d"
+  docker-compose ${COMPOSE_FILES} up -d
 
   $CONTAINER_CLI ps -a
 }
@@ -57,7 +57,7 @@ function deployCC() {
 
 # Generate orderer system channle genesis block
 function createOrdererGenesisBlock() {
-  configtxgen -profile OrgsOrdererGenesis -outputBlock ./system-genesis-block/genesis.block -channelID "mychannel"
+  configtxgen -profile OrgsOrdererGenesis -outputBlock ./channel-artifacts/mychannel.block -channelID "mychannel"
 }
 
 function CAServiceUp() {
