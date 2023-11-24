@@ -18,9 +18,23 @@ VERBOSE="$4"
 : ${CONTAINER_CLI_COMPOSE:="${CONTAINER_CLI}-compose"}
 infoln "Using ${CONTAINER_CLI} and ${CONTAINER_CLI_COMPOSE}"
 
-if [ ! -d "channel-artifacts" ]; then
-	mkdir channel-artifacts
-fi
+#Create a Channel Cnfiguration Transaction
+createChannelGenesisBlock() {
+  setGlobals 1
+	which configtxgen
+	if [ "$?" -ne 0 ]; then
+		fatalln "configtxgen tool not found."
+	fi
+	set -x
+
+	configtxgen -profile OrgsChannel -outputBlock ./channel-artifacts/mychannel.block -channelID mychannel
+
+	peer channel create -o localhsot:1100 -c mychannel -f ./channel-artifacts/mychannel.tx --tls --cafile "$ORDERER_CA"
+
+	res=$?
+	{ set +x; } 2>/dev/null
+  verifyResult $res "Failed to generate channel configuration transaction..."
+}
 
 createChannel() {
 	local rc=1

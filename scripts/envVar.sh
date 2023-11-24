@@ -9,7 +9,7 @@
 # This is a collection of bash functions used by different scripts
 
 # imports
-. ../scriptUtils.sh
+. ./scriptUtils.sh
 
 export CORE_PEER_TLS_ENABLED=true
 export ORDERER_CA=${PWD}/organizations/crypto-config/ordererOrganizations/orderer/msp/tlscacerts/tlsca-cert.pem
