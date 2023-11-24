@@ -42,7 +42,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     volumes:
-      - ../system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../channel-artifacts/mychannel.block:/var/hyperledger/orderer/orderer.genesis.block
       - ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/msp:/var/hyperledger/orderer/msp
       - ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/:/var/hyperledger/orderer/tls
       - orderer:/var/hyperledger/production/orderer
