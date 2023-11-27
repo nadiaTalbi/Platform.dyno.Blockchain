@@ -26,7 +26,7 @@ createChannelGenesisBlock() {
 		fatalln "configtxgen tool not found."
 	fi
 	set -x
-	configtxgen -profile OrgsOrdererGenesis -outputBlock ./channel-artifacts/mychannel.block -channelID mychannel
+	configtxgen -profile OrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID mychannel
 
 	res=$?
 	{ set +x; } 2>/dev/null
