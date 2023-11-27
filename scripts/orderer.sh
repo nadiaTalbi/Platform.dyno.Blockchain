@@ -8,4 +8,4 @@ export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/crypto-config/ordererO
 # Create channel 
 peer channel create -o localhost:1100 -c mychannel -f ./channel-artifacts/channel.tx --tls --cafile $ORDERER_CA
 # To join orderer to a channel
-osnadmin channel join --channelID mychannel --config-block ./channel-artifacts/mychannel.block -o localhost:1100 --ca-file "$ORDERER_CA" --client-cert "$ORDERER_ADMIN_TLS_SIGN_CERT" --client-key "$ORDERER_ADMIN_TLS_PRIVATE_KEY" >> log.txt 2>&1
+osnadmin channel join --channelID mychannel --config-block ./channel-artifacts/genesis.block -o localhost:1100 --ca-file "$ORDERER_CA" --client-cert "$ORDERER_ADMIN_TLS_SIGN_CERT" --client-key "$ORDERER_ADMIN_TLS_PRIVATE_KEY" >> log.txt 2>&1
