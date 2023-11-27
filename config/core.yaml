@@ -1,0 +1,28 @@
+# core.yaml
+
+peer:
+  id: peer0
+  networkId: dev
+  listenAddress: 0.0.0.0:1100
+  chaincodeListenAddress: 0.0.0.0:7052
+  address: localhost:1100
+  gossip:
+    bootstrap:
+      enabled: true
+      address: localhost:1100
+  localMspId: OrgMSP
+  mspConfigPath: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/msp
+
+# TLS configuration (modify accordingly)
+tls:
+  enabled: false
+  certificate: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
+  privateKey: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.key
+  rootCAs:
+    - /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/ca.crt
+
+# Logging configuration
+logging:
+  level: info
+  format: '%{color}%{time:2006-01-02 15:04:05.000 MST}%{color:reset} [%{module}] %{shortfunc} -> %{level:.4s} %{id:03x}%{color:reset} %{message}'
+

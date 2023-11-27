@@ -19,6 +19,8 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('OrdererMSP.admin')"
+        OrdererEndpoints:
+      - localhost:7050
 
     - &Dyno
         Name: dyno-MSP
@@ -66,9 +68,15 @@ Application: &ApplicationDefaults
         <<: *ApplicationCapabilities
 
 Orderer: &OrdererDefaults
-    OrdererType: solo
+    OrdererType: etcdraft
+    EtcdRaft:
+        Consenters:
+          - Host: 0.0.0.0
+            Port: 7050
+            ClientTLSCert: ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
+            ServerTLSCert: ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
     Addresses:
-        - localhost:1100
+        - 0.0.0.0:1100
     BatchTimeout: 2s
     BatchSize:
         MaxMessageCount: 10
@@ -80,6 +88,7 @@ Orderer: &OrdererDefaults
             - 127.0.0.1:9092
 
     Organizations:
+        - OrdererOrg   
 
     Policies:
         Readers:

@@ -36,22 +36,14 @@ createChannelGenesisBlock() {
 createChannel() {
 	local rc=1
 	local COUNTER=1
-	while [ $rc -ne 0 -a $COUNTER -lt 5 ] ; do
-		sleep $DELAY
-		set -x
-        . scripts/orderer.sh mychannel > /dev/null 2>&1
-		res=$?
-		{ set +x; } 2>/dev/null
-		let rc=$res
-		COUNTER=$(expr $COUNTER + 1)
-	done
+	. scripts/orderer.sh mychannel > /dev/null 2>&1
 	cat log.txt
 	verifyResult $res "Channel creation failed"
 }
 
 # joinChannel ORG
 joinChannel() {
-  	FABRIC_CFG_PATH=$PWD/../config/
+  	FABRIC_CFG_PATH=${PWD}/../configtx/
 	local rc=1
 	local COUNTER=1
 	## Sometimes Join takes time, hence retry
