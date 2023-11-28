@@ -8,12 +8,13 @@
 # import utils
 . scripts/envVar.sh
 . scripts/configUpdate.sh
+. scriptUtils.sh
 
 
 # NOTE: this must be run in a CLI container since it requires jq and configtxlator 
 createAnchorPeerUpdate() {
-  infoln "Fetching channel config for channel $CHANNEL_NAME"
-  fetchChannelConfig $ORG $CHANNEL_NAME ${CORE_PEER_LOCALMSPID}config.json
+  infoln "Fetching channel config for channel mychannle"
+  fetchChannelConfig dyno muchannel ${CORE_PEER_LOCALMSPI
 
   infoln "Generating anchor peer update transaction for Org${ORG} on channel $CHANNEL_NAME"
 
@@ -38,11 +39,6 @@ updateAnchorPeer() {
   verifyResult $res "Anchor peer update failed"
   successln "Anchor peer set for org '$CORE_PEER_LOCALMSPID' on channel '$CHANNEL_NAME'"
 }
-
-ORG=$1
-CHANNEL_NAME=$2
-
-setGlobalsCLI
 
 createAnchorPeerUpdate 
 

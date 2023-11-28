@@ -44,16 +44,13 @@ createChannel() {
 # joinChannel ORG
 joinChannel() {
   	FABRIC_CFG_PATH=${PWD}/config/
-	local rc=1
-	local COUNTER=1
-	## Sometimes Join takes time, hence retry
 	peer channel join -b ./channel-artifacts/genesis.block >&log.txt
 	cat log.txt
 	verifyResult $res "After $MAX_RETRY attempts, peer0.DYNO has failed to join channel '$CHANNEL_NAME' "
 }
 
 setAnchorPeer() {
-  ${CONTAINER_CLI} exec cli ./scripts/setAnchorPeer.sh $CHANNEL_NAME 
+  ${CONTAINER_CLI} exec cli ./scripts/setAnchorPeer.sh mychannel
 }
 
 
