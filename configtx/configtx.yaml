@@ -74,7 +74,7 @@ Orderer: &OrdererDefaults
             ClientTLSCert: ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
             ServerTLSCert: ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
     Addresses:
-        - 0.0.0.0:1100
+        - 0.0.0.0:7053
     BatchTimeout: 2s
     BatchSize:
         MaxMessageCount: 10
@@ -85,7 +85,7 @@ Orderer: &OrdererDefaults
         Brokers:
             - 127.0.0.1:9092
     Organizations:
-        - OrdererOrg   
+        - *OrdererOrg   
 
     Policies:
         Readers:

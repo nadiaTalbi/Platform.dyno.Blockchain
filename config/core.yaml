@@ -11,7 +11,7 @@ peer:
       enabled: true
       address: 0.0.0.0:4454
   localMspId: dyno-MSP
-  mspConfigPath: :/home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp
+  mspConfigPath: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp
   tls:
     enabled: false
     certificate: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/server.crt
