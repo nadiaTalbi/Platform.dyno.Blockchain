@@ -2,8 +2,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
----
 Organizations:
     - &OrdererOrg
         Name: OrdererOrg
@@ -20,7 +18,7 @@ Organizations:
                 Type: Signature
                 Rule: "OR('OrdererMSP.admin')"
         OrdererEndpoints:
-      - localhost:7050
+            - localhost:7050
 
     - &Dyno
         Name: dyno-MSP
@@ -86,7 +84,6 @@ Orderer: &OrdererDefaults
     Kafka:
         Brokers:
             - 127.0.0.1:9092
-
     Organizations:
         - OrdererOrg   
 
@@ -119,7 +116,6 @@ Channel: &ChannelDefaults
         <<: *ChannelCapabilities
 
 Profiles:
-
     OrgsOrdererGenesis:
         <<: *ChannelDefaults
         Orderer:

@@ -1,28 +1,38 @@
 # core.yaml
 
 peer:
-  id: peer0
-  networkId: dev
-  listenAddress: 0.0.0.0:1100
-  chaincodeListenAddress: 0.0.0.0:7052
-  address: localhost:1100
+  id: peer0.dyno
+  networkId: dyno_blockchain_network
+  listenAddress: 0.0.0.0:4444
+  chaincodeListenAddress: 0.0.0.0:4445
+  address: peer0.dyno:4444
   gossip:
     bootstrap:
       enabled: true
-      address: localhost:1100
-  localMspId: OrgMSP
-  mspConfigPath: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/msp
+      address: 0.0.0.0:4454
+  localMspId: dyno-MSP
+  mspConfigPath: :/home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp
+  tls:
+    enabled: false
+    certificate: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/server.crt
+    privateKey: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/server.key
+    rootCAs:
+      - /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/ca.crt
+  BCCSP:
+    Default: SW
+    SW:
+      Hash: SHA2
+      Security: 256
+      FileKeyStore:
+        KeyStore: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp/keystore
 
-# TLS configuration (modify accordingly)
-tls:
-  enabled: false
-  certificate: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
-  privateKey: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.key
-  rootCAs:
-    - /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/ca.crt
 
-# Logging configuration
+
 logging:
-  level: info
-  format: '%{color}%{time:2006-01-02 15:04:05.000 MST}%{color:reset} [%{module}] %{shortfunc} -> %{level:.4s} %{id:03x}%{color:reset} %{message}'
 
+    cauthdsl:   warning
+    gossip:     warning
+    ledger:     info
+    msp:        warning
+    policies:   warning
+    grpc:       error

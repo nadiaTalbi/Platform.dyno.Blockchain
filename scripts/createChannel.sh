@@ -43,21 +43,13 @@ createChannel() {
 
 # joinChannel ORG
 joinChannel() {
-  	FABRIC_CFG_PATH=${PWD}/../configtx/
+  	FABRIC_CFG_PATH=${PWD}/config/
 	local rc=1
 	local COUNTER=1
 	## Sometimes Join takes time, hence retry
-	while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ] ; do
-    sleep $DELAY
-    set -x
-    peer channel join -b $BLOCKFILE >&log.txt
-    res=$?
-    { set +x; } 2>/dev/null
-		let rc=$res
-		COUNTER=$(expr $COUNTER + 1)
-	done
+	peer channel join -b ./channel-artifacts/genesis.block >&log.txt
 	cat log.txt
-	verifyResult $res "After $MAX_RETRY attempts, peer0.org has failed to join channel '$CHANNEL_NAME' "
+	verifyResult $res "After $MAX_RETRY attempts, peer0.DYNO has failed to join channel '$CHANNEL_NAME' "
 }
 
 setAnchorPeer() {
@@ -66,8 +58,8 @@ setAnchorPeer() {
 
 
 ## Create channel genesis block
-FABRIC_CFG_PATH=$PWD/../config/
-BLOCKFILE="./channel-artifacts/${CHANNEL_NAME}.block"
+FABRIC_CFG_PATH=$PWD/config/
+BLOCKFILE="./channel-artifacts/genesis.block"
 
 infoln "Generating channel genesis block '${CHANNEL_NAME}.block'"
 FABRIC_CFG_PATH=${PWD}/configtx

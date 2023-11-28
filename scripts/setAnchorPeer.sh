@@ -32,7 +32,7 @@ createAnchorPeerUpdate() {
 }
 
 updateAnchorPeer() {
-  peer channel update -o localhost:1100 --ordererTLSHostnameOverride localhost -c $CHANNEL_NAME -f ${CORE_PEER_LOCALMSPID}anchors.tx --tls --cafile "$ORDERER_CA" >&log.txt
+  peer channel update -o localhost:7053 --ordererTLSHostnameOverride localhost -c $CHANNEL_NAME -f ${CORE_PEER_LOCALMSPID}anchors.tx --tls --cafile "$ORDERER_CA" >&log.txt
   res=$?
   cat log.txt
   verifyResult $res "Anchor peer update failed"
