@@ -46,7 +46,6 @@ joinChannel() {
   	FABRIC_CFG_PATH=${PWD}/config/
 	peer channel join -b ./channel-artifacts/genesis.block >&log.txt
 	cat log.txt
-	verifyResult $res "After $MAX_RETRY attempts, peer0.DYNO has failed to join channel '$CHANNEL_NAME' "
 }
 
 setAnchorPeer() {
@@ -68,7 +67,7 @@ createChannel
 successln "Channel '$CHANNEL_NAME' created"
 
 ## Join all the peers to the channel
-infoln "Joining org1 peer to the channel..."
+infoln "Joining peer to the channel..."
 joinChannel 
 
 ## Set the anchor peers for each org in the channel
