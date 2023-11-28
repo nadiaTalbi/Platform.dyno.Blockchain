@@ -37,6 +37,7 @@ createChannel() {
 	local rc=1
 	local COUNTER=1
 	. scripts/orderer.sh mychannel > /dev/null 2>&1
+	docker restart $(docker ps -q)
 	cat log.txt
 	verifyResult $res "Channel creation failed"
 }
