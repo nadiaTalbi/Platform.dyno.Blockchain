@@ -47,7 +47,6 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     volumes:
-      - /home/dyno/Platform.dyno.Blockchain/channel-artifacts/genesis.block:/var/hyperledger/orderer/genesis.block
       - ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/msp:/var/hyperledger/orderer/msp
       - ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/:/var/hyperledger/orderer/tls
       - orderer:/var/hyperledger/production/orderer

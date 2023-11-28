@@ -26,16 +26,6 @@ COMPOSE_FILE_CA=docker/docker-compose-ca.yaml
 SOCK="${DOCKER_HOST:-/var/run/docker.sock}"
 DOCKER_SOCK="${SOCK##unix://}"
 
-#Create a Channel Cnfiguration Transaction
-createGenesisBlock() {
-	which configtxgen
-	if [ "$?" -ne 0 ]; then
-		fatalln "configtxgen tool not found."
-	fi
-	set -x
-  configtxgen -profile OrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block -channelID mychannel
-}
-
 # Bring up the peer and orderer nodes using docker compose.
 function networkUp() {
   COMPOSE_FILES="-f ${COMPOSE_FILE_BASE} -f ${COMPOSE_FILE_COUCH}"
@@ -113,8 +103,6 @@ else
 fi
 
 if [ "$MODE" == "up" ]; then
-  infoln "Starting nodes with CLI timeout of '${MAX_RETRY}' tries and CLI delay of '${CLI_DELAY}' seconds and using database '${DATABASE}' ${CRYPTO_MODE}"
-  createGenesisBlock
   networkUp
 elif [ "$MODE" == "createChannel" ]; then
   createChannel

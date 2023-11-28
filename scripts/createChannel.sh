@@ -26,7 +26,8 @@ createChannelGenesisBlock() {
 		fatalln "configtxgen tool not found."
 	fi
 	set -x
-	configtxgen -profile OrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID mychannel
+	configtxgen -profile ChannelUsingRaft  -outputBlock ./channel-artifacts/mychannel.block -channelID mychannel
+	# configtxgen -profile OrgsChannel -outputCreateChannelTx ./channel-artifacts/mychannel.tx -channelID mychannel
 
 	res=$?
 	{ set +x; } 2>/dev/null
@@ -34,8 +35,6 @@ createChannelGenesisBlock() {
 }
 
 createChannel() {
-	local rc=1
-	local COUNTER=1
 	. scripts/orderer.sh mychannel > /dev/null 2>&1
 	docker restart $(docker ps -q)
 	cat log.txt
@@ -45,7 +44,7 @@ createChannel() {
 # joinChannel ORG
 joinChannel() {
   	FABRIC_CFG_PATH=${PWD}/config/
-	peer channel join -b ./channel-artifacts/genesis.block >&log.txt
+	peer channel join -b ${PWD}/channel-artifacts/mychannel.block >&log.txt
 	cat log.txt
 }
 

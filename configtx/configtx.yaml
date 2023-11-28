@@ -66,15 +66,8 @@ Application: &ApplicationDefaults
         <<: *ApplicationCapabilities
 
 Orderer: &OrdererDefaults
-    OrdererType: etcdraft
-    EtcdRaft:
-        Consenters:
-          - Host: 0.0.0.0
-            Port: 7050
-            ClientTLSCert: ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
-            ServerTLSCert: ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
     Addresses:
-        - 0.0.0.0:7053
+        - 0.0.0.0:7050
     BatchTimeout: 2s
     BatchSize:
         MaxMessageCount: 10
@@ -84,6 +77,7 @@ Orderer: &OrdererDefaults
     Kafka:
         Brokers:
             - 127.0.0.1:9092
+
     Organizations:
         - *OrdererOrg   
 
@@ -116,25 +110,22 @@ Channel: &ChannelDefaults
         <<: *ChannelCapabilities
 
 Profiles:
-    OrgsOrdererGenesis:
-        <<: *ChannelDefaults
-        Orderer:
-            <<: *OrdererDefaults
-            Organizations:
-                - *OrdererOrg
-            Capabilities:
-                <<: *OrdererCapabilities
-        Consortiums:
-            SampleConsortium:
-                Organizations:
-                    - *Dyno
-    OrgsChannel:
-        Consortium: SampleConsortium
-        <<: *ChannelDefaults
-        Application:
-            <<: *ApplicationDefaults
-            Organizations:
-                - *Dyno
-            Capabilities:
-                <<: *ApplicationCapabilities
-
+  ChannelUsingRaft:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      OrdererType: etcdraft
+      EtcdRaft:
+        Consenters:
+          - Host: orderer
+            Port: 7050
+         ClientTLSCert: ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
+            ServerTLSCert: ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
+      Organizations:
+        - *OrdererOrg
+      Capabilities: *OrdererCapabilities
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *Dyno
+      Capabilities: *ApplicationCapabilities
