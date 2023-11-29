@@ -9,7 +9,7 @@
 # This is a collection of bash functions used by different scripts
 
 # imports
-. ./scriptUtils.sh
+. scripts/scriptUtils.sh
 
 export CORE_PEER_TLS_ENABLED=true
 export ORDERER_CA=${PWD}/organizations/crypto-config/ordererOrganizations/orderer/msp/tlscacerts/tlsca-cert.pem
@@ -24,7 +24,7 @@ setGlobals() {
     USING_ORG="${OVERRIDE_ORG}"
   fi
   infoln "Using organization ${USING_ORG}"
-  export CORE_PEER_LOCALMSPID="dyno-MSP"
+  export CORE_PEER_LOCALMSPID="dyno"
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_DYNO_CA
   export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/crypto-config/peerOrganizations/dyno/users/Admin@dyno/msp
   export CORE_PEER_ADDRESS=localhost:4444

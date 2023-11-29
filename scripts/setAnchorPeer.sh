@@ -8,20 +8,20 @@
 # import utils
 . scripts/envVar.sh
 . scripts/configUpdate.sh
-. scriptUtils.sh
-
+. scripts/scriptUtils.sh
 
 # NOTE: this must be run in a CLI container since it requires jq and configtxlator 
 createAnchorPeerUpdate() {
-  infoln "Fetching channel config for channel mychannle"
-  fetchChannelConfig dyno muchannel ${CORE_PEER_LOCALMSPI
+  infoln "Fetching channel config for channel mychannel"
+  CHANNEL_NAME=mychannel
 
-  infoln "Generating anchor peer update transaction for Org${ORG} on channel $CHANNEL_NAME"
+  fetchChannelConfig dyno mychannel dynoconfig.json
 
-    HOST="peer0.dyno"
-    POR=4444
+  infoln "Generating anchor peer update transaction for Org dyno on channel mychannel"
 
-  set -x
+    HOST=0.0.0.0
+    PORT=4444
+
   # Modify the configuration to append the anchor peer 
   jq '.channel_group.groups.Application.groups.'${CORE_PEER_LOCALMSPID}'.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'}]},"version": "0"}}' ${CORE_PEER_LOCALMSPID}config.json > ${CORE_PEER_LOCALMSPID}modified_config.json
   { set +x; } 2>/dev/null
@@ -33,7 +33,7 @@ createAnchorPeerUpdate() {
 }
 
 updateAnchorPeer() {
-  peer channel update -o localhost:7053 --ordererTLSHostnameOverride localhost -c $CHANNEL_NAME -f ${CORE_PEER_LOCALMSPID}anchors.tx --tls --cafile "$ORDERER_CA" >&log.txt
+  peer channel update -o localhost:7053 --ordererTLSHostnameOverride localhost -c mychannel -f ${CORE_PEER_LOCALMSPID}anchors.tx --tls --cafile "$ORDERER_CA" >&log.txt
   res=$?
   cat log.txt
   verifyResult $res "Anchor peer update failed"

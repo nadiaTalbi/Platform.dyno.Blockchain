@@ -2,7 +2,7 @@
 
 #!/bin/bash
 
-source ../scriptUtils.sh
+. scripts/scriptUtils.sh
 
 CC_NAME=${1}
 CC_SRC_PATH=${2}
@@ -15,7 +15,7 @@ println "- CC_SRC_PATH: ${C_GREEN}${CC_SRC_PATH}${C_RESET}"
 println "- CC_SRC_LANGUAGE: ${C_GREEN}${CC_SRC_LANGUAGE}${C_RESET}"
 println "- CC_VERSION: ${C_GREEN}${CC_VERSION}${C_RESET}"
 
-FABRIC_CFG_PATH=$PWD/../config/
+FABRIC_CFG_PATH=$PWD/config/
 
 #User has not provided a name
 if [ -z "$CC_NAME" ] || [ "$CC_NAME" = "NA" ]; then

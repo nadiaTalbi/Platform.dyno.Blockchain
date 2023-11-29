@@ -70,7 +70,7 @@ successln "Channel '$CHANNEL_NAME' created"
 infoln "Joining peer to the channel..."
 joinChannel 
 
-## Set the anchor peers for each org in the channel
+# Set the anchor peers for each org in the channel
 infoln "Setting anchor peer for org1..."
 setAnchorPeer 
 
