@@ -3,6 +3,7 @@
 peer:
   address: peer0.dyno:4444
   addressautodetect: false
+  chaincodeListenAddress: 0.0.0.0:4445
   authentication:
     timewindow: 15m
   bccsp:
@@ -137,6 +138,7 @@ peer:
 peer:
   address: peer1.dyno:4454
   addressautodetect: false
+  chaincodeListenAddress: 0.0.0.0:4455
   authentication:
     timewindow: 15m
   bccsp:
