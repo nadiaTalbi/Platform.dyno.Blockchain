@@ -263,10 +263,9 @@ peer:
       - tls/ca.crt
     enabled: "true"
     key:
-      file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/server.key
+      file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/server.key
     rootcert:
-      file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/ca.crt
-
+      file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/ca.crt
 
 
 peer:
@@ -275,25 +274,137 @@ peer:
   listenAddress: 0.0.0.0:4464
   chaincodeListenAddress: 0.0.0.0:4465
   address: peer2.dyno:4465
+  addressautodetect: false
+  authentication:
+    timewindow: 15m
+  bccsp:
+    default: SW
+    sw:
+      hash: SHA2
+      security: 256
+  client:
+    conntimeout: 3s
+  deliveryclient:
+    blockgossipenabled: true
+    conntimeout: 3s
+    reconnectbackoffthreshold: 3600s
+    reconnecttotaltimethreshold: 3600s
+  discovery:
+    authcacheenabled: true
+    authcachemaxsize: 1000
+    authcachepurgeretentionratio: 0.75
+    enabled: true
+    orgmembersallowedaccess: false
+  filesystempath: /var/hyperledger/production
+  gateway:
+    broadcasttimeout: 30s
+    dialtimeout: 2m
+    enabled: true
+    endorsementtimeout: 30s
   gossip:
-    bootstrap:
-      enabled: true
-      address: peer0.dyno:4454
-  localMspId: dyno-MSP
-  mspConfigPath: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/msp
+    aliveexpirationtimeout: 25s
+    alivetimeinterval: 5s
+    bootstrap: peer0.dyno:4444
+    conntimeout: 2s
+    dialtimeout: 3s
+    digestwaittime: 1s
+    election:
+      leaderalivethreshold: 10s
+      leaderelectionduration: 5s
+      membershipsampleinterval: 1s
+      startupgraceperiod: 15s
+    externalendpoint: peer1.dyno:4454
+    maxblockcounttostore: 10
+    maxconnectionattempts: 120
+    maxpropagationburstlatency: 10ms
+    maxpropagationburstsize: 10
+    membershiptrackerinterval: 5s
+    msgexpirationfactor: 20
+    orgleader: "false"
+    propagateiterations: 1
+    propagatepeernum: 3
+    publishcertperiod: 10s
+    publishstateinfointerval: 4s
+    pullinterval: 4s
+    pullpeernum: 3
+    pvtdata:
+      btlpullmargin: 10
+      implicitcollectiondisseminationpolicy:
+        maxpeercount: 1
+        requiredpeercount: 0
+      pullretrythreshold: 60s
+      pushacktimeout: 12s
+      reconcilebatchsize: 10
+      reconcilesleepinterval: 1m
+      reconciliationenabled: true
+      skippullinginvalidtransactionsduringcommit: false
+      transientstoremaxblockretention: 1000
+    reconnectinterval: 25s
+    recvbuffsize: 20
+    requeststateinfointerval: 4s
+    requestwaittime: 1500ms
+    responsewaittime: 2s
+    sendbuffsize: 200
+    skipblockverification: false
+    state:
+      batchsize: 10
+      blockbuffersize: 20
+      checkinterval: 10s
+      enabled: false
+      maxretries: 3
+      responsetimeout: 3s
+    useleaderelection: "true"
+  handlers:
+    authfilters:
+    - name: DefaultAuth
+    - name: ExpirationCheck
+    decorators:
+    - name: DefaultDecorator
+    endorsers:
+      escc:
+        name: DefaultEndorsement
+    validators:
+      vscc:
+        name: DefaultValidation
+  id: peer2.dyno
+  keepalive:
+    client:
+      interval: 60s
+      timeout: 20s
+    deliveryclient:
+      interval: 60s
+      timeout: 20s
+    interval: 7200s
+    mininterval: 60s
+    timeout: 20s
+  limits:
+    concurrency:
+      deliverservice: 2500
+      endorserservice: 2500
+      gatewayservice: 500
+  listenaddress: 0.0.0.0:4464
+  localmspid: dyno-MSP
+  localmsptype: bccsp
+  maxrecvmsgsize: 104857600
+  maxsendmsgsize: 104857600
+  mspconfigpath: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/msp
+  networkid: dev
+  profile:
+    enabled: "true"
+    listenaddress: 0.0.0.0:6060
   tls:
-    enabled: false
-    certificate: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/server.crt
-    privateKey: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/server.key
-    rootCAs:
-      - /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/ca.crt
-  BCCSP:
-    Default: SW
-    SW:
-      Hash: SHA2
-      Security: 256
-      FileKeyStore:
-        KeyStore: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/msp/keystore
+    cert:
+      file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/server.crt
+    clientauthrequired: false
+    clientrootcas:
+      files:
+      - tls/ca.crt
+    enabled: "true"
+    key:
+      file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/server.key
+    rootcert:
+      file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/ca.crt
+
 
 ledger:
   history:
