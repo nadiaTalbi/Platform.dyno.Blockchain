@@ -15,7 +15,7 @@ createAnchorPeerUpdate() {
   infoln "Fetching channel config for channel mychannel"
   CHANNEL_NAME=mychannel
 
-  fetchChannelConfig dyno mychannel dynoconfig.json
+  fetchChannelConfig dyno mychannel dynoConfig.json
 
   infoln "Generating anchor peer update transaction for Org dyno on channel mychannel"
 
@@ -23,17 +23,17 @@ createAnchorPeerUpdate() {
     PORT=4444
 
   # Modify the configuration to append the anchor peer 
-  jq '.channel_group.groups.Application.groups.'${CORE_PEER_LOCALMSPID}'.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'}]},"version": "0"}}' ${CORE_PEER_LOCALMSPID}config.json > ${CORE_PEER_LOCALMSPID}modified_config.json
+  jq '.channel_group.groups.Application.groups.dyno.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'}]},"version": "0"}}' dynoConfig.json > dynoModified_config.json
   { set +x; } 2>/dev/null
 
   # Compute a config update, based on the differences between 
   # {orgmsp}config.json and {orgmsp}modified_config.json, write
   # it as a transaction to {orgmsp}anchors.tx
-  createConfigUpdate ${CHANNEL_NAME} ${CORE_PEER_LOCALMSPID}config.json ${CORE_PEER_LOCALMSPID}modified_config.json ${CORE_PEER_LOCALMSPID}anchors.tx
+  createConfigUpdate mychannel dynoConfig.json dynoModified_config.json dynoAnchors.tx
 }
 
 updateAnchorPeer() {
-  peer channel update -o localhost:7053 --ordererTLSHostnameOverride localhost -c mychannel -f ${CORE_PEER_LOCALMSPID}anchors.tx --tls --cafile "$ORDERER_CA" >&log.txt
+  peer channel update -o orderer:7050 --ordererTLSHostnameOverride orderer -c mychannel -f dynoAnchors.tx --tls --cafile "$ORDERER_CA" >&log.txt
   res=$?
   cat log.txt
   verifyResult $res "Anchor peer update failed"
