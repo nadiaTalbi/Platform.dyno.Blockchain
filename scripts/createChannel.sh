@@ -2,7 +2,7 @@
 
 # imports  
 . scripts/envVar.sh
-. scriptUtils.sh
+. scripts/scriptUtils.sh
 
 
 CHANNEL_NAME="$1"
@@ -27,7 +27,6 @@ createChannelGenesisBlock() {
 	fi
 	set -x
 	configtxgen -profile ChannelUsingRaft  -outputBlock ./channel-artifacts/mychannel.block -channelID mychannel
-	# configtxgen -profile OrgsChannel -outputCreateChannelTx ./channel-artifacts/mychannel.tx -channelID mychannel
 
 	res=$?
 	{ set +x; } 2>/dev/null
@@ -44,8 +43,20 @@ createChannel() {
 # joinChannel ORG
 joinChannel() {
   	FABRIC_CFG_PATH=${PWD}/config/
+	local rc=1
+	local COUNTER=1
+	## Sometimes Join takes time, hence retry
+	while [ $rc -ne 0 -a $COUNTER -lt 5 ] ; do
+    sleep $DELAY
+	set -x
 	peer channel join -b ${PWD}/channel-artifacts/mychannel.block >&log.txt
+	res=$?
+    { set +x; } 2>/dev/null
+		let rc=$res
+		COUNTER=$(expr $COUNTER + 1)
+	done
 	cat log.txt
+	verifyResult $res "After 5 attempts, peer0.dyno has failed to join channel 'mychannel' "
 }
 
 setAnchorPeer() {
@@ -61,6 +72,8 @@ infoln "Generating channel genesis block '${CHANNEL_NAME}.block'"
 FABRIC_CFG_PATH=${PWD}/configtx
 
 createChannelGenesisBlock
+
+
 ## Create channel
 infoln "Creating channel ${CHANNEL_NAME}"
 createChannel 

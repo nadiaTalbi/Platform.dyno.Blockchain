@@ -131,6 +131,7 @@ services:
       - CORE_PEER_GOSSIP_ORGLEADER=false
       - CORE_PEER_GOSSIP_PVTDATA_PUSHACKTIMEOUT=12s
       - CORE_PEER_EVENTS_ADDRESS=0.0.0.0:4456
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
       - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/msp:/etc/hyperledger/fabric/msp
@@ -174,6 +175,7 @@ services:
       - CORE_PEER_GOSSIP_ORGLEADER=false
       - CORE_PEER_GOSSIP_PVTDATA_PUSHACKTIMEOUT=12s
       - CORE_PEER_EVENTS_ADDRESS=0.0.0.0:4466
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
       - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/msp:/etc/hyperledger/fabric/msp

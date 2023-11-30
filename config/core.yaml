@@ -9,7 +9,7 @@ peer:
   gossip:
     bootstrap:
       enabled: true
-      address: 0.0.0.0:4454
+      address: peer1.dyno:4454
   localMspId: dyno-MSP
   mspConfigPath: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp
   tls:
@@ -26,6 +26,58 @@ peer:
       FileKeyStore:
         KeyStore: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp/keystore
 
+peer:
+  id: peer1.dyno
+  networkId: dyno_blockchain_network
+  listenAddress: 0.0.0.0:4454
+  chaincodeListenAddress: 0.0.0.0:4455
+  address: peer1.dyno:4455
+  gossip:
+    bootstrap:
+      enabled: true
+      address: peer0.dyno:4444
+  localMspId: dyno-MSP
+  mspConfigPath: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/msp
+  tls:
+    enabled: false
+    certificate: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/server.crt
+    privateKey: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/server.key
+    rootCAs:
+      - /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/ca.crt
+  BCCSP:
+    Default: SW
+    SW:
+      Hash: SHA2
+      Security: 256
+      FileKeyStore:
+        KeyStore: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/msp/keystore
+
+
+peer:
+  id: peer2.dyno
+  networkId: dyno_blockchain_network
+  listenAddress: 0.0.0.0:4464
+  chaincodeListenAddress: 0.0.0.0:4465
+  address: peer2.dyno:4465
+  gossip:
+    bootstrap:
+      enabled: true
+      address: peer0.dyno:4454
+  localMspId: dyno-MSP
+  mspConfigPath: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/msp
+  tls:
+    enabled: false
+    certificate: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/server.crt
+    privateKey: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/server.key
+    rootCAs:
+      - /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/ca.crt
+  BCCSP:
+    Default: SW
+    SW:
+      Hash: SHA2
+      Security: 256
+      FileKeyStore:
+        KeyStore: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/msp/keystore
 
 
 logging:
