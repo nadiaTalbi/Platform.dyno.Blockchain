@@ -61,7 +61,7 @@ services:
     container_name: peer0.dyno
     image: hyperledger/fabric-peer:latest
     environment:
-      - FABRIC_CFG_PATH=/etc/hyperledger/peercfg
+      - FABRIC_CFG_PATH=/etc/hyperledger/config
       #Generic peer variables
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       # the following setting starts chaincode containers on the same
@@ -90,13 +90,12 @@ services:
       - CORE_PEER_EVENTS_ADDRESS=0.0.0.0:4446
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
       - CORE_METRICS_PROVIDER=prometheus
-      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0dyno"}
-      - CORE_CHAINCODE_EXECUTETIMEOUT=300s
     volumes:
       - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp:/etc/hyperledger/fabric/msp
       - ../organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls:/etc/hyperledger/fabric/tls
       - peer0.dyno:/var/hyperledger/production
+      - ../config:/etc/hyperledger/config
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
