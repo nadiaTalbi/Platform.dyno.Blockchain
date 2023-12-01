@@ -1,0 +1,49 @@
+{
+    "name": "test-network-dyno",
+    "version": "1.0.0",
+    "client": {
+        "organization": "dyno",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "dyno": {
+            "mspid": "dynoMSP",
+            "peers": [
+                "peer0.dyno.example.com"
+            ],
+            "certificateAuthorities": [
+                "ca.dyno.example.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.dyno.example.com": {
+            "url": "grpcs://localhost:${P0PORT}",
+            "tlsCACerts": {
+                "pem": "${PEERPEM}"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.dyno.example.com",
+                "hostnameOverride": "peer0.dyno.example.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.org${ORG}.example.com": {
+            "url": "https://localhost:${CAPORT}",
+            "caName": "ca-dyno",
+            "tlsCACerts": {
+                "pem": ["${CAPEM}"]
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

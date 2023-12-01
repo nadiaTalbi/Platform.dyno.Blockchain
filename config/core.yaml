@@ -133,7 +133,31 @@ peer:
       file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/server.key
     rootcert:
       file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/ca.crt
-
+  ledger:
+  history:
+    enablehistorydatabase: true
+  pvtdatastore:
+    collelgprocdbbatchesinterval: 1000
+    collelgprocmaxdbbatchsize: 5000
+    deprioritizeddatareconcilerinterval: 60m
+    purgedkeyauditlogging: true
+    purgeinterval: 100
+  snapshots:
+    rootdir: /var/hyperledger/production/snapshots
+  state:
+    couchdbconfig:
+      cachesize: 64
+      couchdbaddress: couchdb0:5984
+      createglobalchangesdb: false
+      internalquerylimit: 1000
+      maxbatchupdatesize: 1000
+      maxretries: 3
+      maxretriesonstartup: 10
+      password: adminpw
+      requesttimeout: 35s
+      username: admin
+    statedatabase: CouchDB
+    totalquerylimit: 100000
 
 peer:
   address: peer1.dyno:4454
@@ -268,11 +292,23 @@ peer:
       file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/server.key
     rootcert:
       file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/ca.crt
-
+  state:
+    couchdbconfig:
+      cachesize: 64
+      couchdbaddress: couchdb1:5984
+      createglobalchangesdb: false
+      internalquerylimit: 1000
+      maxbatchupdatesize: 1000
+      maxretries: 3
+      maxretriesonstartup: 10
+      password: adminpw
+      requesttimeout: 35s
+      username: admin
+    statedatabase: CouchDB
+    totalquerylimit: 100000
 
 peer:
   id: peer2.dyno
-  networkId: dyno_blockchain_network
   listenAddress: 0.0.0.0:4464
   chaincodeListenAddress: 0.0.0.0:4465
   address: peer2.dyno:4465
@@ -406,23 +442,10 @@ peer:
       file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/server.key
     rootcert:
       file: /home/dyno/Platform.dyno.Blockchain/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/ca.crt
-
-
-ledger:
-  history:
-    enablehistorydatabase: true
-  pvtdatastore:
-    collelgprocdbbatchesinterval: 1000
-    collelgprocmaxdbbatchsize: 5000
-    deprioritizeddatareconcilerinterval: 60m
-    purgedkeyauditlogging: true
-    purgeinterval: 100
-  snapshots:
-    rootdir: /var/hyperledger/production/snapshots
   state:
     couchdbconfig:
       cachesize: 64
-      couchdbaddress: couchdb1:5984
+      couchdbaddress: couchdb2:5984
       createglobalchangesdb: false
       internalquerylimit: 1000
       maxbatchupdatesize: 1000
@@ -433,6 +456,8 @@ ledger:
       username: admin
     statedatabase: CouchDB
     totalquerylimit: 100000
+
+
 
 
 logging:

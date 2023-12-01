@@ -4,172 +4,167 @@ source scriptUtils.sh
 export PATH=${PWD}/./bin:$PATH
 
 
-function createOrgCertificate() {
+#!/bin/bash
+
+function createDyno() {
   infoln "Enrolling the CA admin"
-  mkdir -p ./organizations/crypto-config/peerOrganizations/dyno/
+  mkdir -p organizations/peerOrganizations/dyno.example.com/
 
-  export FABRIC_CA_CLIENT_HOME=${PWD}/organizations/crypto-config/peerOrganizations/dyno/
+  export FABRIC_CA_CLIENT_HOME=${PWD}/organizations/peerOrganizations/dyno.example.com/
 
-
-  fabric-ca-client enroll -u https://admin:adminpw@localhost:4400 --caname ca-dyno --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-
-  echo 'NodeOUs:
-  Enable: true
-  ClientOUIdentifier:
-    Certificate: cacerts/localhost-4400-ca-dyno.pem
-    OrganizationalUnitIdentifier: client
-  PeerOUIdentifier:
-    Certificate: cacerts/localhost-4400-ca-dyno.pem
-    OrganizationalUnitIdentifier: peer
-  AdminOUIdentifier:
-    Certificate: cacerts/localhost-4400-ca-dyno.pem
-    OrganizationalUnitIdentifier: admin
-  OrdererOUIdentifier:
-    Certificate: cacerts/localhost-4400-ca-dyno.pem
-    OrganizationalUnitIdentifier: orderer' >${PWD}/organizations/crypto-config/peerOrganizations/dyno/msp/config.yaml
-
-
-  # Registering peer0
-  fabric-ca-client register --caname ca-dyno --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-
-  # Registering peer1
-  fabric-ca-client register --caname ca-dyno --id.name peer1 --id.secret peer1pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-  # Registering peer2
-  fabric-ca-client register --caname ca-dyno --id.name peer2 --id.secret peer2pw --id.type peer --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-  # Registering user
-  fabric-ca-client register --caname ca-dyno --id.name user1 --id.secret user1pw --id.type client --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-
-  # Registering the org admin
-  fabric-ca-client register --caname ca-dyno --id.name dynoAdmin --id.secret dynoAdminpw --id.type admin --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-
-  # Generating the peer0 msp
-  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:4400 --caname ca-dyno -M ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp --csr.hosts peer0.dyno --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-  # "Generating the peer1 msp"
-  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:4400 --caname ca-dyno -M ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/msp --csr.hosts peer1.dyno --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-  # "Generating the peer2 msp"
-  fabric-ca-client enroll -u https://peer2:peer2pw@localhost:4400 --caname ca-dyno -M ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/msp --csr.hosts peer2.dyno --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/msp/config.yaml ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp/config.yaml
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/msp/config.yaml ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/msp/config.yaml
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/msp/config.yaml ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/msp/config.yaml
-
-  # Generating the peer0-tls certificates
-  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:4400 --caname ca-dyno -M ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls --enrollment.profile tls --csr.hosts peer0.dyno --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-  # Generating the peer1-tls certificates
-  fabric-ca-client enroll -u https://peer1:peer1pw@localhost:4400 --caname ca-dyno -M ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls --enrollment.profile tls --csr.hosts peer1.dyno --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-  # Generating the peer2-tls certificates
-  fabric-ca-client enroll -u https://peer2:peer2pw@localhost:4400 --caname ca-dyno -M ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls --enrollment.profile tls --csr.hosts peer2.dyno --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-  # copy cerificate ca.crt, server.crt, server.key
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/tlscacerts/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/ca.crt
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/signcerts/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/server.crt
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/keystore/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/server.key
-
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/tlscacerts/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/ca.crt
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/signcerts/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/server.crt
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/keystore/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer1.dyno/tls/server.key
-
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/tlscacerts/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/ca.crt
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/signcerts/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/server.crt
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/keystore/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer2.dyno/tls/server.key
-
-  # copy certificate from tlscarts => ca.crt , tlsca.dyno-cert.pem, ca.dyno-cert.pem
-  mkdir -p ${PWD}/organizations/crypto-config/peerOrganizations/dyno/msp/tlscacerts
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/tlscacerts/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/msp/tlscacerts/ca.crt
-
-  mkdir -p ${PWD}/organizations/crypto-config/peerOrganizations/dyno/tlsca
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/tlscacerts/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/tlsca/tlsca.dyno-cert.pem
-
-  mkdir -p ${PWD}/organizations/crypto-config/peerOrganizations/dyno/ca
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp/cacerts/* ${PWD}/organizations/crypto-config/peerOrganizations/dyno/ca/ca.dyno-cert.pem
-
-  # Generating the user msp
-  fabric-ca-client enroll -u https://user:userpw@localhost:4400 --caname ca-dyno -M ${PWD}/organizations/crypto-config/peerOrganizations/dyno/users/User@dyno/msp --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/msp/config.yaml ${PWD}/organizations/crypto-config/peerOrganizations/dyno/users/User@dyno/msp/config.yaml
-
-  # Generating the org admin msp
-  fabric-ca-client enroll -u https://dynoAdmin:dynoAdminpw@localhost:4400 --caname ca-dyno -M ${PWD}/organizations/crypto-config/peerOrganizations/dyno/users/Admin@dyno/msp --tls.certfiles ${PWD}/organizations/fabric-ca/dyno/tls-cert.pem
-
-
-  cp ${PWD}/organizations/crypto-config/peerOrganizations/dyno/msp/config.yaml ${PWD}/organizations/crypto-config/peerOrganizations/dyno/users/Admin@dyno/msp/config.yaml
-}
-
-
-function createorderer() {
-  # "Enrolling the CA admin"
-  mkdir -p ./organizations/crypto-config/ordererOrganizations/orderer
-
-  export FABRIC_CA_CLIENT_HOME=${PWD}/organizations/crypto-config/ordererOrganizations/orderer
-
-
-  fabric-ca-client enroll -u https://admin:adminpw@localhost:2200 --caname ca-orderer --tls.certfiles ${PWD}/organizations/fabric-ca/orderer/tls-cert.pem
-
+  set -x
+  fabric-ca-client enroll -u https://admin:adminpw@localhost:7054 --caname ca-dyno --tls.certfiles "${PWD}/organizations/fabric-ca/dyno/ca-cert.pem"
+  { set +x; } 2>/dev/null
 
   echo 'NodeOUs:
   Enable: true
   ClientOUIdentifier:
-    Certificate: cacerts/localhost-2200-ca-orderer.pem
+    Certificate: cacerts/localhost-7054-ca-dyno.pem
     OrganizationalUnitIdentifier: client
   PeerOUIdentifier:
-    Certificate: cacerts/localhost-2200-ca-orderer.pem
+    Certificate: cacerts/localhost-7054-ca-dyno.pem
     OrganizationalUnitIdentifier: peer
   AdminOUIdentifier:
-    Certificate: cacerts/localhost-2200-ca-orderer.pem
+    Certificate: cacerts/localhost-7054-ca-dyno.pem
     OrganizationalUnitIdentifier: admin
   OrdererOUIdentifier:
-    Certificate: cacerts/localhost-2200-ca-orderer.pem
-    OrganizationalUnitIdentifier: orderer' >${PWD}/organizations/crypto-config/ordererOrganizations/orderer/msp/config.yaml
+    Certificate: cacerts/localhost-7054-ca-dyno.pem
+    OrganizationalUnitIdentifier: orderer' > "${PWD}/organizations/peerOrganizations/dyno.example.com/msp/config.yaml"
 
-  # Registering orderer
-  fabric-ca-client register --caname ca-orderer --id.name orderer --id.secret ordererpw --id.type orderer --tls.certfiles ${PWD}/organizations/fabric-ca/orderer/tls-cert.pem
+  # Since the CA serves as both the organization CA and TLS CA, copy the org's root cert that was generated by CA startup into the org level ca and tlsca directories
 
+  # Copy dyno's CA cert to dyno's /msp/tlscacerts directory (for use in the channel MSP definition)
+  mkdir -p "${PWD}/organizations/peerOrganizations/dyno.example.com/msp/tlscacerts"
+  cp "${PWD}/organizations/fabric-ca/dyno/ca-cert.pem" "${PWD}/organizations/peerOrganizations/dyno.example.com/msp/tlscacerts/ca.crt"
 
-  # Registering the orderer admin"
-  fabric-ca-client register --caname ca-orderer --id.name ordererAdmin --id.secret ordererAdminpw --id.type admin --tls.certfiles ${PWD}/organizations/fabric-ca/orderer/tls-cert.pem
+  # Copy dyno's CA cert to dyno's /tlsca directory (for use by clients)
+  mkdir -p "${PWD}/organizations/peerOrganizations/dyno.example.com/tlsca"
+  cp "${PWD}/organizations/fabric-ca/dyno/ca-cert.pem" "${PWD}/organizations/peerOrganizations/dyno.example.com/tlsca/tlsca.dyno.example.com-cert.pem"
 
+  # Copy dyno's CA cert to dyno's /ca directory (for use by clients)
+  mkdir -p "${PWD}/organizations/peerOrganizations/dyno.example.com/ca"
+  cp "${PWD}/organizations/fabric-ca/dyno/ca-cert.pem" "${PWD}/organizations/peerOrganizations/dyno.example.com/ca/ca.dyno.example.com-cert.pem"
 
-  # Generating the orderer msp
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:2200 --caname ca-orderer -M ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/msp --csr.hosts orderer --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/orderer/tls-cert.pem
+  infoln "Registering peer0"
+  set -x
+  fabric-ca-client register --caname ca-dyno --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles "${PWD}/organizations/fabric-ca/dyno/ca-cert.pem"
+  { set +x; } 2>/dev/null
 
+  infoln "Registering user"
+  set -x
+  fabric-ca-client register --caname ca-dyno --id.name user1 --id.secret user1pw --id.type client --tls.certfiles "${PWD}/organizations/fabric-ca/dyno/ca-cert.pem"
+  { set +x; } 2>/dev/null
 
-  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/msp/config.yaml ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/msp/config.yaml
+  infoln "Registering the org admin"
+  set -x
+  fabric-ca-client register --caname ca-dyno --id.name dynoadmin --id.secret dynoadminpw --id.type admin --tls.certfiles "${PWD}/organizations/fabric-ca/dyno/ca-cert.pem"
+  { set +x; } 2>/dev/null
 
-  # Generating the orderer-tls certificates
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:2200 --caname ca-orderer -M ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls --enrollment.profile tls --csr.hosts orderer --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/orderer/tls-cert.pem
+  infoln "Generating the peer0 msp"
+  set -x
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-dyno -M "${PWD}/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/dyno/ca-cert.pem"
+  { set +x; } 2>/dev/null
 
+  cp "${PWD}/organizations/peerOrganizations/dyno.example.com/msp/config.yaml" "${PWD}/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/msp/config.yaml"
 
-  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/tlscacerts/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/ca.crt
-  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/signcerts/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
-  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/keystore/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.key
+  infoln "Generating the peer0-tls certificates, use --csr.hosts to specify Subject Alternative Names"
+  set -x
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-dyno -M "${PWD}/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls" --enrollment.profile tls --csr.hosts peer0.dyno.example.com --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/dyno/ca-cert.pem"
+  { set +x; } 2>/dev/null
 
-  mkdir -p ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/msp/tlscacerts
-  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/tlscacerts/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/msp/tlscacerts/tlsca-cert.pem
+  # Copy the tls CA cert, server cert, server keystore to well known file names in the peer's tls directory that are referenced by peer startup config
+  cp "${PWD}/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/tlscacerts/"* "${PWD}/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt"
+  cp "${PWD}/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/signcerts/"* "${PWD}/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/server.crt"
+  cp "${PWD}/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/keystore/"* "${PWD}/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/server.key"
 
-  mkdir -p ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/msp/tlscacerts
-  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/tlscacerts/* ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/msp/tlscacerts/tlsca-cert.pem
+  infoln "Generating the user msp"
+  set -x
+  fabric-ca-client enroll -u https://user1:user1pw@localhost:7054 --caname ca-dyno -M "${PWD}/organizations/peerOrganizations/dyno.example.com/users/User1@dyno.example.com/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/dyno/ca-cert.pem"
+  { set +x; } 2>/dev/null
 
-  # Generating the admin msp
-  fabric-ca-client enroll -u https://ordererAdmin:ordererAdminpw@localhost:2200 --caname ca-orderer -M ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/users/Admin@example.com/msp --tls.certfiles ${PWD}/organizations/fabric-ca/orderer/tls-cert.pem
+  cp "${PWD}/organizations/peerOrganizations/dyno.example.com/msp/config.yaml" "${PWD}/organizations/peerOrganizations/dyno.example.com/users/User1@dyno.example.com/msp/config.yaml"
 
+  infoln "Generating the org admin msp"
+  set -x
+  fabric-ca-client enroll -u https://dynoadmin:dynoadminpw@localhost:7054 --caname ca-dyno -M "${PWD}/organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/dyno/ca-cert.pem"
+  { set +x; } 2>/dev/null
 
-  cp ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/msp/config.yaml ${PWD}/organizations/crypto-config/ordererOrganizations/orderer/users/Admin@example.com/msp/config.yaml
+  cp "${PWD}/organizations/peerOrganizations/dyno.example.com/msp/config.yaml" "${PWD}/organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp/config.yaml"
 }
 
-createOrgCertificate
+function createOrderer() {
+  infoln "Enrolling the CA admin"
+  mkdir -p organizations/ordererOrganizations/example.com
 
-createorderer
+  export FABRIC_CA_CLIENT_HOME=${PWD}/organizations/ordererOrganizations/example.com
+
+  set -x
+  fabric-ca-client enroll -u https://admin:adminpw@localhost:9054 --caname ca-orderer --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+  { set +x; } 2>/dev/null
+
+  echo 'NodeOUs:
+  Enable: true
+  ClientOUIdentifier:
+    Certificate: cacerts/localhost-9054-ca-orderer.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/localhost-9054-ca-orderer.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/localhost-9054-ca-orderer.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/localhost-9054-ca-orderer.pem
+    OrganizationalUnitIdentifier: orderer' > "${PWD}/organizations/ordererOrganizations/example.com/msp/config.yaml"
+
+  # Since the CA serves as both the organization CA and TLS CA, copy the org's root cert that was generated by CA startup into the org level ca and tlsca directories
+
+  # Copy orderer org's CA cert to orderer org's /msp/tlscacerts directory (for use in the channel MSP definition)
+  mkdir -p "${PWD}/organizations/ordererOrganizations/example.com/msp/tlscacerts"
+  cp "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem" "${PWD}/organizations/ordererOrganizations/example.com/msp/tlscacerts/tlsca.example.com-cert.pem"
+
+  # Copy orderer org's CA cert to orderer org's /tlsca directory (for use by clients)
+  mkdir -p "${PWD}/organizations/ordererOrganizations/example.com/tlsca"
+  cp "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem" "${PWD}/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem"
+
+  infoln "Registering orderer"
+  set -x
+  fabric-ca-client register --caname ca-orderer --id.name orderer --id.secret ordererpw --id.type orderer --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+  { set +x; } 2>/dev/null
+
+  infoln "Registering the orderer admin"
+  set -x
+  fabric-ca-client register --caname ca-orderer --id.name ordererAdmin --id.secret ordererAdminpw --id.type admin --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+  { set +x; } 2>/dev/null
+
+  infoln "Generating the orderer msp"
+  set -x
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:9054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+  { set +x; } 2>/dev/null
+
+  cp "${PWD}/organizations/ordererOrganizations/example.com/msp/config.yaml" "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/config.yaml"
+
+  infoln "Generating the orderer-tls certificates, use --csr.hosts to specify Subject Alternative Names"
+  set -x
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:9054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls" --enrollment.profile tls --csr.hosts orderer.example.com --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+  { set +x; } 2>/dev/null
+
+  # Copy the tls CA cert, server cert, server keystore to well known file names in the orderer's tls directory that are referenced by orderer startup config
+  cp "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/tlscacerts/"* "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt"
+  cp "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/signcerts/"* "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt"
+  cp "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/keystore/"* "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key"
+
+  # Copy orderer org's CA cert to orderer's /msp/tlscacerts directory (for use in the orderer MSP definition)
+  mkdir -p "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts"
+  cp "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/tlscacerts/"* "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem"
+
+  infoln "Generating the admin msp"
+  set -x
+  fabric-ca-client enroll -u https://ordererAdmin:ordererAdminpw@localhost:9054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/example.com/users/Admin@example.com/msp" --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+  { set +x; } 2>/dev/null
+
+  cp "${PWD}/organizations/ordererOrganizations/example.com/msp/config.yaml" "${PWD}/organizations/ordererOrganizations/example.com/users/Admin@example.com/msp/config.yaml"
+}
 
 
 
