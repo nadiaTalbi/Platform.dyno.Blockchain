@@ -6,7 +6,7 @@ Organizations:
     - &OrdererOrg
         Name: OrdererOrg
         ID: OrdererMSP
-        MSPDir: ../organizations/crypto-config/ordererOrganizations/orderer/msp
+        MSPDir: ../organizations/ordererOrganizations/orderer/msp
         Policies:
             Readers:
                 Type: Signature
@@ -21,19 +21,19 @@ Organizations:
             - orderer:7050
 
     - &Dyno
-        Name: dyno-MSP
-        ID: dyno-MSP
-        MSPDir: ../organizations/crypto-config/peerOrganizations/dyno/msp
+        Name: DynoMSP
+        ID: DynoMSP
+        MSPDir: ../organizations/peerOrganizations/dyno.example.com/msp
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('dyno-MSP.admin', 'dyno-MSP.peer', 'dyno-MSP.client')"
+                Rule: "OR('DynoMSP.admin', 'DynoMSP.peer', 'DynoMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('dyno-MSP.admin', 'dyno-MSP.client')"
+                Rule: "OR('DynoMSP.admin', 'DynoMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('dyno-MSP.admin')"
+                Rule: "OR('DynoMSP.admin')"
 
 Capabilities:
     Channel: &ChannelCapabilities
@@ -119,8 +119,8 @@ Profiles:
         Consenters:
           - Host: 0.0.0.0
             Port: 7050
-            ClientTLSCert: ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
-            ServerTLSCert: ../organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt
+            ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+            ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
       Organizations:
         - *OrdererOrg
       Capabilities: *OrdererCapabilities

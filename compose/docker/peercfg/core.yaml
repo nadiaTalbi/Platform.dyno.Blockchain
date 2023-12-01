@@ -85,11 +85,11 @@ peer:
         enabled:  true
         clientAuthRequired: false
         cert:
-            file: ../../organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/server.crt
+            file: ../../organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/server.crt
         key:
-            file: ../../organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/server.key
+            file: ../../organizations/peerOrganizations/dyno.example.comm/peers/peer0.dyno.example.com/tls/server.key
         rootcert:
-            file: ../../organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/ca.crt
+            file: ../../organizations/peerOrganizations/dyno/peers/peer0.dyno.example.com/tls/ca.crt
         # clientRootCAs:
         #     files:
         #       - ../../organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/tls/ca.crt
@@ -111,10 +111,10 @@ peer:
             Security: 256
             # Location of Key Store
             FileKeyStore: 
-                KeyStore: ../../organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp/keystore
+                KeyStore: ../../organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/msp/keystore
 
     # Path on the file system where peer will find MSP local configurations
-    mspConfigPath: ../../organizations/crypto-config/peerOrganizations/dyno/peers/peer0.dyno/msp
+    mspConfigPath: ../../organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/msp
     localMspId: DynoMSP
 
     client:

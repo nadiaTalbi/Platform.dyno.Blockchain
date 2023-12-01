@@ -2,9 +2,8 @@
 
 export PATH=${PWD}/./bin:$PATH
 
-export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.crt /dev/null 2>&1
-export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/tls/server.key /dev/null 2>&1
-export ORDERER_CA=${PWD}/organizations/crypto-config/ordererOrganizations/orderer/config.orderers/msp/tlscacerts/tlsca-cert.pem
+export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt /dev/null 2>&1
+export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key /dev/null 2>&1
 
 # Create channel 
 peer channel create -o localhost:7053 -c mychannel -f ./channel-artifacts/mychannel.tx --tls --cafile $ORDERER_CA

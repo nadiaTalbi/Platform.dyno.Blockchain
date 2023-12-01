@@ -12,8 +12,8 @@
 . scripts/scriptUtils.sh
 
 export CORE_PEER_TLS_ENABLED=true
-export ORDERER_CA=${PWD}/organizations/crypto-config/ordererOrganizations/orderer/msp/tlscacerts/tlsca-cert.pem
-export PEER0_DYNO_CA=${PWD}/organizations/crypto-config/peerOrganizations/dyno/tlsca/tlsca.dyno-cert.pem
+export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+export PEER0_DYNO_CA=${PWD}/organizations/peerOrganizations/dyno.example.com/tlsca/tlsca.dyno-cert.pem
 
 # Set environment variables for the peer org
 setGlobals() {
@@ -24,10 +24,10 @@ setGlobals() {
     USING_ORG="${OVERRIDE_ORG}"
   fi
   infoln "Using organization ${USING_ORG}"
-  export CORE_PEER_LOCALMSPID="dyno-MSP"
+  export CORE_PEER_LOCALMSPID="DynoMSP"
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_DYNO_CA
-  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/crypto-config/peerOrganizations/dyno/users/Admin@dyno/msp
-  export CORE_PEER_ADDRESS=localhost:4444
+  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp
+  export CORE_PEER_ADDRESS=peer0.dyno.example.com:7051
     
   if [ "$VERBOSE" == "true" ]; then
     env | grep CORE
@@ -36,7 +36,7 @@ setGlobals() {
 
 # Set environment variables for use in the CLI container
 setGlobalsCLI() {
-  export CORE_PEER_ADDRESS=localhost:4444
+  export CORE_PEER_ADDRESS=peer0.dyno.example.com:7051
 }
 
 # parsePeerConnectionParameters $@
@@ -47,7 +47,7 @@ parsePeerConnectionParameters() {
   PEERS=""
   while [ "$#" -gt 0 ]; do
     setGlobals $1
-    PEER="peer0.org$1"
+    PEER="peer0.dyno"
     ## Set peer addresses
     if [ -z "$PEERS" ]
     then
