@@ -68,19 +68,6 @@ function checkPrereqs() {
     fi
   done
 
-  ## check for cfssl binaries
-  if [ "$CRYPTO" == "cfssl" ]; then
-  
-    cfssl version > /dev/null 2>&1
-    if [[ $? -ne 0 ]]; then
-      errorln "cfssl binary not found.."
-      errorln
-      errorln "Follow the instructions to install the cfssl and cfssljson binaries:"
-      errorln "https://github.com/cloudflare/cfssl#installation"
-      exit 1
-    fi
-  fi
-
   ## Check for fabric-ca
   if [ "$CRYPTO" == "Certificate Authorities" ]; then
 
