@@ -216,7 +216,7 @@ services:
       # - peer1.dyno
       # - peer2.dyno
     networks:
-      - dyno_blockchain_network
+      - test
 
 
 

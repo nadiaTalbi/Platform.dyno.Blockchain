@@ -466,7 +466,6 @@ elif [ "$MODE" == "up" ]; then
   cp /home/dyno/hyperledger/fabric-samples/bin/ /home/dyno/Platform.dyno.Blockchain/bin -r
   chmod +x create-certificate.sh
   chmod +x scriptUtils.sh
-  chmod +x ./organizations/cpp-generate.sh
   createOrgs
   networkUp
 elif [ "$MODE" == "createChannel" ]; then
