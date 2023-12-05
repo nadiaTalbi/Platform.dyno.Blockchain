@@ -215,11 +215,6 @@ chaincode:
     externalBuilders:
         - path: /opt/gopath/src/github.com/hyperledger/external-builder 
           name: external-sample-builder
-          propagateEnvironment:
-            - /etc/hyperledger/fabric/tls/ca.crt
-            - /etc/hyperledger/fabric/tls/server.crt
-            - /etc/hyperledger/fabric/tls/server.key
-         
 
 
     # The maximum duration to wait for the chaincode build and install process
