@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source scripts/utils.sh
+source scripts/scriptUtils.sh
 
 CHANNEL_NAME=${1:-"mychannel"}
 CC_NAME=${2}
@@ -47,7 +47,7 @@ else
   CC_COLL_CONFIG="--collections-config $CC_COLL_CONFIG"
 fi
 
-FABRIC_CFG_PATH=$PWD/config/
+FABRIC_CFG_PATH=$PWD/compose/docker/peercfg/
 
 # import utils
 . scripts/envVar.sh
