@@ -42,7 +42,7 @@ createChannel() {
 
 # joinChannel ORG
 joinChannel() {
-  	FABRIC_CFG_PATH=${PWD}/config/
+  	FABRIC_CFG_PATH=${PWD}/compose/docker/peercfg
 	local rc=1
 	local COUNTER=1
 	## Sometimes Join takes time, hence retry
@@ -64,7 +64,7 @@ setAnchorPeer() {
 
 
 ## Create channel genesis block
-FABRIC_CFG_PATH=$PWD/config/
+FABRIC_CFG_PATH=$PWD/compose/docker/peercfg
 BLOCKFILE="./channel-artifacts/genesis.block"
 
 infoln "Generating channel genesis block '${CHANNEL_NAME}.block'"
