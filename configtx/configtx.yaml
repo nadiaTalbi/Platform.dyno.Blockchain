@@ -6,7 +6,7 @@ Organizations:
     - &OrdererOrg
         Name: OrdererOrg
         ID: OrdererMSP
-        MSPDir: ../organizations/ordererOrganizations/orderer/msp
+        MSPDir: ../organizations/ordererOrganizations/example.com/msp
         Policies:
             Readers:
                 Type: Signature

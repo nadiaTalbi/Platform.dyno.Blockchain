@@ -13,7 +13,7 @@
 
 export CORE_PEER_TLS_ENABLED=true
 export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
-export PEER0_DYNO_CA=${PWD}/organizations/peerOrganizations/dyno.example.com/tlsca/tlsca.dyno-cert.pem
+export PEER0_DYNO_CA=${PWD}/organizations/peerOrganizations/dyno.example.com/tlsca/tlsca.dyno.example.com-cert.pem
 
 # Set environment variables for the peer org
 setGlobals() {
@@ -27,7 +27,7 @@ setGlobals() {
   export CORE_PEER_LOCALMSPID="DynoMSP"
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_DYNO_CA
   export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp
-  export CORE_PEER_ADDRESS=peer0.dyno.example.com:7051
+  export CORE_PEER_ADDRESS=localhost:7051
     
   if [ "$VERBOSE" == "true" ]; then
     env | grep CORE
@@ -36,7 +36,7 @@ setGlobals() {
 
 # Set environment variables for use in the CLI container
 setGlobalsCLI() {
-  export CORE_PEER_ADDRESS=peer0.dyno.example.com:7051
+  export CORE_PEER_ADDRESS=localhost:7051
 }
 
 # parsePeerConnectionParameters $@

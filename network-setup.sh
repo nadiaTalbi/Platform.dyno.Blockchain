@@ -127,9 +127,8 @@ function networkUp() {
 
   COMPOSE_FILES="-f compose/${COMPOSE_FILE_BASE} -f compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_BASE}"
 
-  if [ "${DATABASE}" == "couchdb" ]; then
-    COMPOSE_FILES="${COMPOSE_FILES} -f compose/${COMPOSE_FILE_COUCH} -f compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_COUCH}"
-  fi
+  COMPOSE_FILES="${COMPOSE_FILES} -f compose/${COMPOSE_FILE_COUCH} -f compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_COUCH}"
+
 
   DOCKER_SOCK="${DOCKER_SOCK}" ${CONTAINER_CLI_COMPOSE} ${COMPOSE_FILES} up -d 2>&1
 
@@ -300,7 +299,7 @@ function networkDown() {
 # use this as the default docker-compose yaml definition
 COMPOSE_FILE_BASE=compose-net.yaml
 # docker-compose.yaml file if you are using couchdb
-COMPOSE_FILE_COUCH=compose-couch.yaml
+COMPOSE_FILE_COUCH=compose-couchdb.yaml
 # certificate authorities compose file
 COMPOSE_FILE_CA=compose-ca.yaml
 # Parse commandline args
