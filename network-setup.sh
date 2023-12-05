@@ -468,6 +468,15 @@ elif [ "$MODE" == "up" ]; then
   createOrgs
   networkUp
 elif [ "$MODE" == "createChannel" ]; then
+  chmod +x scripts/ccutils.sh
+  chmod +x scripts/configUpdate.sh
+  chmod +x scripts/createChannel.sh
+  chmod +x scripts/envVar.sh
+  chmod +x scripts/orderer.sh
+  chmod +x scripts/packageCC.sh
+  chmod +x scripts/scriptUtils.sh
+  chmod +x scripts/setAnchorPeer.sh
+
   createChannel $BFT
 elif [ "$MODE" == "down" ]; then
   infoln "Stopping network"
