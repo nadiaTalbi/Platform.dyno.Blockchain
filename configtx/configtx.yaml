@@ -37,17 +37,11 @@ Organizations:
 
 Capabilities:
     Channel: &ChannelCapabilities
-        V1_4_3: true
-        V1_3: false
-        V1_1: false
+        V2_0: true
     Orderer: &OrdererCapabilities
-        V1_4_2: true
-        V1_1: false
+        V2_0: true
     Application: &ApplicationCapabilities
-        V1_4_2: true
-        V1_3: false
-        V1_2: false
-        V1_1: false
+        V2_0: true
 
 Application: &ApplicationDefaults
     Organizations:
