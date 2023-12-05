@@ -24,7 +24,7 @@ setGlobals() {
     USING_ORG="${OVERRIDE_ORG}"
   fi
   infoln "Using organization ${USING_ORG}"
-  export CORE_PEER_LOCALMSPID="DynoMSP"
+  export CORE_PEER_LOCALMSPID="OrdererMSP"
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_DYNO_CA
   export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp
   export CORE_PEER_ADDRESS=localhost:7051
