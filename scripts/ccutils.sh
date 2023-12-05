@@ -2,6 +2,8 @@
 
 # installChaincode PEER ORG
 function installChaincode() {
+  ORG=dyno
+  setGlobals $ORG
   set -x
   peer lifecycle chaincode queryinstalled --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
   if test $? -ne 0; then
@@ -10,13 +12,13 @@ function installChaincode() {
   fi
   { set +x; } 2>/dev/null
   cat log.txt
-  verifyResult $res "Chaincode installation on peer0.org has failed"
+  verifyResult $res "Chaincode installation on peer0.dyno has failed"
   successln "Chaincode is installed on peer0.org"
 }
 
 # queryInstalled PEER ORG
 function queryInstalled() {
-  ORG=$1
+  ORG=dyno
   setGlobals $ORG
   set -x
   peer lifecycle chaincode queryinstalled --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt

@@ -182,7 +182,7 @@ function deployCC() {
 }
 
 function deployCCAAS() {
-  scripts/deployCCAAS.sh $CHANNEL_NAME $CC_NAME $CC_SRC_PATH $CCAAS_DOCKER_RUN $CC_VERSION $CC_SEQUENCE $CC_INIT_FCN $CC_END_POLICY $CC_COLL_CONFIG $CLI_DELAY $MAX_RETRY $VERBOSE $CCAAS_DOCKER_RUN
+  scripts/deployCCAAS.sh mychannel basic ./chaincode-external true "1.0.1" auto NA NA NA 3 5 false true
 
   if [ $? -ne 0 ]; then
     fatalln "Deploying chaincode-as-a-service failed"

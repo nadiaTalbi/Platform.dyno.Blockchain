@@ -18,7 +18,7 @@ Organizations:
                 Type: Signature
                 Rule: "OR('OrdererMSP.admin')"
         OrdererEndpoints:
-            - orderer:7050
+            - orderer.example.com:7050
 
     - &Dyno
         Name: DynoMSP
@@ -67,7 +67,7 @@ Application: &ApplicationDefaults
 
 Orderer: &OrdererDefaults
     Addresses:
-        - orderer:7050
+        - orderer.example.com:7050
     BatchTimeout: 2s
     BatchSize:
         MaxMessageCount: 10

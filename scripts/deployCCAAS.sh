@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-source scripts/utils.sh
+source scripts/scriptUtils.sh
 
 CHANNEL_NAME=${1:-"mychannel"}
 CC_NAME=${2}
@@ -41,7 +41,7 @@ println "- DELAY: ${C_GREEN}${DELAY}${C_RESET}"
 println "- MAX_RETRY: ${C_GREEN}${MAX_RETRY}${C_RESET}"
 println "- VERBOSE: ${C_GREEN}${VERBOSE}${C_RESET}"
 
-FABRIC_CFG_PATH=$PWD/../config/
+FABRIC_CFG_PATH=$PWD/compose/docker/peercfg/
 
 #User has not provided a name
 if [ -z "$CC_NAME" ] || [ "$CC_NAME" = "NA" ]; then
@@ -171,11 +171,11 @@ buildDockerImages
 ## package the chaincode
 packageChaincode
 
-## Install chaincode on peer0.org1 and peer0.org2
-infoln "Installing chaincode on peer0.org1..."
-installChaincode 1
-infoln "Install chaincode on peer0.org2..."
-installChaincode 2
+## Install chaincode on peer0.dyno , peer1.dyno and peer2.dyno
+infoln "Installing chaincode on peer0.dyno..."
+installChaincode
+# infoln "Install chaincode on peer0.org2..."
+# installChaincode 2
 
 resolveSequence
 
