@@ -490,6 +490,7 @@ elif [ "$MODE" == "deployCC" ]; then
   deployCC
 elif [ "$MODE" == "deployCCAAS" ]; then
   infoln "deploying chaincode-as-a-service on channel '${CHANNEL_NAME}'"
+  chmod +x scripts/deployCCAAS.sh
   deployCCAAS
 elif [ "$MODE" == "cc" ] && [ "$SUBCOMMAND" == "package" ]; then
   packageChaincode
