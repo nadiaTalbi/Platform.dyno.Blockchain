@@ -19,8 +19,8 @@ createAnchorPeerUpdate() {
 
   infoln "Generating anchor peer update transaction for Org dyno on channel mychannel"
 
-    HOST=0.0.0.0
-    PORT=4444
+    HOST=peer0.dyno.example.com
+    PORT=7051
 
   # Modify the configuration to append the anchor peer 
   jq '.channel_group.groups.Application.groups.dyno.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'}]},"version": "0"}}' dynoConfig.json > dynoModified_config.json
