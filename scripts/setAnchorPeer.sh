@@ -23,7 +23,7 @@ createAnchorPeerUpdate() {
     PORT=7051
 
   # Modify the configuration to append the anchor peer 
-  jq '.channel_group.groups.Application.groups.dyno.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'}]},"version": "0"}}' dynoConfig.json > dynoModified_config.json
+  jq '.channel_group.groups.Application.groups.DynoMSP.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'}]},"version": "0"}}' dynoConfig.json > dynoModified_config.json
   { set +x; } 2>/dev/null
 
   # Compute a config update, based on the differences between 
@@ -33,6 +33,9 @@ createAnchorPeerUpdate() {
 }
 
 updateAnchorPeer() {
+
+  infoln "update anchor peer update transaction for dyno on channel mychannel"
+
   peer channel update -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com -c mychannel -f dynoAnchors.tx --tls --cafile "$ORDERER_CA" >&log.txt
   res=$?
   cat log.txt
