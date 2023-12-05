@@ -81,8 +81,8 @@ services:
       - CORE_PEER_ID=peer0.dyno.exmple.com
       - CORE_PEER_ADDRESS=peer0.dyno.example.com:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.dyno.example.com:7052
-      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      # - CORE_PEER_CHAINCODEADDRESS=peer0.dyno.example.com:7052
+      # - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.dyno.example.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.dyno.example.com:7051
       - CORE_PEER_LOCALMSPID=DynoMSP

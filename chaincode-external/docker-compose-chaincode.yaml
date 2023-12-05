@@ -12,7 +12,7 @@ services:
         volumes:
             - ./crypto:/crypto
         env_file:
-            - chaincode1.env
+            - chaincode.env
         networks:
             docker_test:
         expose:

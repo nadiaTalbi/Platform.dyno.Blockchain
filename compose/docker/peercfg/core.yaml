@@ -210,7 +210,7 @@ chaincode:
     # the `path` form of ID is provided when installing the chaincode.
     # The `name` is used for all other requests and can be any string.
     id:
-        path: ../chaincode-external
+        path: ../../../chaincode-external
         name: myChaincode
 
     # List of directories to treat as external builders and launchers for
@@ -219,10 +219,8 @@ chaincode:
     # If you don't need to fallback to the default Docker builder, also unconfigure vm.endpoint above.
     # To override this property via env variable use CORE_CHAINCODE_EXTERNALBUILDERS: [{name: x, path: dir1}, {name: y, path: dir2}]
     externalBuilders:
-       - name: ccaas_builder
-         path: /opt/hyperledger/ccaas_builder
-         propagateEnvironment:
-           - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG
+       - name: external-sample-builder
+         path: /go/src/github.com/hyperledger/fabric-samples/asset-transfer-basic/chaincode-external/sampleBuilder
 
 
     # The maximum duration to wait for the chaincode build and install process

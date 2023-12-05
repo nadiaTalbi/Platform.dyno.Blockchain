@@ -184,7 +184,7 @@ function resolveSequence() {
   local COUNTER=1
   # first, find the sequence number of the committed chaincode
   # we either get a successful response, or reach MAX RETRY
-  while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ]; do
+  while [ $rc -ne 0 -a $COUNTER -lt 5 ]; do
     set -x
     COMMITTED_CC_SEQUENCE=$(peer lifecycle chaincode querycommitted --channelID $CHANNEL_NAME --name ${CC_NAME} | sed -n "/Version:/{s/.*Sequence: //; s/, Endorsement Plugin:.*$//; p;}")
     res=$?

@@ -174,8 +174,6 @@ packageChaincode
 ## Install chaincode on peer0.dyno , peer1.dyno and peer2.dyno
 infoln "Installing chaincode on peer0.dyno..."
 installChaincode
-# infoln "Install chaincode on peer0.org2..."
-# installChaincode 2
 
 resolveSequence
 
