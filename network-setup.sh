@@ -205,7 +205,7 @@ function packageChaincode() {
 ## Call the script to list installed and committed chaincode on a peer
 function listChaincode() {
 
-  export FABRIC_CFG_PATH=${PWD}/config
+  export FABRIC_CFG_PATH=${PWD}/compose/docker/peercfg
 
   . scripts/envVar.sh
   . scripts/ccutils.sh
@@ -223,7 +223,7 @@ function listChaincode() {
 ## Call the script to query chaincode 
 function queryChaincode() {
 
-  export FABRIC_CFG_PATH=${PWD}/config
+  export FABRIC_CFG_PATH=${PWD}/compose/docker/peercfg
   
   . scripts/envVar.sh
   . scripts/ccutils.sh
@@ -237,7 +237,7 @@ function queryChaincode() {
 ## Call the script to invoke 
 function invokeChaincode() {
 
-  export FABRIC_CFG_PATH=${PWD}/../config
+  export FABRIC_CFG_PATH=${PWD}//compose/docker/peercfg
 
   . scripts/envVar.sh
   . scripts/ccutils.sh

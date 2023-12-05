@@ -47,7 +47,6 @@ joinChannel() {
 	local COUNTER=1
 	## Sometimes Join takes time, hence retry
 	while [ $rc -ne 0 -a $COUNTER -lt 5 ] ; do
-    sleep $DELAY
 	set -x
 	peer channel join -b ${PWD}/channel-artifacts/mychannel.block >&log.txt
 	res=$?
