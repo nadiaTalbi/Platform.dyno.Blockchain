@@ -25,6 +25,10 @@ peer:
             interval: 60s
             timeout: 20s
 
+    externalBuilders:
+        - name: myexternal-chaincode
+          path: ../../../chaincode-exernal/sampleBuilder
+
     # Gossip related configuration
     gossip:
         bootstrap: 127.0.0.1:7051
@@ -149,8 +153,6 @@ peer:
             name: DefaultValidation
             library:
 
-
-
     discovery:
         enabled: true
         authCacheEnabled: true
@@ -209,12 +211,12 @@ chaincode:
     # ID with the Peer and is generally supplied through ENV variables
     # the `path` form of ID is provided when installing the chaincode.
     # The `name` is used for all other requests and can be any string.
-    id:
-        path: ../../../chaincode-external
-        name: myChaincode
+    # id:
+    #     path: ../../../chaincode-external
+    #     name: myChaincode
     externalBuilders:
-    - path: /opt/gopath/src/github.com/hyperledger/fabric-samples/asset-transfer-basic/chaincode-external/sampleBuilder
-      name: external-sample-builder
+    - path: ../../../chaincode-exernal/sampleBuilder
+      name: myexternal-chaincode
 
 
     # The maximum duration to wait for the chaincode build and install process
