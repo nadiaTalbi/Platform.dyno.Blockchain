@@ -79,14 +79,14 @@ packageChaincode() {
   address="{{.peername}}_${CC_NAME}_ccaas:${CCAAS_SERVER_PORT}"
   prefix=$(basename "$0")
   tempdir=$(mktemp -d -t "$prefix.XXXXXXXX") || error_exit "Error creating temporary directory"
-  label=${CC_NAME}_${CC_VERSION}
+  #label=
   mkdir -p "$tempdir/src"
 
 cat > "$tempdir/src/connection.json" <<CONN_EOF
 {
-  "address": "${address}",
-  "dial_timeout": "10s",
-  "tls_required": false
+    "address": "asset-transfer-basic.dyno.example.com:9999",
+    "dial_timeout": "10s",
+    "tls_required": false
 }
 CONN_EOF
 
@@ -94,8 +94,8 @@ CONN_EOF
 
 cat << METADATA-EOF > "$tempdir/pkg/metadata.json"
 {
-    "type": "ccaas",
-    "label": "$label"
+    "type": "external",
+    "label": "basic_1.0"
 }
 METADATA-EOF
 
