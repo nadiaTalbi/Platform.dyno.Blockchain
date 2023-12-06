@@ -213,8 +213,8 @@ chaincode:
         path: ../../../chaincode-external
         name: myChaincode
     externalBuilders:
-        - path: /opt/gopath/src/github.com/hyperledger/external-builder 
-          name: external-sample-builder
+    - path: /opt/gopath/src/github.com/hyperledger/fabric-samples/asset-transfer-basic/chaincode-external/sampleBuilder
+      name: external-sample-builder
 
 
     # The maximum duration to wait for the chaincode build and install process
