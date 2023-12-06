@@ -16,7 +16,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=dyno_network_test
     volumes:
       - ./docker/peercfg:/etc/hyperledger/peercfg
-      #- ${DOCKER_SOCK}:/host/var/run/docker.sock
+      - ${DOCKER_SOCK}:/host/var/run/docker.sock
   
   cli:
     container_name: cli
