@@ -69,7 +69,7 @@ function checkPrereqs() {
 checkPrereqs
 
 ## package the chaincode
-./scripts/packageCC.sh $CC_NAME $CC_SRC_PATH $CC_SRC_LANGUAGE $CC_VERSION 
+./scripts/packageCC.sh $CC_NAME ./chaincode-asset-transfer javascript $CC_VERSION 
 
 PACKAGE_ID=$(peer lifecycle chaincode calculatepackageid ${CC_NAME}.tar.gz)
 

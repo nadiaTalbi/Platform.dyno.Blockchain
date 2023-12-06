@@ -81,16 +81,16 @@ services:
       - CORE_PEER_ID=peer0.dyno.exmple.com
       - CORE_PEER_ADDRESS=peer0.dyno.example.com:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-      # - CORE_PEER_CHAINCODEADDRESS=peer0.dyno.example.com:7052
-      # - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_CHAINCODEADDRESS=peer0.dyno.example.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.dyno.example.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.dyno.example.com:7051
       - CORE_PEER_LOCALMSPID=DynoMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
       - CORE_OPERATIONS_LISTENADDRESS=peer0.dyno.example.com:9444
       - CORE_METRICS_PROVIDER=prometheus
-      #- CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0dyno"}
-      #- CORE_CHAINCODE_EXECUTETIMEOUT=300s
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0dyno"}
+      - CORE_CHAINCODE_EXECUTETIMEOUT=300s
       
     volumes:
       - ../organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com:/etc/hyperledger/fabric
