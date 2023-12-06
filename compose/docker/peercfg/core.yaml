@@ -211,12 +211,46 @@ chaincode:
     # ID with the Peer and is generally supplied through ENV variables
     # the `path` form of ID is provided when installing the chaincode.
     # The `name` is used for all other requests and can be any string.
-    # id:
-    #     path: ../../../chaincode-external
-    #     name: myChaincode
+    id:
+        path:
+        name:
+
+    # Generic builder environment, suitable for most chaincode types
+    builder: $(DOCKER_NS)/fabric-ccenv:$(TWO_DIGIT_VERSION)
+
+    # Enables/disables force pulling of the base docker images (listed below)
+    # during user chaincode instantiation.
+    # Useful when using moving image tags (such as :latest)
+    pull: false
+
+    golang:
+        # golang will never need more than baseos
+        runtime: $(DOCKER_NS)/fabric-baseos:$(TWO_DIGIT_VERSION)
+
+        # whether or not golang chaincode should be linked dynamically
+        dynamicLink: false
+
+    java:
+        # This is an image based on java:openjdk-8 with addition compiler
+        # tools added for java shim layer packaging.
+        # This image is packed with shim layer libraries that are necessary
+        # for Java chaincode runtime.
+        runtime: $(DOCKER_NS)/fabric-javaenv:$(TWO_DIGIT_VERSION)
+
+    node:
+        # This is an image based on node:$(NODE_VER)-alpine
+        runtime: $(DOCKER_NS)/fabric-nodeenv:$(TWO_DIGIT_VERSION)
+
+    # List of directories to treat as external builders and launchers for
+    # chaincode. The external builder detection processing will iterate over the
+    # builders in the order specified below.
+    # If you don't need to fallback to the default Docker builder, also unconfigure vm.endpoint above.
+    # To override this property via env variable use CORE_CHAINCODE_EXTERNALBUILDERS: [{name: x, path: dir1}, {name: y, path: dir2}]
     externalBuilders:
-    - path: ../../../chaincode-exernal/sampleBuilder
-      name: myexternal-chaincode
+       - name: ccaas_builder
+         path: /opt/hyperledger/ccaas_builder
+         propagateEnvironment:
+           - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG
 
 
     # The maximum duration to wait for the chaincode build and install process
@@ -264,8 +298,6 @@ chaincode:
       shim:   warning
       # Format for the chaincode container logs
       format: '%{color}%{time:2006-01-02 15:04:05.000 MST} [%{module}] %{shortfunc} -> %{level:.4s} %{id:03x}%{color:reset} %{message}'
-
-
 
 ###############################################################################
 #

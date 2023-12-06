@@ -89,13 +89,13 @@ services:
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
       - CORE_OPERATIONS_LISTENADDRESS=peer0.dyno.example.com:9444
       - CORE_METRICS_PROVIDER=prometheus
-      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0dyno"}
-      - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+      #- CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0dyno"}
+      #- CORE_CHAINCODE_EXECUTETIMEOUT=300s
       
     volumes:
       - ../organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com:/etc/hyperledger/fabric
       - peer0.dyno.example.com:/var/hyperledger/production
-      - ../chaincode-external:/opt/gopath/src/github.com/hyperledger/fabric-samples/asset-transfer-basic/chaincode-external
+      - ../chaincode-external/sampleBuilder:/opt/hyperledger/ccaas_builder
       - ./docker/peercfg/core.yaml:/etc/hyperledger/fabric/core.yaml
     working_dir: /root
     command: peer node start
