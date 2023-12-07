@@ -95,8 +95,6 @@ services:
     volumes:
       - ../organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com:/etc/hyperledger/fabric
       - peer0.dyno.example.com:/var/hyperledger/production
-      - /home/dyno/Platform.dyno.Blockchain:/opt/gopath/src/github.com/hyperledger/fabric-samples
-      #- ./docker/peercfg/core.yaml:/etc/hyperledger/fabric/core.yaml
     working_dir: /root
     command: peer node start
     ports:
