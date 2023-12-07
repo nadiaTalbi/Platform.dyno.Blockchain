@@ -171,7 +171,6 @@ peer:
 #    VM section
 #
 ###############################################################################
-dock
 vm:
     # settings for docker vms
    docker:
