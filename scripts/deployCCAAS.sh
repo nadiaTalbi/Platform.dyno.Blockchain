@@ -84,18 +84,18 @@ packageChaincode() {
 
 cat > "$tempdir/src/connection.json" <<CONN_EOF
 {
-    "address": "asset-transfer-basic.dyno.example.com:9999",
-    "dial_timeout": "10s",
-    "tls_required": false
+  "address": "asset-transfer-basic.dyno.example.com:9999",
+  "dial_timeout": "10s",
+  "tls_required": false
 }
 CONN_EOF
 
-   mkdir -p "$tempdir/pkg"
+  mkdir -p "$tempdir/pkg"
 
 cat << METADATA-EOF > "$tempdir/pkg/metadata.json"
 {
-    "type": "external",
-    "label": "basic_1.0"
+  "type": "external",
+  "label": "basic_1.0"
 }
 METADATA-EOF
 
@@ -103,7 +103,7 @@ METADATA-EOF
     tar -C "$tempdir/pkg" -czf "$CC_NAME.tar.gz" metadata.json code.tar.gz
     rm -Rf "$tempdir"
 
-    PACKAGE_ID=$(peer lifecycle chaincode calculatepackageid ${CC_NAME}.tar.gz)
+    PACKAGE_ID=$(peer lifecycle chaincode calculatepackageid ./chaincode-external/basic.tar.gz)
   
     successln "Chaincode is packaged  ${address}"
 }

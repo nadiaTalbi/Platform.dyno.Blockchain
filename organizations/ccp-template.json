@@ -13,7 +13,7 @@
     },
     "organizations": {
         "dyno": {
-            "mspid": "dynoMSP",
+            "mspid": "DynoMSP",
             "peers": [
                 "peer0.dyno.example.com"
             ],
