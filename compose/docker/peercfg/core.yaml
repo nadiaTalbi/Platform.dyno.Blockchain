@@ -82,7 +82,7 @@ peer:
     # TLS Settings
     tls:
         # Require server-side TLS
-        enabled:  true
+        enabled:  false
         clientAuthRequired: false
         cert:
             file: ../../../organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/server.crt
