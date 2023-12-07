@@ -100,7 +100,7 @@ cat << METADATA-EOF > "$tempdir/pkg/metadata.json"
 METADATA-EOF
 
     tar -C "$tempdir/src" -czf "$tempdir/pkg/code.tar.gz" .
-    tar -C "$tempdir/pkg" -czf "$CC_NAME.tar.gz" metadata.json code.tar.gz
+    tar -C "$tempdir/pkg" -czf "./chaincode-external/basic.tar.gz" metadata.json code.tar.gz
     rm -Rf "$tempdir"
 
     PACKAGE_ID=$(peer lifecycle chaincode calculatepackageid ./chaincode-external/basic.tar.gz)
