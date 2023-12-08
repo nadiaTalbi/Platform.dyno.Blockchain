@@ -34,6 +34,9 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('DynoMSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('DynoMSP.peer')"
 
 Capabilities:
     Channel: &ChannelCapabilities
