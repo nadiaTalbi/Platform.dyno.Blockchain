@@ -58,6 +58,9 @@ Application: &ApplicationDefaults
         Admins:
             Type: ImplicitMeta
             Rule: "MAJORITY Admins"
+        Endorsement:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
 
     Capabilities:
         <<: *ApplicationCapabilities
