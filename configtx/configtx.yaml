@@ -62,12 +62,13 @@ Organizations:
         Type: Signature
         Rule: "OR('DynoMSP.peer')"
     AnchorPeers:
-            - Host: peer0.dyno.example.com
-              Port: 7051
-            - Host: peer1.dyno.example.com
-              Port: 7061
-            - Host: peer2.dyno.example.com
-              Port: 7071
+        - Host: peer0.dyno.example.com
+          Port: 7051
+        - Host: peer1.dyno.example.com
+          Port: 7061
+        - Host: peer2.dyno.example.com
+          Port: 7071
+          
 ################################################################################
 #
 #   SECTION: Capabilities
