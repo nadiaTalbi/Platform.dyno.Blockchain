@@ -634,8 +634,8 @@ ledger:
     totalQueryLimit: 100000
     couchDBConfig:
        couchDBAddress: 127.0.0.1:5984
-       username:
-       password:
+       username: admin
+       password: adminpw
        maxRetries: 3
        maxRetriesOnStartup: 10
        requestTimeout: 35s
