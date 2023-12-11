@@ -8,8 +8,8 @@ version: "2.4"
 volumes:
   orderer.example.com:
   peer0.dyno.example.com:
-  # peer1.dyno.example.com:
-  # peer2.dyno.example.com:
+  peer1.dyno.example.com:
+  peer2.dyno.example.com:
 
 
 networks:
@@ -103,94 +103,93 @@ services:
     networks:
       - test
     
-  # peer1.dyno.example.com:
-  #   container_name: peer1.dyno.example.com
-  #   image: hyperledger/fabric-peer:latest
-  #   labels:
-  #     service: hyperledger-fabric
-  #   environment:
-  #     - FABRIC_CFG_PATH=/etc/hyperledger/peercfg
-  #     #Generic peer variables
-  #     - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-  #     # the following setting starts chaincode containers on the same
-  #     # bridge network as the peers
-  #     # https://docs.docker.com/compose/networking/
-  #     - FABRIC_LOGGING_SPEC=INFO
-  #     - CORE_PEER_TLS_ENABLED=true
-  #     - CORE_PEER_PROFILE_ENABLED=true
-  #     - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
-  #     - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
-  #     - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
-  #     # Peer specific variabes
-  #     - CORE_PEER_ID=peer1.dyno.exmple.com
-  #     - CORE_PEER_ADDRESS=peer1.dyno.example.com:7061
-  #     - CORE_PEER_LISTENADDRESS=0.0.0.0:7061
-  #     - CORE_PEER_CHAINCODEADDRESS=peer1.dyno.example.com:7052
-  #     - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-  #     - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.dyno.example.com:7051
-  #     - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.dyno.example.com:7051
-  #     - CORE_PEER_LOCALMSPID=DynoMSP
-  #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
-  #     - CORE_OPERATIONS_LISTENADDRESS=peer0.dyno.example.com:9444
-  #     - CORE_METRICS_PROVIDER=prometheus
-  #     - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0dyno"}
-  #     - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+  peer1.dyno.example.com:
+    container_name: peer1.dyno.example.com
+    image: hyperledger/fabric-peer:latest
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - FABRIC_CFG_PATH=/etc/hyperledger/peercfg
+      #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      # the following setting starts chaincode containers on the same
+      # bridge network as the peers
+      # https://docs.docker.com/compose/networking/
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      # Peer specific variabes
+      - CORE_PEER_ID=pee1.dyno.exmple.com
+      - CORE_PEER_ADDRESS=peer1.dyno.example.com:7061
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7061
+      - CORE_PEER_CHAINCODEADDRESS=peer1.dyno.example.com:7062
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7062
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.dyno.example.com:7061
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.dyno.example.com:7061
+      - CORE_PEER_LOCALMSPID=DynoMSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+      - CORE_OPERATIONS_LISTENADDRESS=peer1.dyno.example.com:9454
+      - CORE_METRICS_PROVIDER=prometheus
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer1dyno"}
+      - CORE_CHAINCODE_EXECUTETIMEOUT=300s
       
-  #   volumes:
-  #     - ../organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com:/etc/hyperledger/fabric
-  #     - peer0.dyno.example.com:/var/hyperledger/production
-  #   working_dir: /root
-  #   command: peer node start
-  #   ports:
-  #     - 7061:7061
-  #     - 9454:9454
-  #   networks:
-  #     - test
-  
-  # peer2.dyno.example.com:
-  #   container_name: peer0.dyno.example.com
-  #   image: hyperledger/fabric-peer:latest
-  #   labels:
-  #     service: hyperledger-fabric
-  #   environment:
-  #     - FABRIC_CFG_PATH=/etc/hyperledger/peercfg
-  #     #Generic peer variables
-  #     - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-  #     # the following setting starts chaincode containers on the same
-  #     # bridge network as the peers
-  #     # https://docs.docker.com/compose/networking/
-  #     - FABRIC_LOGGING_SPEC=INFO
-  #     - CORE_PEER_TLS_ENABLED=true
-  #     - CORE_PEER_PROFILE_ENABLED=true
-  #     - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
-  #     - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
-  #     - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
-  #     # Peer specific variabes
-  #     - CORE_PEER_ID=peer0.dyno.exmple.com
-  #     - CORE_PEER_ADDRESS=peer0.dyno.example.com:7051
-  #     - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-  #     - CORE_PEER_CHAINCODEADDRESS=peer0.dyno.example.com:7052
-  #     - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-  #     - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.dyno.example.com:7051
-  #     - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.dyno.example.com:7051
-  #     - CORE_PEER_LOCALMSPID=DynoMSP
-  #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
-  #     - CORE_OPERATIONS_LISTENADDRESS=peer0.dyno.example.com:9444
-  #     - CORE_METRICS_PROVIDER=prometheus
-  #     - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0dyno"}
-  #     - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+    volumes:
+      - ../organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com:/etc/hyperledger/fabric
+      - peer1.dyno.example.com:/var/hyperledger/production
+    working_dir: /root
+    command: peer node start
+    ports:
+      - 7061:7061
+      - 9454:9454
+    networks:
+      - test
+
+  peer2.dyno.example.com:
+    container_name: peer2.dyno.example.com
+    image: hyperledger/fabric-peer:latest
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - FABRIC_CFG_PATH=/etc/hyperledger/peercfg
+      #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      # the following setting starts chaincode containers on the same
+      # bridge network as the peers
+      # https://docs.docker.com/compose/networking/
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      # Peer specific variabes
+      - CORE_PEER_ID=peer2.dyno.exmple.com
+      - CORE_PEER_ADDRESS=peer2.dyno.example.com:7071
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7071
+      - CORE_PEER_CHAINCODEADDRESS=peer2.dyno.example.com:7072
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7072
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer2.dyno.example.com:7071
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer2.dyno.example.com:7071
+      - CORE_PEER_LOCALMSPID=DynoMSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+      - CORE_OPERATIONS_LISTENADDRESS=peer2.dyno.example.com:9464
+      - CORE_METRICS_PROVIDER=prometheus
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer2dyno"}
+      - CORE_CHAINCODE_EXECUTETIMEOUT=300s
       
-  #   volumes:
-  #     - ../organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com:/etc/hyperledger/fabric
-  #     - peer0.dyno.example.com:/var/hyperledger/production
-  #   working_dir: /root
-  #   command: peer node start
-  #   ports:
-  #     - 7051:7051
-  #     - 9444:9444
-  #   networks:
-  #     - test
-  
+    volumes:
+      - ../organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com:/etc/hyperledger/fabric
+      - peer2.dyno.example.com:/var/hyperledger/production
+    working_dir: /root
+    command: peer node start
+    ports:
+      - 7071:7071
+      - 9464:9464
+    networks:
+      - test
 
 
   cli:
