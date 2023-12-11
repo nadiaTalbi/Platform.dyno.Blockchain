@@ -208,8 +208,8 @@ services:
       - ../scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
     depends_on:
       - peer0.dyno.example.com
-      # - peer1.dyno.example.com
-      # - peer2.dyno.example.com
+      - peer1.dyno.example.com
+      - peer2.dyno.example.com
     networks:
       - test
 
