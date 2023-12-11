@@ -356,7 +356,7 @@ peer:
         useLeaderElection: false
         orgLeader: true
         membershipTrackerInterval: 5s
-        endpoint: peer0.dyno.example.com:7071
+        endpoint: peer2.dyno.example.com:7071
         maxBlockCountToStore: 10
         maxPropagationBurstLatency: 10ms
         maxPropagationBurstSize: 10
