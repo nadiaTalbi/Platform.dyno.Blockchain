@@ -127,8 +127,8 @@ services:
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7061
       - CORE_PEER_CHAINCODEADDRESS=peer1.dyno.example.com:7062
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7062
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.dyno.example.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.dyno.example.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.dyno.example.com:7061
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.dyno.example.com:7061
       - CORE_PEER_LOCALMSPID=DynoMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
       - CORE_OPERATIONS_LISTENADDRESS=peer1.dyno.example.com:9454
@@ -171,8 +171,8 @@ services:
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7071
       - CORE_PEER_CHAINCODEADDRESS=peer2.dyno.example.com:7072
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7072
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.dyno.example.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.dyno.example.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer2.dyno.example.com:7071
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer2.dyno.example.com:7071
       - CORE_PEER_LOCALMSPID=DynoMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
       - CORE_OPERATIONS_LISTENADDRESS=peer2.dyno.example.com:9464
