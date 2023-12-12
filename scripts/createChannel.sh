@@ -20,7 +20,7 @@ infoln "Using ${CONTAINER_CLI} and ${CONTAINER_CLI_COMPOSE}"
 
 #Create a Channel Cnfiguration Transaction
 createChannelGenesisBlock() {
-  setGlobals 1
+  setGlobals dyno 0
 	which configtxgen
 	if [ "$?" -ne 0 ]; then
 		fatalln "configtxgen tool not found."
@@ -47,7 +47,7 @@ joinChannel() {
 	local COUNTER=1
 	PEER=$1
 	## Sometimes Join takes time, hence retry
-	setGlobals dyno $PEER
+	setGlobalsWithAdminKeys dyno $PEER
 	while [ $rc -ne 0 -a $COUNTER -lt 5 ] ; do
 	set -x
 	peer channel list
