@@ -15,7 +15,7 @@ organizations:
     certificateAuthorities:
     - ca.dyno.example.com
 peers:
-  peer0.org${ORG}.example.com:
+  peer0.dyno.example.com:
     url: grpcs://localhost:${P0PORT}
     tlsCACerts:
       pem: |
@@ -23,6 +23,22 @@ peers:
     grpcOptions:
       ssl-target-name-override: peer0.dyno.example.com
       hostnameOverride: peer0.dyno.example.com
+  peer1.dyno.example.com:
+    url: grpcs://localhost:${P1PORT}
+    tlsCACerts:
+      pem: |
+          ${PEERPEM}
+    grpcOptions:
+      ssl-target-name-override: peer1.dyno.example.com
+      hostnameOverride: peer1.dyno.example.com
+  peer2.dyno.example.com:
+    url: grpcs://localhost:${P2PORT}
+    tlsCACerts:
+      pem: |
+          ${PEERPEM}
+    grpcOptions:
+      ssl-target-name-override: peer2.dyno.example.com
+      hostnameOverride: peer2.dyno.example.com
 certificateAuthorities:
   ca.dyno.example.com:
     url: https://localhost:${CAPORT}

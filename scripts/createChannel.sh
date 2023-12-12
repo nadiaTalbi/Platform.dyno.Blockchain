@@ -48,14 +48,14 @@ joinChannel() {
 	## Sometimes Join takes time, hence retry
 	while [ $rc -ne 0 -a $COUNTER -lt 5 ] ; do
 	set -x
+	peer channel list
+
 	peer channel join -b ${PWD}/channel-artifacts/mychannel.block >&log.txt
 	res=$?
     { set +x; } 2>/dev/null
 		let rc=$res
 		COUNTER=$(expr $COUNTER + 1)
 	done
-	peer channel list
-
 	cat log.txt
 
 	verifyResult $res "After 5 attempts, peer0.dyno has failed to join channel 'mychannel' "
