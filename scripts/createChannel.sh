@@ -45,7 +45,9 @@ joinChannel() {
   	FABRIC_CFG_PATH=${PWD}/compose/docker/peercfg
 	local rc=1
 	local COUNTER=1
+	PEER=$1
 	## Sometimes Join takes time, hence retry
+	setGlobals dyno $PEER
 	while [ $rc -ne 0 -a $COUNTER -lt 5 ] ; do
 	set -x
 	peer channel list
@@ -86,11 +88,11 @@ cp -r ${PWD}/organizations/peerOrganizations/dyno.example.com/peers/* ${PWD}/org
 
 ## Join all the peers to the channel
 infoln "Joining peer 0 to the channel..."
-joinChannel 
+joinChannel 0
 infoln "Joining peer 1  to the channel..."
-joinChannel
+joinChannel 1
 infoln "Joining peer 2 to the channel..."
-joinChannel
+joinChannel 2
 
 # Set the anchor peers for each org in the channel
 infoln "Setting anchor peer for dyno..."
