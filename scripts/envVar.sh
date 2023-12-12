@@ -26,12 +26,12 @@ setGlobals() {
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_DYNO_CA
   export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp
   if [ $USING_PEER -eq 0 ]; then
-      export CORE_PEER_ADDRESS=localhost:7051
-    elif [ $USING_PEER -eq 1 ]; then
-      export CORE_PEER_ADDRESS=localhost:7061
-    elif [ $USING_PEER -eq 2 ]; then
-      export CORE_PEER_ADDRESS=localhost:7071
-    fi
+    export CORE_PEER_ADDRESS=localhost:7051
+  elif [ $USING_PEER -eq 1 ]; then
+    export CORE_PEER_ADDRESS=localhost:7061
+  elif [ $USING_PEER -eq 2 ]; then
+    export CORE_PEER_ADDRESS=localhost:7071
+  fi
     
   if [ "$VERBOSE" == "true" ]; then
     env | grep CORE
