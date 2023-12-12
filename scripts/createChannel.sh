@@ -55,7 +55,7 @@ joinChannel() {
 		COUNTER=$(expr $COUNTER + 1)
 	done
 	peer channel list
-	
+
 	cat log.txt
 
 	verifyResult $res "After 5 attempts, peer0.dyno has failed to join channel 'mychannel' "
@@ -67,13 +67,14 @@ setAnchorPeer() {
 
 
 ## Create channel genesis block
-FABRIC_CFG_PATH=$PWD/compose/docker/peercfg
-BLOCKFILE="./channel-artifacts/genesis.block"
+
 
 infoln "Generating channel genesis block '${CHANNEL_NAME}.block'"
 FABRIC_CFG_PATH=${PWD}/configtx
-
 createChannelGenesisBlock
+
+FABRIC_CFG_PATH=$PWD/compose/docker/peercfg
+BLOCKFILE="./channel-artifacts/genesis.block"
 
 
 ## Create channel
@@ -81,12 +82,18 @@ infoln "Creating channel ${CHANNEL_NAME}"
 createChannel 
 successln "Channel '$CHANNEL_NAME' created"
 
+cp -r ${PWD}/organizations/peerOrganizations/dyno.example.com/peers/* ${PWD}/organizations/peerOrganizations/dyno.example.com/users/
+
 ## Join all the peers to the channel
-infoln "Joining peer to the channel..."
+infoln "Joining peer 0 to the channel..."
 joinChannel 
+infoln "Joining peer 1  to the channel..."
+joinChannel
+infoln "Joining peer 2 to the channel..."
+joinChannel
 
 # Set the anchor peers for each org in the channel
-infoln "Setting anchor peer for org1..."
+infoln "Setting anchor peer for dyno..."
 setAnchorPeer 
 
 successln "Channel '$CHANNEL_NAME' joined"

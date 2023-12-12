@@ -6,8 +6,8 @@
 peer:
     id: peer0.dyno.example.com
     networkId: dev
-    listenAddress: localhost:7051
-    address: localhost:7051
+    listenAddress: 0.0.0.0:7051
+    address: 0.0.0.0:7051
     addressAutoDetect: false
     gateway:
         enabled: true
@@ -82,7 +82,7 @@ peer:
     # TLS Settings
     tls:
         # Require server-side TLS
-        enabled:  false
+        enabled:  true
         clientAuthRequired: false
         cert:
             file: ../../../organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/server.crt
@@ -169,8 +169,8 @@ peer:
 peer:
     id: peer1.dyno.example.com
     networkId: dev
-    listenAddress: localhost:7061
-    address: localhost:7061
+    listenAddress: 0.0.0.0:7061
+    address: 0.0.0.0:7061
     addressAutoDetect: false
     gateway:
         enabled: true
@@ -192,7 +192,7 @@ peer:
     gossip:
         bootstrap: 127.0.0.1:7061
         useLeaderElection: false
-        orgLeader: true
+        orgLeader: false
         membershipTrackerInterval: 5s
         endpoint: peer1.dyno.example.com:7061
         maxBlockCountToStore: 10
@@ -245,7 +245,7 @@ peer:
     # TLS Settings
     tls:
         # Require server-side TLS
-        enabled:  false
+        enabled:  true
         clientAuthRequired: false
         cert:
             file: ../../../organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/server.crt
@@ -331,8 +331,8 @@ peer:
 peer:
     id: peer2.dyno.example.com
     networkId: dev
-    listenAddress: localhost:7071
-    address: localhost:7071
+    listenAddress: 0.0.0.0:7071
+    address: 0.0.0.0:7071
     addressAutoDetect: false
     gateway:
         enabled: true
@@ -354,7 +354,7 @@ peer:
     gossip:
         bootstrap: 127.0.0.1:7071
         useLeaderElection: false
-        orgLeader: true
+        orgLeader: false
         membershipTrackerInterval: 5s
         endpoint: peer2.dyno.example.com:7071
         maxBlockCountToStore: 10
@@ -407,7 +407,7 @@ peer:
     # TLS Settings
     tls:
         # Require server-side TLS
-        enabled:  false
+        enabled:  true
         clientAuthRequired: false
         cert:
             file: ../../../organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/server.crt
