@@ -65,10 +65,10 @@ Organizations:
         - Host: peer0.dyno.example.com
           Port: 7051
         - Host: peer1.dyno.example.com
-          Port: 7061
+          Port: 7051
         - Host: peer2.dyno.example.com
-          Port: 7071
-          
+          Port: 7051
+
 ################################################################################
 #
 #   SECTION: Capabilities

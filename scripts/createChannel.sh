@@ -54,7 +54,10 @@ joinChannel() {
 		let rc=$res
 		COUNTER=$(expr $COUNTER + 1)
 	done
+	peer channel list
+	
 	cat log.txt
+
 	verifyResult $res "After 5 attempts, peer0.dyno has failed to join channel 'mychannel' "
 }
 

@@ -22,26 +22,14 @@ createAnchorPeerUpdate() {
     HOST=peer0.dyno.example.com
     PORT=7051
 
-    HOST1=peer1.dyno.example.com
-    PORT1=7061
+    HOST=peer1.dyno.example.com
+    PORT=7061
 
-    HOST2=peer2.dyno.example.com
-    PORT2=7071
+    HOST=peer0.dyno.example.com
+    PORT=7071
 
   # Modify the configuration to append the anchor peer 
-  jq '.channel_group.groups.Application.groups.DynoMSP.values += {
-        "AnchorPeers": {
-          "mod_policy": "Admins",
-          "value": {
-            "anchor_peers": [
-              {"host": "'$HOST'", "port": '$PORT'},
-              {"host": "'$HOST1'", "port": '$PORT1'},
-              {"host": "'$HOST2'", "port": '$PORT2'}
-            ]
-          },
-          "version": "0"
-        }
-      }' dynoConfig.json > dynoModified_config.json
+  jq '.channel_group.groups.Application.groups.DynoMSP.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'}]},"version": "0"}}' dynoConfig.json > dynoModified_config.json
   { set +x; } 2>/dev/null
 
   # Compute a config update, based on the differences between 
