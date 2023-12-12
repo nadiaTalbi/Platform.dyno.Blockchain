@@ -26,7 +26,7 @@ createChannelGenesisBlock() {
 		fatalln "configtxgen tool not found."
 	fi
 	set -x
-	configtxgen -profile ChannelUsingRaft  -outputBlock ./channel-artifacts/mychannel.block -channelID mychannel
+	configtxgen -profile TwoOrgsApplicationGenesis  -outputBlock ./channel-artifacts/mychannel.block -channelID mychannel
 
 	res=$?
 	{ set +x; } 2>/dev/null
@@ -35,7 +35,7 @@ createChannelGenesisBlock() {
 
 createChannel() {
 	. scripts/orderer.sh mychannel > /dev/null 2>&1
-	docker restart $(docker ps -q)
+	# docker restart $(docker ps -q)
 	cat log.txt
 	verifyResult $res "Channel creation failed"
 }
