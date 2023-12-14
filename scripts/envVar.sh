@@ -48,7 +48,9 @@ setGlobals() {
   local USING_ORG=$1
   infoln "Using organization ${USING_ORG}"
   
-  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp/
+  export CORE_PEER_TLS_ENABLED=true
+  export FABRIC_CFG_PATH=/home/dyno/Platform.dyno.Blockchain/compose/docker/peercfg/
+  export CORE_PEER_MSPCONFIGPATH=/home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp
   export CORE_PEER_LOCALMSPID="DynoMSP"
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_DYNO_CA
   export CORE_PEER_ADDRESS=localhost:7051
