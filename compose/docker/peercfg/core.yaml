@@ -28,7 +28,7 @@ peer:
     # Gossip related configuration
     gossip:
         bootstrap: 127.0.0.1:7051
-        useLeaderElection: false
+        useLeaderElection: true
         orgLeader: true
         membershipTrackerInterval: 5s
         endpoint: peer0.dyno.example.com:7051
@@ -67,7 +67,7 @@ peer:
             reconciliationEnabled: true
             skipPullingInvalidTransactionsDuringCommit: false
             implicitCollectionDisseminationPolicy:
-               requiredPeerCount: 2
+               requiredPeerCount: 0
                maxPeerCount: 3
 
         # Gossip state transfer related configuration
@@ -230,7 +230,7 @@ peer:
             reconciliationEnabled: true
             skipPullingInvalidTransactionsDuringCommit: false
             implicitCollectionDisseminationPolicy:
-               requiredPeerCount: 2
+               requiredPeerCount: 0
                maxPeerCount: 3
 
         # Gossip state transfer related configuration
@@ -392,7 +392,7 @@ peer:
             reconciliationEnabled: true
             skipPullingInvalidTransactionsDuringCommit: false
             implicitCollectionDisseminationPolicy:
-               requiredPeerCount: 2
+               requiredPeerCount: 0
                maxPeerCount: 3
 
         # Gossip state transfer related configuration

@@ -54,6 +54,17 @@ Organizations:
 
         MSPDir: ../organizations/peerOrganizations/dyno.example.com/msp
 
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.dyno.example.com
+              Port: 7051
+            - Host: peer1.dyno.example.com
+              Port: 7061
+            - Host: peer2.dyno.example.com
+              Port: 7071
+
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
         #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
