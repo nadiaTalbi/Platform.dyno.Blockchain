@@ -26,6 +26,9 @@ createChannelGenesisBlock() {
 		fatalln "configtxgen tool not found."
 	fi
 	set -x
+
+	#configtxgen -profile TwoOrgsApplicationGenesis -outputCreateChannelTx ./channel-artifacts/mychannel.tx -channelID mychannel
+
 	configtxgen -profile TwoOrgsApplicationGenesis  -outputBlock ./channel-artifacts/mychannel.block -channelID mychannel
 
 	res=$?
@@ -82,7 +85,7 @@ BLOCKFILE="./channel-artifacts/genesis.block"
 ## Create channel
 infoln "Creating channel ${CHANNEL_NAME}"
 createChannel 
-successln "Channel '$CHANNEL_NAME' created"
+successln "Channel mychannel created"
 
 cp -r ${PWD}/organizations/peerOrganizations/dyno.example.com/peers/* ${PWD}/organizations/peerOrganizations/dyno.example.com/users/
 
