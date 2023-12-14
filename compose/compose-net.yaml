@@ -93,6 +93,7 @@ services:
       - CORE_CHAINCODE_EXECUTETIMEOUT=300s
       
     volumes:
+      - config.json:/root/.docker/config.json
       - ../organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com:/etc/hyperledger/fabric
       - peer0.dyno.example.com:/var/hyperledger/production
     working_dir: /root
