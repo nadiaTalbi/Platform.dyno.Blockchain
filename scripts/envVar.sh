@@ -43,31 +43,20 @@ setGlobalsWithAdminKeys() {
 
 
 setGlobals() {
-  echo "org $1 peer $2"
+  echo "org $1"
 
   local USING_ORG=$1
-  local USING_PEER=$2
-
   infoln "Using organization ${USING_ORG}"
   
   export CORE_PEER_LOCALMSPID="DynoMSP"
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_DYNO_CA
-
-  if [ $USING_PEER -eq 0 ]; then
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp
-    export CORE_PEER_ADDRESS=localhost:7051
-  elif [ $USING_PEER -eq 1 ]; then
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/msp
-    export CORE_PEER_ADDRESS=localhost:7061
-  elif [ $USING_PEER -eq 2 ]; then
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/msp
-    export CORE_PEER_ADDRESS=localhost:7071
-  fi
+  export CORE_PEER_MSPCONFIGPATH=/home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp
+  export CORE_PEER_ADDRESS=localhost:7051
     
-
   if [ "$VERBOSE" == "true" ]; then
     env | grep CORE
   fi
+
 }
 
 

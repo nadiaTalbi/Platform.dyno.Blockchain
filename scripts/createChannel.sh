@@ -20,7 +20,7 @@ infoln "Using ${CONTAINER_CLI} and ${CONTAINER_CLI_COMPOSE}"
 
 #Create a Channel Cnfiguration Transaction
 createChannelGenesisBlock() {
-  setGlobals dyno 0
+  setGlobals dyno 
 	which configtxgen
 	if [ "$?" -ne 0 ]; then
 		fatalln "configtxgen tool not found."

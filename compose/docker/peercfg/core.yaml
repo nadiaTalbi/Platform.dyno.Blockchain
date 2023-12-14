@@ -439,7 +439,7 @@ peer:
                 KeyStore: ../../../organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/msp/keystore
 
     # Path on the file system where peer will find MSP local configurations
-    mspConfigPath: ../../../organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/msp
+    mspConfigPath: /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/msp
     localMspId: DynoMSP
 
     client:

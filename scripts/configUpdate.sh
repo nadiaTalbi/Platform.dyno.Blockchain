@@ -54,9 +54,9 @@ createConfigUpdate() {
 # signConfigtxAsPeerOrg <org> <configtx.pb>
 # Set the peerOrg admin of an org and sign the config update
 signConfigtxAsPeerOrg() {
-  ORG=$1
+  ORG=dyno
   CONFIGTXFILE=$2
-  setGlobals $ORG 0 
+  setGlobals $ORG 
   set -x
   peer channel signconfigtx -f "${CONFIGTXFILE}"
   { set +x; } 2>/dev/null

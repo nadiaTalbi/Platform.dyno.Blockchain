@@ -210,7 +210,7 @@ function listChaincode() {
   . scripts/envVar.sh
   . scripts/ccutils.sh
 
-  setGlobals $ORG 0
+  setGlobals $ORG 
 
   println
   queryInstalledOnPeer
@@ -228,7 +228,7 @@ function queryChaincode() {
   . scripts/envVar.sh
   . scripts/ccutils.sh
 
-  setGlobals $ORG 0
+  setGlobals $ORG 
 
   chaincodeQuery $ORG $CHANNEL_NAME $CC_NAME $CC_QUERY_CONSTRUCTOR
 
@@ -242,7 +242,7 @@ function invokeChaincode() {
   . scripts/envVar.sh
   . scripts/ccutils.sh
 
-  setGlobals $ORG 0
+  setGlobals $ORG 
 
   chaincodeInvoke $ORG $CHANNEL_NAME $CC_NAME $CC_INVOKE_CONSTRUCTOR
 
