@@ -12,7 +12,7 @@
 # Writes the current channel config for a given channel to a JSON file
 # NOTE: this must be run in a CLI container since it requires configtxlator
 fetchChannelConfig() {
-    ORG=$1
+    ORG=dyno
     CHANNEL=$2
     OUTPUT=$3
 
