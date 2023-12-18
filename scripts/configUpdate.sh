@@ -14,7 +14,7 @@
 fetchChannelConfig() {
     ORG=dyno
     CHANNEL=$2
-    OUTPUT=$3
+    OUTPUT=dynoConfig.json
 
   setGlobals $ORG
 
@@ -23,7 +23,7 @@ fetchChannelConfig() {
 
   infoln "Fetching the most recent configuration block for the channel"
   set -x
-  sudo peer channel fetch config config_block.pb -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com -c mychannel --tls --cafile /home/dyno/Platform.dyno.Blockchain/organizations/ordererOrganizations/example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+  peer channel fetch config config_block.pb -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com -c mychannel --tls --cafile /home/dyno/Platform.dyno.Blockchain/organizations/ordererOrganizations/example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
   { set +x; } 2>/dev/null
 
@@ -40,10 +40,10 @@ fetchChannelConfig() {
 # which transitions between the two
 # NOTE: this must be run in a CLI container since it requires configtxlator
 createConfigUpdate() {
-  CHANNEL=$1
-  ORIGINAL=$2
-  MODIFIED=$3
-  OUTPUT=$4
+  CHANNEL=mychannel
+  ORIGINAL=dynoConfig.json
+  MODIFIED=dynoModified_config.json
+  OUTPUT=dynoAnchors.tx
 
   set -x
   configtxlator proto_encode --input "${ORIGINAL}" --type common.Config --output original_config.pb
