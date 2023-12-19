@@ -21,13 +21,6 @@ createAnchorPeerUpdate() {
 
     HOST=peer0.dyno.example.com
     PORT=7051
-
-    # HOST=peer1.dyno.example.com
-    # PORT=7061
-
-    # HOST=peer0.dyno.example.com
-    # PORT=7071
-
   # Modify the configuration to append the anchor peer 
   jq '.channel_group.groups.Application.groups.DynoMSP.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "'$HOST'","port": '$PORT'}]},"version": "0"}}' dynoConfig.json > dynoModified_config.json
   { set +x; } 2>/dev/null

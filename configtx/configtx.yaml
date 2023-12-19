@@ -28,7 +28,7 @@ Organizations:
                 Rule: "OR('OrdererMSP.admin')"
 
         OrdererEndpoints:
-            - orderer.example.com:9443
+            - orderer.example.com:7050
 
     - &Dyno
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -46,10 +46,6 @@ Organizations:
             # encoded in the genesis block in the Application section context
             - Host: peer0.dyno.example.com
               Port: 7051
-            - Host: peer1.dyno.example.com
-              Port: 7061
-            - Host: peer2.dyno.example.com
-              Port: 7071
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually

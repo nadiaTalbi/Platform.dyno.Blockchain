@@ -87,8 +87,6 @@ infoln "Creating channel ${CHANNEL_NAME}"
 createChannel 
 successln "Channel mychannel created"
 
-cp -r ${PWD}/organizations/peerOrganizations/dyno.example.com/peers/* ${PWD}/organizations/peerOrganizations/dyno.example.com/users/
-
 ## Join all the peers to the channel
 infoln "Joining peer 0 to the channel..."
 joinChannel 0
