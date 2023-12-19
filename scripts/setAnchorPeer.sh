@@ -42,7 +42,7 @@ updateAnchorPeer() {
 
   infoln "update anchor peer update transaction for dyno on channel mychannel"
 
-  peer channel update -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com -c mychannel -f dynoAnchors.tx --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/msp/tlscacerts/tlsca.example.com-cert.pem >&log.txt
+  peer channel update -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com -c mychannel -f dynoAnchors.tx --tls --cafile "$ORDERER_CA" >&log.txt
   res=$?
   cat log.txt
   verifyResult $res "Anchor peer update failed"
