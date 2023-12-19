@@ -165,6 +165,8 @@ startDockerContainer() {
   fi
 }
 
+
+
 # Build the docker image 
 buildDockerImages
 
