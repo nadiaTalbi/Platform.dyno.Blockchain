@@ -353,7 +353,7 @@ peer:
     # Gossip related configuration
     gossip:
         bootstrap: 127.0.0.1:7071
-        useLeaderElection: false
+        useLeaderElection: true
         orgLeader: false
         membershipTrackerInterval: 5s
         endpoint: peer2.dyno.example.com:7071
