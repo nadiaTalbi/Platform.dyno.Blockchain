@@ -19,11 +19,10 @@ fetchChannelConfig() {
   setGlobals $ORG
 
   export CORE_PEER_TLS_ENABLED=true
-  export $ORDERER_CA=/home/dyno/Platform.dyno.Blockchain/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
   infoln "Fetching the most recent configuration block for the channel"
   set -x
-  peer channel fetch config config_block.pb -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com -c mychannel --tls --cafile "$ORDERER_CA"
+  peer channel fetch config config_block.pb -o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com -c mychannel --tls --cafile /home/dyno/Platform.dyno.Blockchain/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
   { set +x; } 2>/dev/null
 
