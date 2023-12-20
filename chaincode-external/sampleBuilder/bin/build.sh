@@ -1,14 +1,22 @@
 #!/bin/sh
 
+#!/bin/bash
+
 set -euo pipefail
 
-METADIR=$2
-# check if the "type" field is set to "external"
-# crude way without jq which is not in the default fabric peer image
-TYPE=$(tr -d '\n' < "$METADIR/metadata.json" | awk -F':' '{ for (i = 1; i < NF; i++){ if ($i~/type/) { print $(i+1); break }}}'| cut -d\" -f2)
+OUTPUT=$3
 
-if [ "$TYPE" = "external" ]; then
-    exit 0
+#external chaincodes expect connection.json file in the chaincode package
+if [ ! -f "../../connection.json" ]; then
+    >&2 echo "../../connection.json not found"
+    exit 1
 fi
 
-exit 1
+#simply copy the endpoint information to specified output location
+cp ../../connection.json ../connection.json
+
+if [ -d "../../metadata" ]; then
+    cp -a ../../metadata ../metadata
+fi
+
+exit 0

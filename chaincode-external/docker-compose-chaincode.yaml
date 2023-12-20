@@ -8,7 +8,7 @@ services:
     asset-transfer-basic.dyno.example.com:
         build: .
         container_name: asset-transfer-basic.dyno.example.com
-        hostname: asset-transfer-basic.dyno.example.com
+        hostname: localhost
         volumes:
             - ./crypto:/crypto
         env_file:

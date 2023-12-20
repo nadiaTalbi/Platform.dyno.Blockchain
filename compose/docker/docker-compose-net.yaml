@@ -17,7 +17,8 @@ services:
     volumes:
       - ./docker/peercfg:/etc/hyperledger/peercfg
       - ${DOCKER_SOCK}:/host/var/run/docker.sock
-      - /home/dyno/Platform.dyno.Blockchain/chaincode-external/sampleBuilder/:/opt/hyperledger/ccaas_builder
+      - ../..:/opt/gopath/src/github.com/hyperledger/fabric-samples
+      - ./peercfg/core.yaml:/etc/hyperledger/fabric/core.yaml
 
   peer1.dyno.example.com:
     container_name: peer1.dyno.example.com
@@ -31,7 +32,8 @@ services:
     volumes:
       - ./docker/peercfg:/etc/hyperledger/peercfg
       - ${DOCKER_SOCK}:/host/var/run/docker.sock
-      - /home/dyno/Platform.dyno.Blockchain/chaincode-external/sampleBuilder/:/opt/hyperledger/ccaas_builder
+      - ../..:/opt/gopath/src/github.com/hyperledger/fabric-samples
+      - ./peercfg/core.yaml:/etc/hyperledger/fabric/core.yaml
   
   peer2.dyno.example.com:
     container_name: peer2.dyno.example.com
@@ -45,11 +47,11 @@ services:
     volumes:
       - ./docker/peercfg:/etc/hyperledger/peercfg
       - ${DOCKER_SOCK}:/host/var/run/docker.sock
-      - /home/dyno/Platform.dyno.Blockchain/chaincode-external/sampleBuilder/:/opt/hyperledger/ccaas_builder
+      - ../..:/opt/gopath/src/github.com/hyperledger/fabric-samples
+      - ./peercfg/core.yaml:/etc/hyperledger/fabric/core.yaml
   
   cli:
     container_name: cli
     image: hyperledger/fabric-tools:latest
     volumes:
       - ./docker/peercfg:/etc/hyperledger/peercfg
-      - /home/dyno/Platform.dyno.Blockchain/chaincode-external/sampleBuilder/:/opt/hyperledger/ccaas_builder
