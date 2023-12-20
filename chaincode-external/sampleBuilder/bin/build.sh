@@ -1,21 +1,36 @@
 #!/bin/sh
 
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
 set -euo pipefail
 
-SOURCE=../..
-OUTPUT=.
-
-#external chaincodes expect connection.json file in the chaincode package
-if [ ! -f "$SOURCE/connection.json" ]; then
-    >&2 echo "$SOURCE/connection.json not found"
+if [ "$#" -ne 3 ]; then
+    >&2 echo "Expected 3 directories got $#"
     exit 1
 fi
 
-#simply copy the endpoint information to specified output location
-cp $SOURCE/connection.json $OUTPUT/connection.json
+SOURCE=$1
+METADATA=$2
+OUTPUT=$3
 
-if [ -d "$SOURCE/metadata" ]; then
-    cp -a $SOURCE/metadata $OUTPUT/metadata
+>&2 jq . "$2/metadata.json"
+
+if [[ "$(jq -r .label "$METADATA/metadata.json")" == *fail* ]]; then
+    >&2 echo "Exiting with failure..."
+    exit 1
 fi
 
-exit 0
+GO_PACKAGE_PATH="$(jq -r .path "$METADATA/metadata.json")"
+if [ -f "$SOURCE/src/go.mod" ]; then
+    cd "$SOURCE/src"
+    go build -v -mod=readonly -o "$OUTPUT/chaincode" "$GO_PACKAGE_PATH"
+else
+    GO111MODULE=off go build -v  -o "$OUTPUT/chaincode" "$GO_PACKAGE_PATH"
+fi
+
+# copy index metadata if present
+if [ -d "$SOURCE/META-INF" ]; then
+    cp -a "$SOURCE/META-INF" "$OUTPUT"
+fi

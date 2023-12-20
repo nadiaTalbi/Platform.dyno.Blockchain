@@ -1,22 +1,20 @@
 #!/bin/sh
 
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
 set -euo pipefail
+
+if [ "$#" -ne 2 ]; then
+    >&2 echo "Expected 2 directories got $#"
+    exit 2
+fi
+
 
 BLD="$1"
 RELEASE="$2"
 
-if [ -d "$BLD/metadata" ]; then
-   cp -a "$BLD/metadata/"* "$RELEASE/"
+if [ -d "$BLD/META-INF" ] ; then
+   cp -a "$BLD/META-INF"/* "$RELEASE"
 fi
-
-#external chaincodes expect artifacts to be placed under "$RELEASE"/chaincode/server
-if [ -f $BLD/connection.json ]; then
-   mkdir -p "$RELEASE"/chaincode/server
-   cp $BLD/connection.json "$RELEASE"/chaincode/server
-
-   #if tls_required is true, copy TLS files (using above example, the fully qualified path for these fils would be "$RELEASE"/chaincode/server/tls)
-
-   exit 0
-fi
-
-exit 1
