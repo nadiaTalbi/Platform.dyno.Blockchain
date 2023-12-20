@@ -1,5 +1,5 @@
 {
-    "address": "asset-transfer-basic.dyno.example.com:9999",
+    "address": "localhost",
     "dial_timeout": "10s",
     "tls_required": false
 }

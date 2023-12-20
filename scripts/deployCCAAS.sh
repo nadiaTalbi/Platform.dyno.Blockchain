@@ -84,7 +84,7 @@ packageChaincode() {
 
 cat > "$tempdir/src/connection.json" <<CONN_EOF
 {
-  "address": "asset-transfer-basic.dyno.example.com:9999",
+  "address": "localhost:9999",
   "dial_timeout": "10s",
   "tls_required": false
 }
