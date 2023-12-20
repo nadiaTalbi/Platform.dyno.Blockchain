@@ -17,7 +17,9 @@ services:
     volumes:
       - ./docker/peercfg:/etc/hyperledger/peercfg
       - ${DOCKER_SOCK}:/host/var/run/docker.sock
-      - ../../chaincode-external/sampleBuilder:/opt/hyperledger/ccaas_builder
+      - ../../chaincode-external:/opt/hyperledger/ccaas_builder
+      - ./peercfg/core.yaml:/etc/hyperledger/fabric/core.yaml
+
 
   peer1.dyno.example.com:
     container_name: peer1.dyno.example.com

@@ -96,7 +96,7 @@ infoln "Joining peer 2 to the channel..."
 joinChannel 2
 
 # Set the anchor peers for each org in the channel
-infoln "Setting anchor peer for dyno..."
-setAnchorPeer 
+# infoln "Setting anchor peer for dyno..."
+# setAnchorPeer 
 
 successln "Channel mychannel joined"
