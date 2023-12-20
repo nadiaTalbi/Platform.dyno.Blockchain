@@ -568,7 +568,7 @@ chaincode:
     # To override this property via env variable use CORE_CHAINCODE_EXTERNALBUILDERS: [{name: x, path: dir1}, {name: y, path: dir2}] 
     externalBuilders:
        - name: ccaas_builder
-         path: /opt/hyperledger/ccaas_builder
+         path: /opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode-external/sampleBuilder
          propagateEnvironment:
            - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG
 

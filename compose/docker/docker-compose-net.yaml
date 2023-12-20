@@ -17,6 +17,7 @@ services:
     volumes:
       - ./docker/peercfg:/etc/hyperledger/peercfg
       - ${DOCKER_SOCK}:/host/var/run/docker.sock
+      - ../..:/opt/gopath/src/github.com/hyperledger/fabric-samples
 
   peer1.dyno.example.com:
     container_name: peer1.dyno.example.com
