@@ -242,8 +242,6 @@ func main() {
 	if err := server.Start(); err != nil {
 		log.Panicf("error starting asset-transfer-basic chaincode: %s", err)
 	}
-
-	InitLedger()
 }
 
 func getTLSProperties() shim.TLSProperties {

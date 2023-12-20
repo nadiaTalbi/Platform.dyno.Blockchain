@@ -136,13 +136,14 @@ function queryCommitted() {
 }
 
 function chaincodeInvokeInit() {
-  parsePeerConnectionParameters $@
+  # parsePeerConnectionParameters $@
+
   res=$?
-  verifyResult $res "Invoke transaction failed on channel '$CHANNEL_NAME' due to uneven number of peer and org parameters "
+  verifyResult $res "Invoke transaction failed on channel mychannel  due to uneven number of peer and org parameters "
 
   local rc=1
   local COUNTER=1
-  local fcn_call='{"function":"'${CC_INIT_FCN}'","Args":[]}'
+  local fcn_call='{"function":"InitLedger","Args":[]}'
   # continue to poll
   # we either get a successful response, or reach MAX RETRY
   while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ]; do
@@ -152,12 +153,16 @@ function chaincodeInvokeInit() {
     # it using the "-o" option
     set -x
     infoln "invoke fcn call:${fcn_call}"
-    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" -C $CHANNEL_NAME -n ${CC_NAME} "${PEER_CONN_PARMS[@]}" --isInit -c ${fcn_call} >&log.txt
+    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" -C $CHANNEL_NAME -n ${CC_NAME} --peerAddresses localhost:7051 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt \
+    --peerAddresses localhost:7061 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt \
+    --peerAddresses localhost:7071 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt \ --isInit -c ${fcn_call} >&log.txt
+    
     res=$?
     { set +x; } 2>/dev/null
     let rc=$res
     COUNTER=$(expr $COUNTER + 1)
   done
+  
   cat log.txt
   verifyResult $res "Invoke execution on $PEERS failed "
   successln "Invoke transaction successful on $PEERS on channel '$CHANNEL_NAME'"
