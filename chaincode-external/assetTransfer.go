@@ -218,11 +218,15 @@ func (s *SmartContract) GetAllAssets(ctx contractapi.TransactionContextInterface
 func main() {
 	// See chaincode.env.example
 	config := serverConfig{
-		CCID:    os.Getenv("CHAINCODE_ID"),
-		Address: os.Getenv("CHAINCODE_SERVER_ADDRESS"),
+		CCID:   "basic_1.0:6726c6b6d8ff66fcf5710b72c6ce512d24f118c51c3de510b3d43e51fa592a7d" ,//os.Getenv("CHAINCODE_ID"),
+		Address: "asset-transfer-basic.dyno.example.com:9999" ,//os.Getenv("CHAINCODE_SERVER_ADDRESS")
 	}
 
+	log.Println("chiancode create 1  ....")
+
 	chaincode, err := contractapi.NewChaincode(&SmartContract{})
+
+	log.Println("chiancode create 2 ....")
 
 	if err != nil {
 		log.Panicf("error create asset-transfer-basic chaincode: %s", err)
@@ -238,6 +242,8 @@ func main() {
 	if err := server.Start(); err != nil {
 		log.Panicf("error starting asset-transfer-basic chaincode: %s", err)
 	}
+
+	InitLedger()
 }
 
 func getTLSProperties() shim.TLSProperties {

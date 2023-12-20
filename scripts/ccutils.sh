@@ -86,7 +86,7 @@ function commitChaincodeDefinition() {
   set -x
 
   peer lifecycle chaincode commit \
-  -o orderer.example.com:7050 \
+  -o localhost:7050 \
   --ordererTLSHostnameOverride orderer.example.com \
   --tls \
   --cafile /home/dyno/Platform.dyno.Blockchain/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem \
