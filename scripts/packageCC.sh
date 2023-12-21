@@ -37,7 +37,7 @@ packageChaincode() {
   # else
   #   peer lifecycle chaincode package ${CC_NAME}.tar.gz --path ${CC_SRC_PATH} --lang ${CC_RUNTIME_LANGUAGE} --label ${CC_NAME}_${CC_VERSION} >&log.txt
   # fi
-  peer lifecycle chaincode package basic.tar.gz --path ./chaincode-javascript --lang node  --label basic_1.0
+  peer lifecycle chaincode package basic.tar.gz --path ./chaincode-javascript --lang node  --label basic_1.0 >&log.txt
 
   res=$?
 

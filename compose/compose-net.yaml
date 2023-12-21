@@ -95,7 +95,6 @@ services:
     volumes:
       - ../organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com:/etc/hyperledger/fabric
       - peer0.dyno.example.com:/var/hyperledger/production
-      - ./../chaincode-external/sampleBuilder:/etc/hyperledger/external-builder
     working_dir: /root
     command: peer node start
     ports:
@@ -140,7 +139,6 @@ services:
     volumes:
       - ../organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com:/etc/hyperledger/fabric
       - peer1.dyno.example.com:/var/hyperledger/production
-      - ./../chaincode-external/sampleBuilder:/etc/hyperledger/external-builder
     working_dir: /root
     command: peer node start
     ports:
@@ -185,7 +183,6 @@ services:
     volumes:
       - ../organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com:/etc/hyperledger/fabric
       - peer2.dyno.example.com:/var/hyperledger/production
-      - ./../chaincode-external/sampleBuilder:/etc/hyperledger/external-builder
     working_dir: /root
     command: peer node start
     ports:
