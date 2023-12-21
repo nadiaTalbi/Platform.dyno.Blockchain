@@ -85,9 +85,9 @@ function checkCommitReadiness() {
   done
   cat log.txt
   if test $rc -eq 0; then
-    infoln "Checking the commit readiness of the chaincode definition successful on {ORG} on channel mychannel"
+    infoln "Checking the commit readiness of the chaincode definition successful on dyno on channel mychannel"
   else
-    fatalln "After $MAX_RETRY attempts, Check commit readiness result on peer0.org${ORG} is INVALID!"
+    fatalln "After $MAX_RETRY attempts, Check commit readiness result on ${ORG} is INVALID!"
   fi
 }
 
