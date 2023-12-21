@@ -94,8 +94,9 @@ CONN_EOF
 
 cat << METADATA-EOF > "$tempdir/pkg/metadata.json"
 {
-  "type": "GOLANG",
-  "label": "basic_1.0"
+  "path":"/home/dyno/Platform.dyno.Blockchain/chaincode-external",
+  "type":"external",
+  "label":"mycc"
 }
 METADATA-EOF
 
