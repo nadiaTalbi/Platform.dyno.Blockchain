@@ -90,7 +90,7 @@ installChaincode dyno 2
 queryInstalled 1
 
 ## approve the definition for org1
-approveForMyOrg 1
+approveForMyOrg 0
 
 ## check whether the chaincode definition is ready to be committed
 ## expect dyno to have approved and org2 not to
