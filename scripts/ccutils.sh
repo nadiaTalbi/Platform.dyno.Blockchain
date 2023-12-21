@@ -19,7 +19,10 @@ function installChaincode() {
 # queryInstalled PEER ORG
 function queryInstalled() {
   ORG=dyno
-  setGlobals $ORG
+  local USING_PEER=$2
+
+  infoln "Using organization ${USING_ORG}, $USING_PEER"
+  setGlobalsWithAdminKeys dyno $USING_PEER
   set -x
   peer lifecycle chaincode queryinstalled --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
   res=$?
@@ -32,7 +35,12 @@ function queryInstalled() {
 # approveForMyOrg VERSION PEER ORG
 function approveForMyOrg() {
   ORG=dyno
-  setGlobals $ORG
+
+  # setGlobals $ORG
+  local USING_PEER=$2
+
+  infoln "Using organization ${USING_ORG}, $USING_PEER"
+  setGlobalsWithAdminKeys dyno $USING_PEER
   set -x
   peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence ${CC_SEQUENCE} ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG} >&log.txt
   res=$?
@@ -46,7 +54,13 @@ function approveForMyOrg() {
 function checkCommitReadiness() {
   ORG=dyno
   shift 1
-  setGlobals $ORG
+  # setGlobals $ORG
+
+  local USING_PEER=$2
+
+  infoln "Using organization ${USING_ORG}, $USING_PEER"
+  setGlobalsWithAdminKeys dyno $USING_PEER
+
   infoln "Checking the commit readiness of the chaincode definition on ${ORG} on channel $CHANNEL_NAME..."
   local rc=1
   local COUNTER=1
