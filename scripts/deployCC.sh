@@ -74,10 +74,15 @@ checkPrereqs
 PACKAGE_ID=$(peer lifecycle chaincode calculatepackageid basic.tar.gz)
 
 ## Install chaincode on peer0.org1 and peer0.org2
-infoln "Installing chaincode on peer0.org1..."
-installChaincode 
-infoln "Install chaincode on peer1.org1..."
-installChaincode 
+infoln "Installing chaincode on peer0.dyno..."
+installChaincode dyno 0
+
+
+infoln "Install chaincode on peer1.dyno..."
+installChaincode dyno 1
+
+infoln "Install chaincode on peer2.dyno..."
+installChaincode dyno 2
 
 resolveSequence
 

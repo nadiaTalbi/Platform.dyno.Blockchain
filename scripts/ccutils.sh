@@ -3,7 +3,13 @@
 # installChaincode PEER ORG
 function installChaincode() {
   ORG=dyno
-  setGlobals $ORG
+  # setGlobals $ORG
+
+  local USING_PEER=$2
+
+  infoln "Using organization ${USING_ORG}, $USING_PEER"
+  setGlobalsWithAdminKeys dyno $USING_PEER
+
   set -x
   peer lifecycle chaincode queryinstalled --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
   if test $? -ne 0; then
@@ -21,15 +27,17 @@ function queryInstalled() {
   ORG=dyno
   local USING_PEER=$2
 
-  infoln "Using organization ${USING_ORG}, $USING_PEER"
+  infoln "Using organization ${ORG}, $USING_PEER"
   setGlobalsWithAdminKeys dyno $USING_PEER
+
   set -x
+  
   peer lifecycle chaincode queryinstalled --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt
-  verifyResult $res "Query installed on peer0.org${ORG} has failed"
-  successln "Query installed successful on peer0.org${ORG} on channel"
+  verifyResult $res "Query installed on peer$USING_PEER.${ORG} has failed"
+  successln "Query installed successful on peer$USING_PEER.${ORG} on channel"
 }
 
 # approveForMyOrg VERSION PEER ORG
