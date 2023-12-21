@@ -487,6 +487,7 @@ elif [ "$MODE" == "restart" ]; then
   networkUp
 elif [ "$MODE" == "deployCC" ]; then
   infoln "deploying chaincode on channel mychannel"
+  chmod +x scripts/deployCC.sh
   deployCC
 elif [ "$MODE" == "deployCCAAS" ]; then
   infoln "deploying chaincode-as-a-service on channel '${CHANNEL_NAME}'"
