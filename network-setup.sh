@@ -174,7 +174,7 @@ function createChannel() {
 
 ## Call the script to deploy a chaincode to the channel
 function deployCC() {
-  scripts/deployCC.sh "mychannel" "basic" "./chaincode-asset-transfer" "javascript" "1.0.1" auto "NA" "NA" "NA" 3 5 false
+  scripts/deployCC.sh mychannel basic ./chaincode-javascript javascript "1.0.1" auto NA NA NA 3 5 false
 
   if [ $? -ne 0 ]; then 
     fatalln "Deploying chaincode failed"
@@ -486,7 +486,7 @@ elif [ "$MODE" == "restart" ]; then
   networkDown
   networkUp
 elif [ "$MODE" == "deployCC" ]; then
-  infoln "deploying chaincode on channel '${CHANNEL_NAME}'"
+  infoln "deploying chaincode on channel mychannel"
   deployCC
 elif [ "$MODE" == "deployCCAAS" ]; then
   infoln "deploying chaincode-as-a-service on channel '${CHANNEL_NAME}'"
