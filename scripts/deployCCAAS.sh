@@ -94,7 +94,7 @@ CONN_EOF
 
 cat << METADATA-EOF > "$tempdir/pkg/metadata.json"
 {
-  "type": "ccaas",
+  "type": "GOLANG",
   "label": "basic_1.0"
 }
 METADATA-EOF
