@@ -573,8 +573,8 @@ chaincode:
     #        - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG
 
     externalBuilders:
-        - path: /etc/hyperledger/external-builder
-          name: my-golang-builder
+        - path: /home/dyno/Platform.dyno.Blockchain/chaincode-external/sampleBuilder/
+          name: basic_1.0
           environmentWhitelist:
             - GOPROXY
             - GONOPROXY
