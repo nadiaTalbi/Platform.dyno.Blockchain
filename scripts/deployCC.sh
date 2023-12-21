@@ -97,10 +97,6 @@ queryInstalled dyno 2
 ## approve the definition for org1
 approveForMyOrg dyno 0 
 
-approveForMyOrg dyno 1
-
-approveForMyOrg dyno 2
-
 
 ## check whether the chaincode definition is ready to be committed
 ## expect org1 to have approved and org2 not to
@@ -108,9 +104,9 @@ approveForMyOrg dyno 2
 
 checkCommitReadiness dyno 0
 
-checkCommitReadiness dyno 1
+# checkCommitReadiness dyno 1
 
-checkCommitReadiness dyno 2
+# checkCommitReadiness dyno 2
 
 
 
@@ -121,14 +117,16 @@ commitChaincodeDefinition 1 2
 
 ## query on both orgs to see that the definition committed successfully
 queryCommitted 1
-queryCommitted 2
+# queryCommitted 2
 
 ## Invoke the chaincode - this does require that the chaincode have the 'initLedger'
 ## method defined
-if [ "$CC_INIT_FCN" = "NA" ]; then
-  infoln "Chaincode initialization is not required"
-else
-  chaincodeInvokeInit 1 2
-fi
+# if [ "$CC_INIT_FCN" = "NA" ]; then
+#   infoln "Chaincode initialization is not required"
+# else
+#   chaincodeInvokeInit 1 2
+# fi
+
+chaincodeInvokeInit 1 2
 
 exit 0
