@@ -25,13 +25,9 @@ function installChaincode() {
 # queryInstalled PEER ORG
 function queryInstalled() {
   ORG=dyno
-  local USING_PEER=$2
-
-  infoln "Using organization ${ORG}, $USING_PEER"
-  setGlobalsWithAdminKeys dyno $USING_PEER
-
+  
+  setGlobals $ORG
   set -x
-
   peer lifecycle chaincode queryinstalled --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
   res=$?
   { set +x; } 2>/dev/null
