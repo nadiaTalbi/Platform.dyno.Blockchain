@@ -167,10 +167,10 @@ Orderer: &OrdererDefaults
 
     OrdererType: etcdraft
     Addresses:
-        - orderer.example.com:7050
+        - localhost:7050
     EtcdRaft:
         Consenters:
-        - Host: orderer.example.com
+        - Host: localhost
           Port: 7050
           ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
           ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt

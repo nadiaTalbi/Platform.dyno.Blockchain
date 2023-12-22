@@ -1,0 +1,18 @@
+General:
+  LedgerType: etcdraft
+  ListenAddress: 0.0.0.0
+  ListenPort: 7050
+
+EtcdRaft:
+  Consenters:
+    - Host: orderer.example.com
+      Port: 7050
+      ClientTLSCert: ../../../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+      ServerTLSCert: ../../../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+
+  Options:
+    TickInterval: 500ms
+    ElectionTick: 10
+    HeartbeatTick: 1
+    MaxInflightBlocks: 5
+    SnapshotIntervalSize: 20 MB
