@@ -40,13 +40,9 @@ function queryInstalled() {
 function approveForMyOrg() {
   ORG=dyno
 
-  # setGlobals $ORG
-  local USING_PEER=$2
-
-  infoln "Using organization ${USING_ORG}, $USING_PEER"
-  setGlobalsWithAdminKeys dyno $USING_PEER
+  setGlobals $ORG
   set -x
-  peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence 1 --signature-policy "AND ('DynoMSP.peer')" >&log.txt
+  peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence 1 --signature-policy "OR('DynoMSP.peer')" >&log.txt
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt

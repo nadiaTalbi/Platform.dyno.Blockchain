@@ -77,7 +77,6 @@ PACKAGE_ID=$(peer lifecycle chaincode calculatepackageid basic.tar.gz)
 infoln "Installing chaincode on peer0.dyno..."
 installChaincode dyno 0
 
-
 infoln "Install chaincode on peer1.dyno..."
 installChaincode dyno 1
 
