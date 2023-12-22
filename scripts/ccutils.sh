@@ -74,7 +74,8 @@ function checkCommitReadiness() {
     sleep $DELAY
     infoln "Attempting to check the commit readiness of the chaincode definition on ${ORG}, Retry after $DELAY seconds."
     set -x
-    peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name ${CC_NAME} --version 1.0.1 --sequence 1 ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG} --output json >&log.txt
+    # ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG}
+    peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name basic --version 1.0.1 --sequence 1 --output json >&log.txt
     res=$?
     { set +x; } 2>/dev/null
     let rc=0

@@ -165,15 +165,15 @@ Application: &ApplicationDefaults
 ################################################################################
 Orderer: &OrdererDefaults
 
-    OrdererType: etcdraft
+    OrdererType: solo
     Addresses:
         - orderer.example.com:7050
-    EtcdRaft:
-        Consenters:
-        - Host: orderer.example.com
-          Port: 7050
-          ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-          ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+    # EtcdRaft:
+    #     Consenters:
+    #     - Host: orderer.example.com
+    #       Port: 7050
+    #       ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+    #       ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
