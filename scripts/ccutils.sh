@@ -39,8 +39,12 @@ function queryInstalled() {
 # approveForMyOrg VERSION PEER ORG
 function approveForMyOrg() {
   ORG=dyno
+  PEER=$1
 
-  setGlobals $ORG
+  infoln "Approve my org $ORG , peer : $PEER"
+  # setGlobals $ORG
+  setGlobalsWithAdminKeys $ORG $PEER
+  
   set -x
   peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence 1 --signature-policy "OR('DynoMSP.peer')" >&log.txt
   res=$?
