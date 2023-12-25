@@ -101,7 +101,7 @@ approveForMyOrg 0
 checkCommitReadiness 1 "\"DynoMSP\": true"
 
 ## now that we know for sure both orgs have approved, commit the definition
-commitChaincodeDefinition 1 2
+commitChaincodeDefinition 
 
 ## query on both orgs to see that the definition committed successfully
 queryCommitted 1

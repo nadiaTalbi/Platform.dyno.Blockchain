@@ -102,14 +102,9 @@ function checkCommitReadiness() {
 
 # commitChaincodeDefinition VERSION PEER ORG (PEER ORG)...
 function commitChaincodeDefinition() {
-  # parsePeerConnectionParameters $@
 
   res=$?
   verifyResult $res "Invoke transaction failed on channel '$CHANNEL_NAME' due to uneven number of peer and org parameters "
-
-  # while 'peer chaincode' command can get the orderer endpoint from the
-  # peer (if join was successful), let's supply it directly as we know
-  # it using the "-o" option
   set -x
 
   peer lifecycle chaincode commit \
@@ -122,7 +117,7 @@ function commitChaincodeDefinition() {
   --peerAddresses localhost:7051 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt \
   --peerAddresses localhost:7061 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt \
   --peerAddresses localhost:7071 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt \
-  --version 1.0 \
+  --version 1.0 --init-required \
   --sequence 1 \
   >&log.txt
 
