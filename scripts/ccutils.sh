@@ -122,7 +122,7 @@ function commitChaincodeDefinition() {
   --peerAddresses localhost:7051 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt \
   --peerAddresses localhost:7061 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt \
   --peerAddresses localhost:7071 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt \
-  --version 1.0.1 \
+  --version 1.0 \
   --sequence 1 \
   >&log.txt
 
