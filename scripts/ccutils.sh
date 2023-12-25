@@ -178,7 +178,7 @@ function chaincodeInvokeInit() {
     infoln "invoke fcn call:${fcn_call}"
     peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" -C $CHANNEL_NAME -n ${CC_NAME} --peerAddresses localhost:7051 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt \
     --peerAddresses localhost:7061 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt \
-    --peerAddresses localhost:7071 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt \ --isInit -c ${fcn_call} >&log.txt
+    --peerAddresses localhost:7071 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt --isInit -c ${fcn_call} >&log.txt
     
     res=$?
     { set +x; } 2>/dev/null
