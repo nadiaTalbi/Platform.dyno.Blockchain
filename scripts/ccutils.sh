@@ -138,22 +138,23 @@ function queryCommitted() {
   local COUNTER=1
   # continue to poll
   # we either get a successful response, or reach MAX RETRY
-  while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ]; do
+  while [ $rc -ne 0 -a $COUNTER -lt 2 ]; do
     sleep $DELAY
     infoln "Attempting to Query committed status on peer0.org${ORG}, Retry after $DELAY seconds."
     set -x
     peer lifecycle chaincode querycommitted --channelID $CHANNEL_NAME --name ${CC_NAME} >&log.txt
     res=$?
     { set +x; } 2>/dev/null
-    test $res -eq 0 && VALUE=$(cat log.txt | grep -o '^Version: '$CC_VERSION', Sequence: [0-9]*, Endorsement Plugin: escc, Validation Plugin: vscc')
+    test $res -eq 0 && VALUE=$(cat log.txt | grep -o '^Version: 1.0, Sequence: [0-9]*, Endorsement Plugin: escc, Validation Plugin: vscc')
+    infoln "Value : ${VALUE} , ExpectedValue = ${EXPECTED_RESULT}"
     test "$VALUE" = "$EXPECTED_RESULT" && let rc=0
     COUNTER=$(expr $COUNTER + 1)
   done
-  cat log.txt
+  infoln "rc : ${rc}"
   if test $rc -eq 0; then
     successln "Query chaincode definition successful on peer0.org${ORG} on channel '$CHANNEL_NAME'"
   else
-    fatalln "After $MAX_RETRY attempts, Query chaincode definition result on peer0.org${ORG} is INVALID!"
+    fatalln "After $MAX_RETRY attempts, Query chaincode definition result on peer0.${ORG} is INVALID!"
   fi
 }
 
