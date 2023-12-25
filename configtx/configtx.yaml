@@ -33,19 +33,9 @@ Organizations:
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
         Name: DynoMSP
-
         # ID to load the MSP definition as
         ID: DynoMSP
-
         MSPDir: ../organizations/peerOrganizations/dyno.example.com/msp
-
-        AnchorPeers:
-            # AnchorPeers defines the location of peers which can be used
-            # for cross org gossip communication.  Note, this value is only
-            # encoded in the genesis block in the Application section context
-            - Host: peer0.dyno.example.com
-              Port: 7051
-
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
         #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
@@ -116,7 +106,7 @@ Capabilities:
         # features of fabric v2.5, namely the ability to purge private data.
         # Prior to enabling V2.5 application capabilities, ensure that all
         # peers on a channel are at v2.5.0 or later.
-        V2_0: true
+        V2_5: true
 
 ################################################################################
 #
@@ -131,7 +121,6 @@ Application: &ApplicationDefaults
     # Organizations is the list of orgs which are defined as participants on
     # the application side of the network
     Organizations:
-
     # Policies defines the set of policies at this level of the config tree
     # For Application policies, their canonical path is
     #   /Channel/Application/<PolicyName>
@@ -151,7 +140,6 @@ Application: &ApplicationDefaults
         Endorsement:
             Type: ImplicitMeta
             Rule: "MAJORITY Endorsement"
-
     Capabilities:
         <<: *ApplicationCapabilities
 ################################################################################
@@ -167,13 +155,6 @@ Orderer: &OrdererDefaults
     OrdererType: etcdraft
     Addresses:
         - localhost:7050
-    EtcdRaft:
-        Consenters:
-        - Host: localhost
-          Port: 7050
-          ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-          ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
     # Batch Size: Controls the number of messages batched into a block
@@ -208,9 +189,6 @@ Orderer: &OrdererDefaults
         BlockValidation:
             Type: ImplicitMeta
             Rule: "ANY Writers"
-    Capabilities:
-        <<: *OrdererCapabilities
-
 ################################################################################
 #
 #   CHANNEL
@@ -236,7 +214,6 @@ Channel: &ChannelDefaults
         Admins:
             Type: ImplicitMeta
             Rule: "MAJORITY Admins"
-
     # Capabilities describes the channel level capabilities, see the
     # dedicated Capabilities section elsewhere in this file for a full
     # description
@@ -252,21 +229,22 @@ Channel: &ChannelDefaults
 #
 ################################################################################
 Profiles:
-
     TwoOrgsApplicationGenesis:
         <<: *ChannelDefaults
         Orderer:
             <<: *OrdererDefaults
-            Organizations:
-                - *Dyno
-        Consortiums:
-            SampleConsortium:
+            OrdererType: etcdraft
+            EtcdRaft:
+                Consenters:
+                    - Host: orderer.example.com
+                      Port: 7050
+                      ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+                      ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
                 Organizations:
-                    - *Dyno
-    Channel:
-        <<: *ChannelDefaults
-        Consortium: SampleConsortium
+                    - *OrdererOrg
+                Capabilities: *OrdererCapabilities
         Application:
             <<: *ApplicationDefaults
             Organizations:
                 - *Dyno
+            Capabilities: *ApplicationCapabilities
