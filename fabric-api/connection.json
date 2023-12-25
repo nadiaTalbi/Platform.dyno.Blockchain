@@ -1,0 +1,77 @@
+{
+    "name": "dyno_network_test",
+    "version": "1.0",
+    "client": {
+      "organization": "Dyno",
+      "connectionTimeout": 3000
+    },
+    "channels": {
+      "mychannel": {
+        "orderers": ["orderer.example.com"],
+        "peers": {
+          "peer0.dyno.example.com": {},
+          "peer1.dyno.example.com": {},
+          "peer2.dyno.example.com": {}
+        }
+      }
+    },
+    "organizations": {
+      "Dyno": {
+        "mspid": "DynoMSP",
+        "peers": ["peer0.dyno.example.com", "peer1.dyno.example.com", "peer2.dyno.example.com"],
+        "certificateAuthorities": ["ca.dyno.example.com"]
+      }
+    },
+    "orderers": {
+      "orderer.example.com": {
+        "url": "grpcs://localhost:7050",
+        "grpcOptions": {
+          "ssl-target-name-override": "orderer.example.com"
+        },
+        "tlsCACerts": {
+            "pem": "-----BEGIN CERTIFICATE-----\nMIICFzCCAb2gAwIBAgIUTHQ3cmwN6BxbtYpyCV1azZB908cwCgYIKoZIzj0EAwIwaDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBmYWJyaWMtY2Etc2VydmVyMB4XDTIzMTIyNTE0MTIwMFoXDTM4MTIyMTE0MTIwMFowaDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBmYWJyaWMtY2Etc2VydmVyMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/DIBnlI7aBhKMCtqsQmkq73FWLASAng0hErP/4+t71FmE0TLv8HhuS7Kz2LIEaRS+lpDDqnZ8LUA8bl7Z39unqNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYDVR0OBBYE\nFK3zg9aR6cx0tsy4xKQjz1t+X4RUMAoGCCqGSM49BAMCA0gAMEUCIQCLbWhQgfoH\ngkA95txHzBM+RcJo/lADy17JG6MFTKP9KAIgJauzkHK6UPOMMIFgHGU4ayKNVrE4\n-----END CERTIFICATE-----"
+        }
+      }
+    },
+    "peers": {
+      "peer0.dyno.example.com": {
+        "url": "grpcs://localhost:7051",
+        "eventUrl": "grpcs://localhost:7051",
+        "grpcOptions": {
+          "ssl-target-name-override": "peer0.dyno.example.com"
+        },
+        "tlsCACerts": {
+            "pem": "-----BEGIN CERTIFICATE-----\nMIICFjCCAb2gAwIBAgIUIlMhsBwOHaLVDaW94cj7Av+tueEwCgYIKoZIzj0EAwIwaDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBmYWJyaWMtY2Etc2VydmVyMB4XDTIzMTIyNTE0MTIwMFoXDTM4MTIyMTE0MTIwMFowaDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBmYWJyaWMtY2Etc2VydmVyMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEuxAKX/8mEyZZXdgyCC3Ct85H0UmhtElf0Y9MKh1BSv2h7dSLphdnnezfViXSH+3wcqhkTrtP35ytKVtU9LTrsqNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYDVR0OBBYEFNTXvvEWK/NyQdDmPPeQOwMXhaGQMAoGCCqGSM49BAMCA0cAMEQCID7Fjaxbl/fov86lN10V1C5FWoUswVi+okiuqlr0jEk8AiAtYIBXUn68+lefi7AQ7PRIb/LOWKHwdJ3txTNfZ3RSTQ==\n-----END CERTIFICATE-----"
+        }
+      },
+      "peer1.dyno.example.com": {
+        "url": "grpcs://localhost:7061",
+        "eventUrl": "grpcs://loca:7061",
+        "grpcOptions": {
+          "ssl-target-name-override": "peer1.dyno.example.com"
+        },
+        "tlsCACerts": {
+            "pem": "-----BEGIN CERTIFICATE-----\nMIICFjCCAb2gAwIBAgIUIlMhsBwOHaLVDaW94cj7Av+tueEwCgYIKoZIzj0EAwIwaDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBmYWJyaWMtY2Etc2VydmVyMB4XDTIzMTIyNTE0MTIwMFoXDTM4MTIyMTE0MTIwMFowaDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBmYWJyaWMtY2Etc2VydmVyMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEuxAKX/8mEyZZXdgyCC3Ct85H0UmhtElf0Y9MKh1BSv2h7dSLphdnnezfViXSH+3wcqhkTrtP35ytKVtU9LTrsqNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYDVR0OBBYEFNTXvvEWK/NyQdDmPPeQOwMXhaGQMAoGCCqGSM49BAMCA0cAMEQCID7Fjaxbl/fov86lN10V1C5FWoUswVi+okiuqlr0jEk8AiAtYIBXUn68+lefi7AQ7PRIb/LOWKHwdJ3txTNfZ3RSTQ==\n-----END CERTIFICATE-----"
+        }
+      },
+      "peer2.dyno.example.com": {
+        "url": "grpcs://localhost:7071",
+        "eventUrl": "grpcs://localhost:7071",
+        "grpcOptions": {
+          "ssl-target-name-override": "peer2.dyno.example.com"
+        },
+        "tlsCACerts": {
+            "pem": "-----BEGIN CERTIFICATE-----\nMIICFjCCAb2gAwIBAgIUIlMhsBwOHaLVDaW94cj7Av+tueEwCgYIKoZIzj0EAwIwaDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBmYWJyaWMtY2Etc2VydmVyMB4XDTIzMTIyNTE0MTIwMFoXDTM4MTIyMTE0MTIwMFowaDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBmYWJyaWMtY2Etc2VydmVyMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEuxAKX/8mEyZZXdgyCC3Ct85H0UmhtElf0Y9MKh1BSv2h7dSLphdnnezfViXSH+3wcqhkTrtP35ytKVtU9LTrsqNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYDVR0OBBYEFNTXvvEWK/NyQdDmPPeQOwMXhaGQMAoGCCqGSM49BAMCA0cAMEQCID7Fjaxbl/fov86lN10V1C5FWoUswVi+okiuqlr0jEk8AiAtYIBXUn68+lefi7AQ7PRIb/LOWKHwdJ3txTNfZ3RSTQ==\n-----END CERTIFICATE-----"
+        }
+      }
+    },
+    "certificateAuthorities": {
+      "ca.dyno.example.com": {
+        "url": "https://localhost:7054",
+        "caName": "ca.dyno.example.com",
+        "tlsCACerts": {
+          "pem": "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
+        }
+      }
+    }
+}

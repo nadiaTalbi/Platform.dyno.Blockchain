@@ -16,46 +16,46 @@ class AssetTransfer extends Contract {
     async InitLedger(ctx) {
         const assets = [
             {
-                ID: 'asset1',
-                Color: 'blue',
-                Size: 5,
-                Owner: 'Tomoko',
-                AppraisedValue: 300,
+                ID: 'wallet1',
+                Code: '0000',
+                PrivateKey: '@0000',
+                PublicKey: '@0000',          
+                Balance: 300,
             },
             {
-                ID: 'asset2',
-                Color: 'red',
-                Size: 5,
-                Owner: 'Brad',
-                AppraisedValue: 400,
+                ID: 'wallet2',
+                Code: '0001',
+                PrivateKey: '@0001',
+                PublicKey: '@0001',          
+                Balance: 200,
             },
             {
-                ID: 'asset3',
-                Color: 'green',
-                Size: 10,
-                Owner: 'Jin Soo',
-                AppraisedValue: 500,
+                ID: 'wallet3',
+                Code: '0002',
+                PrivateKey: '@0002',
+                PublicKey: '@0002',          
+                Balance: 500,
             },
             {
-                ID: 'asset4',
-                Color: 'yellow',
-                Size: 10,
-                Owner: 'Max',
-                AppraisedValue: 600,
+                ID: 'wallet4',
+                Code: '0004',
+                PrivateKey: '@0004',
+                PublicKey: '@0004',          
+                Balance: 700,
             },
             {
-                ID: 'asset5',
-                Color: 'black',
-                Size: 15,
-                Owner: 'Adriana',
-                AppraisedValue: 700,
+                ID: 'wallet5',
+                Code: '0005',
+                PrivateKey: '@0005',
+                PublicKey: '@0005',          
+                Balance: 300,
             },
             {
-                ID: 'asset6',
-                Color: 'white',
-                Size: 15,
-                Owner: 'Michel',
-                AppraisedValue: 800,
+                ID: 'wallet6',
+                Code: '0006',
+                PrivateKey: '@0006',
+                PublicKey: '@0006',          
+                Balance: 450,
             },
         ];
 
@@ -70,7 +70,7 @@ class AssetTransfer extends Contract {
     }
 
     // CreateAsset issues a new asset to the world state with given details.
-    async CreateAsset(ctx, id, color, size, owner, appraisedValue) {
+    async CreateAsset(ctx, id, code, privateKey, publicKey, balance) {
         const exists = await this.AssetExists(ctx, id);
         if (exists) {
             throw new Error(`The asset ${id} already exists`);
@@ -78,10 +78,10 @@ class AssetTransfer extends Contract {
 
         const asset = {
             ID: id,
-            Color: color,
-            Size: size,
-            Owner: owner,
-            AppraisedValue: appraisedValue,
+            Code: code,
+            PrivateKey: privateKey,
+            PublicKey: publicKey,
+            Balance: balance,
         };
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
         await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(asset))));
@@ -98,7 +98,7 @@ class AssetTransfer extends Contract {
     }
 
     // UpdateAsset updates an existing asset in the world state with provided parameters.
-    async UpdateAsset(ctx, id, color, size, owner, appraisedValue) {
+    async UpdateAsset(ctx, id, code, privateKey, publicKey, balance) {
         const exists = await this.AssetExists(ctx, id);
         if (!exists) {
             throw new Error(`The asset ${id} does not exist`);
@@ -107,10 +107,10 @@ class AssetTransfer extends Contract {
         // overwriting original asset with new asset
         const updatedAsset = {
             ID: id,
-            Color: color,
-            Size: size,
-            Owner: owner,
-            AppraisedValue: appraisedValue,
+            Code: code,
+            PrivateKey: privateKey,
+            PublicKey: publicKey,
+            Balance: balance,
         };
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
         return ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(updatedAsset))));
