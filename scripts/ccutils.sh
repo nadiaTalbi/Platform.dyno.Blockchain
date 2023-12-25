@@ -13,13 +13,13 @@ function installChaincode() {
   set -x
   peer lifecycle chaincode queryinstalled --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
   if test $? -ne 0; then
-    peer lifecycle chaincode install ${CC_NAME}.tar.gz >&log.txt
+    peer lifecycle chaincode install ${CC_NAME}.tar.gz --peerAddresses peer0.dyno.example.com:7051 --peerAddresses peer1.dyno.example.com:7061 --peerAddresses peer2.dyno.example.com:7071 >&log.txt
     res=$?
   fi
   { set +x; } 2>/dev/null
   cat log.txt
-  verifyResult $res "Chaincode installation on peer0.dyno has failed"
-  successln "Chaincode is installed on peer0.dyno"
+  verifyResult $res "Chaincode installation on peer${USING_PEER}.dyno has failed"
+  successln "Chaincode is installed on peer${USING_PEER}.dyno"
 }
 
 # queryInstalled PEER ORG
@@ -28,7 +28,7 @@ function queryInstalled() {
   
   setGlobals $ORG
   set -x
-  peer lifecycle chaincode queryinstalled --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
+  peer lifecycle chaincode queryinstalled --peerAddresses peer0.dyno.example.com:7051 --peerAddresses peer1.dyno.example.com:7061 --peerAddresses peer2.dyno.example.com:7071 --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt
@@ -46,7 +46,7 @@ function approveForMyOrg() {
   setGlobalsWithAdminKeys $ORG $PEER
   
   set -x
-  peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${CC_VERSION} --package-id ${PACKAGE_ID} --sequence 1 --signature-policy "OR('DynoMSP.peer')" >&log.txt
+  peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name ${CC_NAME} --version 1.0 --init-required --package-id ${PACKAGE_ID} --sequence 1 --signature-policy "OR('DynoMSP.peer')" >&log.txt
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt
@@ -70,8 +70,7 @@ function checkCommitReadiness() {
     sleep $DELAY
     infoln "Attempting to check the commit readiness of the chaincode definition on ${ORG}, Retry after $DELAY seconds."
     set -x
-    # ${INIT_REQUIRED} ${CC_END_POLICY} ${CC_COLL_CONFIG}
-    peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name basic --version 1.0.1 --sequence 1 --output json >&log.txt
+    peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name basic --version 1.0 --init-required --sequence 1 --output json --inspect >&log.txt
     res=$?
     { set +x; } 2>/dev/null
     let rc=0

@@ -1,5 +1,4 @@
 Organizations:
-
     # SampleOrg defines an MSP using the sampleconfig.  It should never be used
     # in production but may be used as a template for other definitions
     - &OrdererOrg
@@ -209,6 +208,8 @@ Orderer: &OrdererDefaults
         BlockValidation:
             Type: ImplicitMeta
             Rule: "ANY Writers"
+    Capabilities:
+        <<: *OrdererCapabilities
 
 ################################################################################
 #
@@ -257,10 +258,15 @@ Profiles:
         Orderer:
             <<: *OrdererDefaults
             Organizations:
-                - *OrdererOrg
-            Capabilities: *OrdererCapabilities
+                - *Dyno
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Dyno
+    Channel:
+        <<: *ChannelDefaults
+        Consortium: SampleConsortium
         Application:
             <<: *ApplicationDefaults
             Organizations:
                 - *Dyno
-            Capabilities: *ApplicationCapabilities

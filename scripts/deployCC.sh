@@ -83,7 +83,7 @@ installChaincode dyno 1
 infoln "Install chaincode on peer2.dyno..."
 installChaincode dyno 2
 
-# resolveSequence
+resolveSequence
 
 ## query whether the chaincode is installed
 queryInstalled 1
@@ -91,9 +91,9 @@ queryInstalled 1
 ## approve the definition for org1
 approveForMyOrg 0
 
-approveForMyOrg 1
+# approveForMyOrg 1
 
-approveForMyOrg 2
+# approveForMyOrg 2
 
 ## check whether the chaincode definition is ready to be committed
 ## expect dyno to have approved and org2 not to
