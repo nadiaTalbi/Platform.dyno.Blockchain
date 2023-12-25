@@ -56,11 +56,10 @@ function approveForMyOrg() {
   PEER=$1
 
   infoln "Approve my org $ORG , peer : $PEER"
-  # setGlobals $ORG
-  setGlobalsWithAdminKeys $ORG $PEER
-  
+  setGlobals $ORG
   set -x
-  peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name ${CC_NAME} --version 1.0 --init-required --package-id ${PACKAGE_ID} --sequence 1 --signature-policy "OR('DynoMSP.peer')" >&log.txt
+  # --signature-policy "OR('DynoMSP.peer')"
+  peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name ${CC_NAME} --version 1.0 --init-required --package-id ${PACKAGE_ID} --sequence 1 >&log.txt
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt
