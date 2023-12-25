@@ -13,7 +13,13 @@ function installChaincode() {
   set -x
   peer lifecycle chaincode queryinstalled --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
   if test $? -ne 0; then
-    peer lifecycle chaincode install ${CC_NAME}.tar.gz --peerAddresses peer0.dyno.example.com:7051 --peerAddresses peer1.dyno.example.com:7061 --peerAddresses peer2.dyno.example.com:7071 >&log.txt
+    if [ $USING_PEER -eq 0 ]; then
+      peer lifecycle chaincode install ${CC_NAME}.tar.gz --peerAddresses localhost:7051 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt >&log.txt
+    elif [ $USING_PEER -eq 1 ]; then
+      peer lifecycle chaincode install ${CC_NAME}.tar.gz --peerAddresses localhost:7061 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt >&log.txt
+    elif [ $USING_PEER -eq 2 ]; then
+      peer lifecycle chaincode install ${CC_NAME}.tar.gz --peerAddresses localhost:7071 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt >&log.txt
+    fi
     res=$?
   fi
   { set +x; } 2>/dev/null
@@ -25,10 +31,18 @@ function installChaincode() {
 # queryInstalled PEER ORG
 function queryInstalled() {
   ORG=dyno
-  
-  setGlobals $ORG
+  local USING_PEER=$2
+  # setGlobals $ORG
+  infoln "Using organization ${USING_ORG}, $USING_PEER"
+  setGlobalsWithAdminKeys dyno $USING_PEER
   set -x
-  peer lifecycle chaincode queryinstalled --peerAddresses peer0.dyno.example.com:7051 --peerAddresses peer1.dyno.example.com:7061 --peerAddresses peer2.dyno.example.com:7071 --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
+  if [ $USING_PEER -eq 0 ]; then
+    peer lifecycle chaincode queryinstalled --peerAddresses localhost:7051 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt 
+  elif [ $USING_PEER -eq 1 ]; then
+    peer lifecycle chaincode queryinstalled --peerAddresses localhost:7061 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt 
+  elif [ $USING_PEER -eq 2 ]; then
+    peer lifecycle chaincode queryinstalled --peerAddresses localhost:7071 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt 
+  fi
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt
