@@ -132,8 +132,8 @@ function commitChaincodeDefinition() {
 function queryCommitted() {
    ORG=dyno
   setGlobals $ORG
-  EXPECTED_RESULT="Version: ${CC_VERSION}, Sequence: ${CC_SEQUENCE}, Endorsement Plugin: escc, Validation Plugin: vscc"
-  infoln "Querying chaincode definition on peer0.org${ORG} on channel '$CHANNEL_NAME'..."
+  EXPECTED_RESULT="Version: 1.0, Sequence: 1, Endorsement Plugin: escc, Validation Plugin: vscc"
+  infoln "Querying chaincode definition on peer0.${ORG} on channel '$CHANNEL_NAME', ${EXPECTED_RESULT}..."
   local rc=1
   local COUNTER=1
   # continue to poll
