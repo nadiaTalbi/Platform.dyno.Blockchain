@@ -21,7 +21,7 @@ class AssetTransfer extends Contract {
                 PublicKey: '@0000',          
                 Balance: 300,
                 WalletType: 0,
-                AssignToId: "c23c03c2-a6f4-4423-842e-68b2c25711eb",
+                AssignToId: 'c23c03c2-a6f4-4423-842e-68b2c25711eb',
                 AssignToType: 2,
                 Status: 0
             },
@@ -31,7 +31,7 @@ class AssetTransfer extends Contract {
                 PublicKey: '@0001',          
                 Balance: 200,
                 WalletType: 0,
-                AssignToId: "cf346361-62d7-4c2e-bc3f-db9ab618e74a",
+                AssignToId: 'cf346361-62d7-4c2e-bc3f-db9ab618e74a',
                 AssignToType: 2,
                 Status: 0
             },
@@ -41,7 +41,7 @@ class AssetTransfer extends Contract {
                 PublicKey: '@0002',          
                 Balance: 500,
                 WalletType: 0,
-                AssignToId: "11476ad4-ffbd-4c98-ab9d-5a71a331249e",
+                AssignToId: '11476ad4-ffbd-4c98-ab9d-5a71a331249e',
                 AssignToType: 2,
                 Status: 0
             },
@@ -51,7 +51,7 @@ class AssetTransfer extends Contract {
                 PublicKey: '@0003',          
                 Balance: 700,
                 WalletType: 0,
-                AssignToId: "e4283ad2-fbe9-4185-a402-f38c1ba46d02",
+                AssignToId: 'e4283ad2-fbe9-4185-a402-f38c1ba46d02',
                 AssignToType: 2,
                 Status: 0
             }
