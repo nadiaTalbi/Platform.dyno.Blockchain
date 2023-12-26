@@ -60,7 +60,7 @@ class AssetTransfer extends Contract {
         for (const wallet of wallets) {
             //'asset'
             wallet.docType = 'wallet';
-            await ctx.stub.putState(wallet.ID, Buffer.from(stringify(sortKeysRecursive(wallet))));
+            await ctx.stub.putState(wallet.Id, Buffer.from(stringify(sortKeysRecursive(wallet))));
         }
     }
 
