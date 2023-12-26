@@ -14,89 +14,95 @@ const { Contract } = require('fabric-contract-api');
 class AssetTransfer extends Contract {
 
     async InitLedger(ctx) {
-        const assets = [
+        const wallets = [
             {
-                ID: 'wallet1',
-                Code: '0000',
+                Id: '2144e667-6c8d-4d95-8132-21b1d735e969',
                 PrivateKey: '@0000',
                 PublicKey: '@0000',          
                 Balance: 300,
+                WalletType: 0,
+                AssignToId: "c23c03c2-a6f4-4423-842e-68b2c25711eb",
+                AssignToType: 2,
+                Status: 0
             },
             {
-                ID: 'wallet2',
-                Code: '0001',
+                Id: '2144e667-6c8d-4d95-8132-21b1d735a969',
                 PrivateKey: '@0001',
                 PublicKey: '@0001',          
                 Balance: 200,
+                WalletType: 0,
+                AssignToId: "cf346361-62d7-4c2e-bc3f-db9ab618e74a",
+                AssignToType: 2,
+                Status: 0
             },
             {
-                ID: 'wallet3',
-                Code: '0002',
+                Id: '9be3505b-0e15-4106-a56d-3cbfec1dc6b7',
                 PrivateKey: '@0002',
                 PublicKey: '@0002',          
                 Balance: 500,
+                WalletType: 0,
+                AssignToId: "11476ad4-ffbd-4c98-ab9d-5a71a331249e",
+                AssignToType: 2,
+                Status: 0
             },
             {
-                ID: 'wallet4',
-                Code: '0004',
-                PrivateKey: '@0004',
-                PublicKey: '@0004',          
+                Id: 'f05944e8-f7ea-4c93-ad6c-09aa7dc07a07',
+                PrivateKey: '@0003',
+                PublicKey: '@0003',          
                 Balance: 700,
-            },
-            {
-                ID: 'wallet5',
-                Code: '0005',
-                PrivateKey: '@0005',
-                PublicKey: '@0005',          
-                Balance: 300,
-            },
-            {
-                ID: 'wallet6',
-                Code: '0006',
-                PrivateKey: '@0006',
-                PublicKey: '@0006',          
-                Balance: 450,
-            },
+                WalletType: 0,
+                AssignToId: "e4283ad2-fbe9-4185-a402-f38c1ba46d02",
+                AssignToType: 2,
+                Status: 0
+            }
         ];
 
-        for (const asset of assets) {
-            asset.docType = 'asset';
-            // example of how to write to world state deterministically
-            // use convetion of alphabetic order
-            // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-            // when retrieving data, in any lang, the order of data will be the same and consequently also the corresonding hash
-            await ctx.stub.putState(asset.ID, Buffer.from(stringify(sortKeysRecursive(asset))));
+        for (const wallet of wallets) {
+            //'asset'
+            wallet.docType = 'wallet';
+            await ctx.stub.putState(wallet.ID, Buffer.from(stringify(sortKeysRecursive(wallet))));
         }
     }
 
-    // CreateAsset issues a new asset to the world state with given details.
-    async CreateAsset(ctx, id, code, privateKey, publicKey, balance) {
+
+    // CreateWallet issues a new wallet to the world state with given details.
+    async CreateAsset(ctx, id, privateKey, publicKey, balance, walletType, assignToId, assignToType, status) {
         const exists = await this.AssetExists(ctx, id);
         if (exists) {
-            throw new Error(`The asset ${id} already exists`);
+            throw new Error(`The wallet ${id} already exists`);
         }
 
-        const asset = {
+        const wallet = {
             ID: id,
-            Code: code,
             PrivateKey: privateKey,
             PublicKey: publicKey,
             Balance: balance,
+            WalletType: walletType,
+            AssignToId: assignToId,
+            AssignToType: assignToType,
+            Status: status    
         };
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-        await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(asset))));
-        return JSON.stringify(asset);
+        await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(wallet))));
+        return JSON.stringify(wallet);
     }
 
     // ReadAsset returns the asset stored in the world state with given id.
     async ReadAsset(ctx, id) {
         const assetJSON = await ctx.stub.getState(id); // get the asset from chaincode state
         if (!assetJSON || assetJSON.length === 0) {
-            throw new Error(`The asset ${id} does not exist`);
+            throw new Error(`The wallet ${id} does not exist`);
         }
         return assetJSON.toString();
     }
-
+    
+    async GetWalletByUserId(ctx, assignToId) {
+        const assetJSON = await ctx.stub.getState(x => x.AssignToId == assignToId);
+        if (!assetJSON || assetJSON.length === 0) {
+            throw new Error(`The wallet ${id} does not exist`);
+        }
+        return assetJSON.toString();
+    }
     // UpdateAsset updates an existing asset in the world state with provided parameters.
     async UpdateAsset(ctx, id, code, privateKey, publicKey, balance) {
         const exists = await this.AssetExists(ctx, id);

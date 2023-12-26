@@ -26,7 +26,7 @@ async function enrollUser() {
         certificate: enrollment.certificate,
         privateKey: enrollment.key.toBytes(),
       },
-      mspId: 'YourMSPID', // Replace with your MSP ID
+      mspId: 'DynoMSP', // Replace with your MSP ID
       type: 'X.509',
     };
   
@@ -60,6 +60,29 @@ app.get('/queryAllAssets', async (req, res) => {
       const contract = network.getContract('basic');
   
       const result = await contract.evaluateTransaction('GetAllAssets');
+      res.send(result.toString());
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+});
+
+// Endpoint to create a new asset
+app.post('/createAsset', async (req, res) => {
+    const { id, code, privateKey, publickey, balance } = req.body;
+  
+    try {
+      const network = await connectToNetwork();
+      const contract = network.getContract('basic');
+  
+      const result = await contract.submitTransaction(
+        'CreateAsset',
+        id,
+        code,
+        privateKey,
+        publickey,
+        balance
+      );
+  
       res.send(result.toString());
     } catch (error) {
       res.status(500).send(error.message);
