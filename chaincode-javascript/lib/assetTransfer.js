@@ -97,11 +97,21 @@ class AssetTransfer extends Contract {
     }
     
     async GetWalletByUserId(ctx, assignToId) {
-        const assetJSON = await ctx.stub.getState(x => x.AssignToId == assignToId);
-        if (!assetJSON || assetJSON.length === 0) {
-            throw new Error(`The wallet ${id} does not exist`);
+        const iterator = await ctx.stub.getStateByRange('', '');
+        let result = await iterator.next();
+    
+        while (!result.done) {
+            const walletString = Buffer.from(result.value.value.toString()).toString('utf8');
+            const wallet = JSON.parse(walletString);
+    
+            if (wallet.AssignToId === assignToId) {
+                return JSON.stringify(wallet);
+            }
+    
+            result = await iterator.next();
         }
-        return assetJSON.toString();
+    
+        throw new Error(`Wallet not found for assignToId: ${assignToId}`);
     }
     // UpdateAsset updates an existing asset in the world state with provided parameters.
     async UpdateAsset(ctx, id, code, privateKey, publicKey, balance) {

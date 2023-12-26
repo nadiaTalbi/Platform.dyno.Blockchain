@@ -66,10 +66,26 @@ app.get('/queryAllAssets', async (req, res) => {
     }
 });
 
+// Endpoint to get wallet by Id 
+app.get('/getWallet/:id', async (req, res) => {
+  try {
+      const id = req.params.id;
+      console.log(id);
+      const network = await connectToNetwork();
+      const contract = network.getContract('basic');
+
+      const result = await contract.evaluateTransaction('ReadAsset', id);
+      res.send(result.toString());
+  } catch (error) {
+      res.status(500).send(error.message);
+  }
+});
+
 // Endpoint to create a new asset
 app.get('/getWalletByUserId/:assignToId', async (req, res) => {
   try {
       const assignToId = req.params.assignToId;
+      console.log(assignToId);
       const network = await connectToNetwork();
       const contract = network.getContract('basic');
 
