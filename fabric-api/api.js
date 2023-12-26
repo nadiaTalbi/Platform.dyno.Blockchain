@@ -67,27 +67,18 @@ app.get('/queryAllAssets', async (req, res) => {
 });
 
 // Endpoint to create a new asset
-app.post('/createAsset', async (req, res) => {
-    const { id, code, privateKey, publickey, balance } = req.body;
-  
-    try {
+app.get('/getWalletByUserId/:assignToId', async (req, res) => {
+  try {
+      const assignToId = req.params.assignToId;
       const network = await connectToNetwork();
       const contract = network.getContract('basic');
-  
-      const result = await contract.submitTransaction(
-        'CreateAsset',
-        id,
-        code,
-        privateKey,
-        publickey,
-        balance
-      );
-  
+
+      const result = await contract.evaluateTransaction('GetWalletByUserId', assignToId);
       res.send(result.toString());
-    } catch (error) {
+  } catch (error) {
       res.status(500).send(error.message);
-    }
-  });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
