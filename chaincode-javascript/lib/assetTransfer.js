@@ -124,14 +124,14 @@ class AssetTransfer extends Contract {
             const walletString = Buffer.from(result.value.value.toString()).toString('utf8');
             const wallet = JSON.parse(walletString);
     
-            if (wallet.PrivateKey === privateKey && wallet.Status === 0) {
+            if (wallet.PrivateKey === privateKey && wallet.Status == 0) {
                 return JSON.stringify(wallet);
             }
     
             result = await iterator.next();
         }
     
-        throw new Error(`Wallet not found !`);
+        return JSON.stringify(`Wallet of sender not found !`);
     }
 
     async GetWalletByPublicKey(ctx, publicKey) {
@@ -143,14 +143,14 @@ class AssetTransfer extends Contract {
             const walletString = Buffer.from(result.value.value.toString()).toString('utf8');
             const wallet = JSON.parse(walletString);
     
-            if (wallet.PublicKey === publicKey && wallet.Status === 0) {
+            if (wallet.PublicKey === publicKey && wallet.Status == 0) {
                 return JSON.stringify(wallet);
             }
     
             result = await iterator.next();
         }
     
-        throw new Error(`Wallet not found !`);
+        return JSON.stringify(`Wallet of receiver not found !`);
 
     }
 
@@ -193,8 +193,10 @@ class AssetTransfer extends Contract {
 
     // Transaction amount A(privateKey) => B(publicKey)
     async Transaction(ctx, senderPrivateKey, receiverPublicKey, amount) {
+
         const walletSenderString = await this.GetWalletByPrivateKey(ctx, senderPrivateKey);
         const walletSender = JSON.parse(walletSenderString);
+        console.log(walletSender.Balance);
         if(walletSender.Balance >= amount) {
             const walletReceiverString = await this.GetWalletByPublicKey(ctx, receiverPublicKey);
             const walletReceiver = JSON.parse(walletReceiverString);
@@ -205,10 +207,12 @@ class AssetTransfer extends Contract {
 
             walletReceiver.Balance += amount
             // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-            return await ctx.stub.putState(walletReceiver.id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));
+            await ctx.stub.putState(walletReceiver.id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));
+
+            return JSON.stringify(`Transaction created successfully !`);
         }
         
-        throw new Error(`Wallet not found !`);
+        return JSON.stringify(`Wallet not found !`);
     }
 
     // GetAllAssets returns all assets found in the world state.
