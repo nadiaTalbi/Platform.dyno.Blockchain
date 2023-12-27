@@ -73,7 +73,7 @@ class AssetTransfer extends Contract {
         }
 
         const wallet = {
-            ID: id,
+            Id: id,
             PrivateKey: privateKey,
             PublicKey: publicKey,
             Balance: balance,
@@ -82,6 +82,7 @@ class AssetTransfer extends Contract {
             AssignToType: assignToType,
             Status: status    
         };
+
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
         await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(wallet))));
         return JSON.stringify(wallet);
@@ -113,8 +114,47 @@ class AssetTransfer extends Contract {
     
         throw new Error(`Wallet not found for assignToId: ${assignToId}`);
     }
+
+    async GetWalletByPrivateKey(ctx, privateKey) {
+
+        const iterator = await ctx.stub.getStateByRange('', '');
+        let result = await iterator.next();
+    
+        while (!result.done) {
+            const walletString = Buffer.from(result.value.value.toString()).toString('utf8');
+            const wallet = JSON.parse(walletString);
+    
+            if (wallet.PrivateKey === privateKey && wallet.Status === 0) {
+                return JSON.stringify(wallet);
+            }
+    
+            result = await iterator.next();
+        }
+    
+        throw new Error(`Wallet not found !`);
+    }
+
+    async GetWalletByPublicKey(ctx, publicKey) {
+
+        const iterator = await ctx.stub.getStateByRange('', '');
+        let result = await iterator.next();
+    
+        while (!result.done) {
+            const walletString = Buffer.from(result.value.value.toString()).toString('utf8');
+            const wallet = JSON.parse(walletString);
+    
+            if (wallet.PublicKey === publicKey && wallet.Status === 0) {
+                return JSON.stringify(wallet);
+            }
+    
+            result = await iterator.next();
+        }
+    
+        throw new Error(`Wallet not found !`);
+
+    }
     // UpdateAsset updates an existing asset in the world state with provided parameters.
-    async UpdateAsset(ctx, id, code, privateKey, publicKey, balance) {
+    async UpdateAsset(ctx, id, privateKey, publicKey, balance, walletType, assignToId, assignToType, status) {
         const exists = await this.AssetExists(ctx, id);
         if (!exists) {
             throw new Error(`The asset ${id} does not exist`);
@@ -122,11 +162,14 @@ class AssetTransfer extends Contract {
 
         // overwriting original asset with new asset
         const updatedAsset = {
-            ID: id,
-            Code: code,
+            Id: id,
             PrivateKey: privateKey,
             PublicKey: publicKey,
             Balance: balance,
+            WalletType: walletType,
+            AssignToId: assignToId,
+            AssignToType: assignToType,
+            Status: status    
         };
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
         return ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(updatedAsset))));
@@ -147,15 +190,24 @@ class AssetTransfer extends Contract {
         return assetJSON && assetJSON.length > 0;
     }
 
-    // TransferAsset updates the owner field of asset with given id in the world state.
-    async TransferAsset(ctx, id, newOwner) {
-        const assetString = await this.ReadAsset(ctx, id);
-        const asset = JSON.parse(assetString);
-        const oldOwner = asset.Owner;
-        asset.Owner = newOwner;
-        // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-        await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(asset))));
-        return oldOwner;
+    // Transaction amount A(privateKey) => B(publicKey)
+    async Transaction(ctx, senderPrivateKey, receiverPublicKey, amount) {
+        const walletSenderString = await this.GetWalletByPrivateKey(ctx, senderPrivateKey);
+        const walletSender = JSON.parse(walletSenderString);
+        if(walletSender >= amount) {
+            const walletReceiverString = await this.GetWalletByPublicKey(receiverPublicKey);
+            const walletReceiver = JSON.parse(walletReceiverString);
+
+            walletSender.Balance -= amount
+            // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
+            await ctx.stub.putState(walletSender.id, Buffer.from(stringify(sortKeysRecursive(walletSender))));
+
+            walletReceiver.Balance += amount
+            // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
+            return await ctx.stub.putState(walletReceiver.id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));
+        }
+        
+        throw new Error(`Wallet not found !`);
     }
 
     // GetAllAssets returns all assets found in the world state.

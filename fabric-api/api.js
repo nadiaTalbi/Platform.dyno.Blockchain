@@ -54,7 +54,7 @@ async function connectToNetwork() {
 }
 
 // Endpoint to query all assets
-app.get('/queryAllAssets', async (req, res) => {
+app.get('/GetAllWallet', async (req, res) => {
     try {
       const network = await connectToNetwork();
       const contract = network.getContract('basic');
@@ -81,7 +81,7 @@ app.get('/getWallet/:id', async (req, res) => {
   }
 });
 
-// Endpoint to create a new asset
+// Endpoint to get a wallet by user Id
 app.get('/getWalletByUserId/:assignToId', async (req, res) => {
   try {
       const assignToId = req.params.assignToId;
@@ -95,6 +95,93 @@ app.get('/getWalletByUserId/:assignToId', async (req, res) => {
       res.status(500).send(error.message);
   }
 });
+
+// Endpoint to create a new wallet
+app.post('/createWallet', async (req, res) => {
+  
+  const { id, privateKey, publicKey, walletType, assignToId, assignToType, status } = req.body;
+
+  try {
+    const network = await connectToNetwork();
+    const contract = network.getContract('basic');
+    const balance = 0;
+
+    const result = await contract.submitTransaction(
+      'CreateAsset',
+      id,
+      privateKey, 
+      publicKey, 
+      balance,
+      walletType, 
+      assignToId, 
+      assignToType, 
+      status
+    );
+
+    console.log(result);
+
+    res.send(result.toString());
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// Endpoint to create a new wallet
+app.put('/updateWallet', async (req, res) => {
+  
+  const { id, privateKey, publicKey, walletType, assignToId, assignToType, status } = req.body;
+
+  try {
+    const network = await connectToNetwork();
+    const contract = network.getContract('basic');
+    const balance = 0;
+
+    const result = await contract.submitTransaction(
+      'UpdateAsset',
+      id,
+      privateKey, 
+      publicKey, 
+      balance,
+      walletType, 
+      assignToId, 
+      assignToType, 
+      status
+    );
+
+    console.log(result);
+
+    res.send(result.toString());
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// Endpoint to create a new wallet
+app.post('/Transaction', async (req, res) => {
+  
+  const { senderPrivateKey, receiverPublicKey, amount } = req.body;
+
+  try {
+    const network = await connectToNetwork();
+    const contract = network.getContract('basic');
+
+    const result = await contract.submitTransaction(
+      'Transaction',
+      senderPrivateKey,
+      receiverPublicKey,
+      amount
+    );
+
+    console.log(result);
+
+    res.send(result.toString());
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
