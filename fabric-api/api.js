@@ -119,12 +119,46 @@ app.post('/createWallet', async (req, res) => {
     );
 
     console.log(result);
-
     res.send(result.toString());
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
+
+// Endpoint to create a new 4 wallets for users 
+app.post('/createDefaultWallets', async (req, res) => {
+  
+  const wallets = req.body;
+
+  try {
+    const network = await connectToNetwork();
+    const contract = network.getContract('basic');
+    const balance = 0;
+
+    wallets.forEach(async (wallet) => {
+      const { id, privateKey, publicKey, walletType, assignToId, assignToType, status } = wallet;
+      
+      const result = await contract.submitTransaction(
+        'CreateAsset',
+        id,
+        privateKey, 
+        publicKey, 
+        balance,
+        walletType, 
+        assignToId, 
+        assignToType, 
+        status
+      );    
+      console.log(result);     
+    });
+
+    res.status(200).send("Wallets created successfuly !");
+    
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 
 // Endpoint to create a new wallet
 app.put('/updateWallet', async (req, res) => {
