@@ -195,7 +195,7 @@ class AssetTransfer extends Contract {
     async Transaction(ctx, senderPrivateKey, receiverPublicKey, amount) {
         const walletSenderString = await this.GetWalletByPrivateKey(ctx, senderPrivateKey);
         const walletSender = JSON.parse(walletSenderString);
-        if(walletSender >= amount) {
+        if(walletSender.Balance >= amount) {
             const walletReceiverString = await this.GetWalletByPublicKey(ctx, receiverPublicKey);
             const walletReceiver = JSON.parse(walletReceiverString);
 
