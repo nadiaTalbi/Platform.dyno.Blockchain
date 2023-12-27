@@ -3,9 +3,12 @@ const { Gateway, Wallets } = require('fabric-network');
 const path = require('path');
 const fs = require('fs');
 const FabricCAServices = require('fabric-ca-client');
+const bodyParser = require('body-parser');
 
 const app = express();
 const port = 3000;
+
+app.use(bodyParser.json());
 
 async function enrollUser() {
     const caURL = 'https://localhost:7054'; // Replace with your Fabric CA URL
@@ -129,7 +132,7 @@ app.post('/createWallet', async (req, res) => {
 app.post('/createDefaultWallets', async (req, res) => {
   
   const wallets = req.body;
-
+  console.log(wallets);
   try {
     const network = await connectToNetwork();
     const contract = network.getContract('basic');

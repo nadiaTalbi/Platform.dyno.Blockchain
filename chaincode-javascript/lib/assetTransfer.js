@@ -100,19 +100,19 @@ class AssetTransfer extends Contract {
     async GetWalletByUserId(ctx, assignToId) {
         const iterator = await ctx.stub.getStateByRange('', '');
         let result = await iterator.next();
+        const wallets = [];
     
         while (!result.done) {
             const walletString = Buffer.from(result.value.value.toString()).toString('utf8');
             const wallet = JSON.parse(walletString);
     
             if (wallet.AssignToId === assignToId) {
-                return JSON.stringify(wallet);
+                wallets.push(wallet);
             }
     
             result = await iterator.next();
         }
-    
-        throw new Error(`Wallet not found for assignToId: ${assignToId}`);
+        return JSON.stringify(wallets);
     }
 
     async GetWalletByPrivateKey(ctx, privateKey) {
@@ -153,6 +153,7 @@ class AssetTransfer extends Contract {
         throw new Error(`Wallet not found !`);
 
     }
+
     // UpdateAsset updates an existing asset in the world state with provided parameters.
     async UpdateAsset(ctx, id, privateKey, publicKey, balance, walletType, assignToId, assignToType, status) {
         const exists = await this.AssetExists(ctx, id);
@@ -195,7 +196,7 @@ class AssetTransfer extends Contract {
         const walletSenderString = await this.GetWalletByPrivateKey(ctx, senderPrivateKey);
         const walletSender = JSON.parse(walletSenderString);
         if(walletSender >= amount) {
-            const walletReceiverString = await this.GetWalletByPublicKey(receiverPublicKey);
+            const walletReceiverString = await this.GetWalletByPublicKey(ctx, receiverPublicKey);
             const walletReceiver = JSON.parse(walletReceiverString);
 
             walletSender.Balance -= amount
