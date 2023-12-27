@@ -196,18 +196,17 @@ class AssetTransfer extends Contract {
 
         const walletSenderString = await this.GetWalletByPrivateKey(ctx, senderPrivateKey);
         const walletSender = JSON.parse(walletSenderString);
-        console.log(walletSender.Balance);
         if(walletSender.Balance >= amount) {
             const walletReceiverString = await this.GetWalletByPublicKey(ctx, receiverPublicKey);
             const walletReceiver = JSON.parse(walletReceiverString);
 
             walletSender.Balance -= amount
             // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-            await ctx.stub.putState(walletSender.id, Buffer.from(stringify(sortKeysRecursive(walletSender))));
+            await ctx.stub.putState(walletSender.Id, Buffer.from(stringify(sortKeysRecursive(walletSender))));
 
             walletReceiver.Balance += amount
             // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-            await ctx.stub.putState(walletReceiver.id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));
+            await ctx.stub.putState(walletReceiver.Id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));
 
             return JSON.stringify(`Transaction created successfully !`);
         }
