@@ -63,7 +63,13 @@ app.get('/GetAllWallet', async (req, res) => {
       const contract = network.getContract('basic');
   
       const result = await contract.evaluateTransaction('GetAllAssets');
-      res.send(result.toString());
+      var resultApi = 
+      {
+        "statusCode": 200,
+        "objectValue": result
+      } 
+      // res.send(result.toString());
+      res.send(resultApi);
     } catch (error) {
       res.status(500).send(error.message);
     }
@@ -73,19 +79,23 @@ app.get('/GetAllWallet', async (req, res) => {
 app.get('/getWallet/:id', async (req, res) => {
   try {
       const id = req.params.id;
-      console.log(id);
       const network = await connectToNetwork();
       const contract = network.getContract('basic');
 
       const result = await contract.evaluateTransaction('ReadAsset', id);
-      res.send(result.toString());
+      var resultApi = 
+      {
+        "statusCode": 200,
+        "objectValue": result
+      } 
+      res.send(resultApi);
   } catch (error) {
       res.status(500).send(error.message);
   }
 });
 
 // Endpoint to get a wallet by user Id
-app.get('/getWalletByUserId/:assignToId', async (req, res) => {
+app.get('/getWalletsByUserId/:assignToId', async (req, res) => {
   try {
       const assignToId = req.params.assignToId;
       console.log(assignToId);
@@ -152,7 +162,6 @@ app.post('/createDefaultWallets', async (req, res) => {
         assignToType, 
         status
       );    
-      console.log(result);     
     });
 
     res.status(200).send("Wallets created successfuly !");
