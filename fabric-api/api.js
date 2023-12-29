@@ -56,20 +56,20 @@ async function connectToNetwork() {
   return gateway.getNetwork('mychannel');
 }
 
-// Endpoint to query all assets
+// Endpoint to query all wallets
 app.get('/GetAllWallet', async (req, res) => {
     try {
       const network = await connectToNetwork();
       const contract = network.getContract('basic');
   
-      const result = await contract.evaluateTransaction('GetAllAssets');
-      var resultApi = 
+      const result = await contract.evaluateTransaction('GetAllWallets');
+      var responseApi = 
       {
         "statusCode": 200,
         "objectValue": result
       } 
-      // res.send(result.toString());
-      res.send(resultApi);
+
+      res.status(200).send(responseApi);
     } catch (error) {
       res.status(500).send(error.message);
     }
@@ -82,13 +82,13 @@ app.get('/getWallet/:id', async (req, res) => {
       const network = await connectToNetwork();
       const contract = network.getContract('basic');
 
-      const result = await contract.evaluateTransaction('ReadAsset', id);
-      var resultApi = 
+      const result = await contract.evaluateTransaction('GetWallet', id);
+      var responseApi = 
       {
         "statusCode": 200,
         "objectValue": result
       } 
-      res.send(resultApi);
+      res.send(responseApi);
   } catch (error) {
       res.status(500).send(error.message);
   }
@@ -98,12 +98,42 @@ app.get('/getWallet/:id', async (req, res) => {
 app.get('/getWalletsByUserId/:assignToId', async (req, res) => {
   try {
       const assignToId = req.params.assignToId;
-      console.log(assignToId);
+      
+      const network = await connectToNetwork();
+      const contract = network.getContract('basic');
+      const result = await contract.evaluateTransaction('GetWalletByUserId', assignToId);
+      var responseApi = 
+      {
+        "statusCode": 200,
+        "objectValue": result
+      } 
+      res.status(200).send(responseApi);
+  } catch (error) {
+      res.status(500).send(error.message);
+  }
+});
+
+// Endpoint to get a wallet by user Id and wallet Type
+app.get('/GetUserWalletByType/:assignToId/:walletType', async (req, res) => {
+  try {
+      const assignToId = req.params.assignToId;
+      const walletType = req.params.walletType;
+
       const network = await connectToNetwork();
       const contract = network.getContract('basic');
 
-      const result = await contract.evaluateTransaction('GetWalletByUserId', assignToId);
-      res.send(result.toString());
+      const result = await contract.evaluateTransaction(
+        'GetUserWalletByType', 
+        assignToId,
+        walletType
+      );
+      
+      var responseApi = 
+      {
+        "statusCode": 200,
+        "objectValue": result
+      }
+      res.send(responseApi);
   } catch (error) {
       res.status(500).send(error.message);
   }
@@ -120,7 +150,7 @@ app.post('/createWallet', async (req, res) => {
     const balance = 0;
 
     const result = await contract.submitTransaction(
-      'CreateAsset',
+      'CreateWallet',
       id,
       privateKey, 
       publicKey, 
@@ -131,10 +161,21 @@ app.post('/createWallet', async (req, res) => {
       status
     );
 
-    console.log(result);
-    res.send(result.toString());
+    var responseApi = 
+    {
+      "statusCode": 200,
+      "objectValue": result
+    }
+
+    res.status(200).send(responseApi);
   } catch (error) {
-    res.status(500).send(error.message);
+
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+    res.status(500).send(responseApi);
   }
 });
 
@@ -152,7 +193,7 @@ app.post('/createDefaultWallets', async (req, res) => {
       const { id, privateKey, publicKey, walletType, assignToId, assignToType, status } = wallet;
       
       const result = await contract.submitTransaction(
-        'CreateAsset',
+        'CreateWallet',
         id,
         privateKey, 
         publicKey, 
@@ -163,27 +204,37 @@ app.post('/createDefaultWallets', async (req, res) => {
         status
       );    
     });
+    
+    var responseApi = 
+    {
+      "statusCode": 200,
+      "objectValue": result
+    }
 
-    res.status(200).send("Wallets created successfuly !");
+    res.status(200).send(responseApi);
     
   } catch (error) {
-    res.status(500).send(error.message);
+
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+    res.status(500).send(responseApi);
   }
 });
 
 
-// Endpoint to create a new wallet
+// Endpoint to update The wallet
 app.put('/updateWallet', async (req, res) => {
   
-  const { id, privateKey, publicKey, walletType, assignToId, assignToType, status } = req.body;
+  const { id, privateKey, publicKey, balance, walletType, assignToId, assignToType, status } = req.body;
 
   try {
     const network = await connectToNetwork();
     const contract = network.getContract('basic');
-    const balance = 0;
-
     const result = await contract.submitTransaction(
-      'UpdateAsset',
+      'UpdateWallet',
       id,
       privateKey, 
       publicKey, 
@@ -194,11 +245,213 @@ app.put('/updateWallet', async (req, res) => {
       status
     );
 
-    console.log(result);
+    var responseApi = 
+    {
+      "statusCode": 200,
+      "objectValue": result
+    }
 
-    res.send(result.toString());
+    res.status(200).send(responseApi);
+  } catch (error) {
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+    res.status(500).send(responseApi);
+  }
+});
+
+// Endpoint to delete The wallet
+app.delete('/deleteWallet/:id', async (req, res) => {
+  
+  try {
+    const network = await connectToNetwork();
+    const contract = network.getContract('basic');
+    const id = req.params.id;
+
+    const result = await contract.submitTransaction('DeleteWallet', id);
+
+    var responseApi = 
+    {
+      "statusCode": 200,
+      "objectValue": result
+    }
+
+    res.status(200).send(responseApi);
+
+  } catch (error) {
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+    res.status(500).send(responseApi);
+  }
+});
+
+// Endpoint to query all transactions
+app.get('/GetAllTransactions', async (req, res) => {
+  try {
+    const network = await connectToNetwork();
+    const contract = network.getContract('basic');
+
+    const result = await contract.evaluateTransaction('GetAllTransactions');
+    var responseApi = 
+    {
+      "statusCode": 200,
+      "objectValue": result
+    } 
+
+    res.status(200).send(responseApi);
   } catch (error) {
     res.status(500).send(error.message);
+  }
+});
+
+// Endpoint to get transaction by Id 
+app.get('/GetTransaction/:id', async (req, res) => {
+  try {
+      const id = req.params.id;
+      const network = await connectToNetwork();
+      const contract = network.getContract('basic');
+
+      const result = await contract.evaluateTransaction('GetTransaction', id);
+      var responseApi = 
+      {
+        "statusCode": 200,
+        "objectValue": result
+      } 
+      res.send(responseApi);
+  } catch (error) {
+      res.status(500).send(error.message);
+  }
+});
+
+// Endpoint to get transaction by wallet Id 
+app.get('/GetWalletTransactions/:walletId', async (req, res) => {
+  try {
+      const walletId = req.params.walletId;
+      const network = await connectToNetwork();
+      const contract = network.getContract('basic');
+
+      const result = await contract.evaluateTransaction('GetWalletTransactions', walletId);
+      var responseApi = 
+      {
+        "statusCode": 200,
+        "objectValue": result
+      } 
+      res.send(responseApi);
+  } catch (error) {
+      res.status(500).send(error.message);
+  }
+});
+
+// Endpoint to get transaction by wallet Id where transaction equal to receiver
+app.get('/GetWalletReceivedTransactions/:walletId', async (req, res) => {
+  try {
+      const walletId = req.params.walletId;
+      const network = await connectToNetwork();
+      const contract = network.getContract('basic');
+
+      const result = await contract.evaluateTransaction('GetWalletReceivedTransactions', walletId);
+      var responseApi = 
+      {
+        "statusCode": 200,
+        "objectValue": result
+      } 
+      res.send(responseApi);
+  } catch (error) {
+      res.status(500).send(error.message);
+  }
+});
+
+// Endpoint to get transaction by wallet Id  where transaction equal to sender
+app.get('/GetWalletSentTransactions/:walletId', async (req, res) => {
+  try {
+      const walletId = req.params.walletId;
+      const network = await connectToNetwork();
+      const contract = network.getContract('basic');
+
+      const result = await contract.evaluateTransaction('GetWalletSentTransactions', walletId);
+      var responseApi = 
+      {
+        "statusCode": 200,
+        "objectValue": result
+      } 
+      res.send(responseApi);
+  } catch (error) {
+      res.status(500).send(error.message);
+  }
+});
+
+// Endpoint to get transaction by user Id 
+app.get('/GetUserTransactions/:userId', async (req, res) => {
+  try {
+      const userId = req.params.userId;
+      const network = await connectToNetwork();
+      const contract = network.getContract('basic');
+
+      const result = await contract.evaluateTransaction('GetUserTransactions', userId);
+      var responseApi = 
+      {
+        "statusCode": 200,
+        "objectValue": result
+      } 
+      res.send(responseApi);
+  } catch (error) {
+      res.status(500).send(error.message);
+  }
+});
+
+// Endpoint to get transaction by user Id where transaction is receiver 
+app.get('/GetUserReceivedTransactions/:userId', async (req, res) => {
+  try {
+      const userId = req.params.userId;
+      const network = await connectToNetwork();
+      const contract = network.getContract('basic');
+
+      const result = await contract.evaluateTransaction('GetUserReceivedTransactions', userId);
+      var responseApi = 
+      {
+        "statusCode": 200,
+        "objectValue": result
+      } 
+      res.send(responseApi);
+  } catch (error) {
+    var responseApi = 
+      {
+        "statusCode": 500,
+        "objectValue": error.message
+      } 
+
+      res.status(500).send(responseApi);
+  }
+});
+
+
+// Endpoint to get transaction by user Id where transaction is receiver 
+app.get('/GetUserSentTransactions/:userId', async (req, res) => {
+  try {
+      const userId = req.params.userId;
+      const network = await connectToNetwork();
+      const contract = network.getContract('basic');
+
+      const result = await contract.evaluateTransaction('GetUserSentTransactions', userId);
+      var responseApi = 
+      {
+        "statusCode": 200,
+        "objectValue": result
+      } 
+      res.send(responseApi);
+  } catch (error) {
+    var responseApi = 
+      {
+        "statusCode": 500,
+        "objectValue": error.message
+      } 
+
+      res.status(500).send(responseApi);
   }
 });
 
@@ -225,8 +478,6 @@ app.post('/Transaction', async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-
-
 
 
 app.listen(port, () => {
