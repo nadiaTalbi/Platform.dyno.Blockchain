@@ -209,7 +209,8 @@ class AssetTransfer extends Contract {
             WalletType: walletType,
             AssignToId: assignToId,
             AssignToType: assignToType,
-            Status: status    
+            Status: status,
+            docType: 'Wallet'
         };
 
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
@@ -421,7 +422,8 @@ class AssetTransfer extends Contract {
             QrCodeId: qrCodeId,
             Amount: amount,
             TransactionDate: transactionDate,
-            Status: status    
+            Status: status,
+            docType: 'Transaction'    
         };
 
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'

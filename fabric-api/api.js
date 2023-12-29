@@ -6,7 +6,7 @@ const FabricCAServices = require('fabric-ca-client');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3006;
+const port = 3007;
 
 app.use(bodyParser.json());
 
@@ -57,7 +57,7 @@ async function connectToNetwork() {
 }
 
 // Endpoint to query all wallets
-app.get('/GetAllWallet', async (req, res) => {
+app.get('/GetAllWallets', async (req, res) => {
     try {
       const network = await connectToNetwork();
       const contract = network.getContract('basic');
@@ -66,12 +66,17 @@ app.get('/GetAllWallet', async (req, res) => {
       var responseApi = 
       {
         "statusCode": 200,
-        "objectValue": result
+        "objectValue": JSON.parse(result.toString())
       } 
 
       res.status(200).send(responseApi);
     } catch (error) {
-      res.status(500).send(error.message);
+      var responseApi = 
+      {
+        "statusCode": 500,
+        "exceptionMessage": error.message
+      }
+      res.status(500).send(responseApi);
     }
 });
 
@@ -86,11 +91,16 @@ app.get('/getWallet/:id', async (req, res) => {
       var responseApi = 
       {
         "statusCode": 200,
-        "objectValue": result
+        "objectValue": JSON.parse(result.toString())
       } 
       res.send(responseApi);
   } catch (error) {
-      res.status(500).send(error.message);
+    var responseApi = 
+      {
+        "statusCode": 500,
+        "exceptionMessage": error.message
+      }
+      res.status(500).send(responseApi);
   }
 });
 
@@ -105,11 +115,16 @@ app.get('/getWalletsByUserId/:assignToId', async (req, res) => {
       var responseApi = 
       {
         "statusCode": 200,
-        "objectValue": result
+        "objectValue": JSON.parse(result.toString())
       } 
       res.status(200).send(responseApi);
   } catch (error) {
-      res.status(500).send(error.message);
+    var responseApi = 
+      {
+        "statusCode": 500,
+        "exceptionMessage": error.message
+      }
+      res.status(500).send(responseApi);
   }
 });
 
@@ -131,11 +146,16 @@ app.get('/GetUserWalletByType/:assignToId/:walletType', async (req, res) => {
       var responseApi = 
       {
         "statusCode": 200,
-        "objectValue": result
+        "objectValue": JSON.parse(result.toString())
       }
       res.send(responseApi);
   } catch (error) {
-      res.status(500).send(error.message);
+    var responseApi = 
+      {
+        "statusCode": 500,
+        "exceptionMessage": error.message
+      }
+      res.status(500).send(responseApi);
   }
 });
 
@@ -164,7 +184,7 @@ app.post('/createWallet', async (req, res) => {
     var responseApi = 
     {
       "statusCode": 200,
-      "objectValue": result
+      "objectValue": JSON.parse(result.toString())
     }
 
     res.status(200).send(responseApi);
@@ -189,6 +209,8 @@ app.post('/createDefaultWallets', async (req, res) => {
     const contract = network.getContract('basic');
     const balance = 0;
 
+    var results = [];
+
     wallets.forEach(async (wallet) => {
       const { id, privateKey, publicKey, walletType, assignToId, assignToType, status } = wallet;
       
@@ -203,12 +225,14 @@ app.post('/createDefaultWallets', async (req, res) => {
         assignToType, 
         status
       );    
+
+      results.push(result);
     });
     
     var responseApi = 
     {
       "statusCode": 200,
-      "objectValue": result
+      "objectValue": JSON.parse(results.toString())
     }
 
     res.status(200).send(responseApi);
@@ -248,7 +272,7 @@ app.put('/updateWallet', async (req, res) => {
     var responseApi = 
     {
       "statusCode": 200,
-      "objectValue": result
+      "objectValue": JSON.parse(result.toString())
     }
 
     res.status(200).send(responseApi);
@@ -275,7 +299,7 @@ app.delete('/deleteWallet/:id', async (req, res) => {
     var responseApi = 
     {
       "statusCode": 200,
-      "objectValue": result
+      "objectValue": JSON.parse(result.toString())
     }
 
     res.status(200).send(responseApi);
@@ -300,12 +324,17 @@ app.get('/GetAllTransactions', async (req, res) => {
     var responseApi = 
     {
       "statusCode": 200,
-      "objectValue": result
+      "objectValue": JSON.parse(result.toString())
     } 
 
     res.status(200).send(responseApi);
   } catch (error) {
-    res.status(500).send(error.message);
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+    res.status(500).send(responseApi);
   }
 });
 
@@ -320,11 +349,16 @@ app.get('/GetTransaction/:id', async (req, res) => {
       var responseApi = 
       {
         "statusCode": 200,
-        "objectValue": result
+        "objectValue": JSON.parse(result.toString())
       } 
       res.send(responseApi);
   } catch (error) {
-      res.status(500).send(error.message);
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+      res.status(500).send(responseApi);
   }
 });
 
@@ -339,11 +373,16 @@ app.get('/GetWalletTransactions/:walletId', async (req, res) => {
       var responseApi = 
       {
         "statusCode": 200,
-        "objectValue": result
+        "objectValue": JSON.parse(result.toString())
       } 
       res.send(responseApi);
   } catch (error) {
-      res.status(500).send(error.message);
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+    res.status(500).send(responseApi);
   }
 });
 
@@ -358,11 +397,16 @@ app.get('/GetWalletReceivedTransactions/:walletId', async (req, res) => {
       var responseApi = 
       {
         "statusCode": 200,
-        "objectValue": result
+        "objectValue": JSON.parse(result.toString())
       } 
       res.send(responseApi);
   } catch (error) {
-      res.status(500).send(error.message);
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+    res.status(500).send(responseApi);
   }
 });
 
@@ -377,11 +421,16 @@ app.get('/GetWalletSentTransactions/:walletId', async (req, res) => {
       var responseApi = 
       {
         "statusCode": 200,
-        "objectValue": result
+        "objectValue": JSON.parse(result.toString())
       } 
       res.send(responseApi);
   } catch (error) {
-      res.status(500).send(error.message);
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+    res.status(500).send(responseApi);
   }
 });
 
@@ -396,11 +445,16 @@ app.get('/GetUserTransactions/:userId', async (req, res) => {
       var responseApi = 
       {
         "statusCode": 200,
-        "objectValue": result
+        "objectValue": JSON.parse(result.toString())
       } 
       res.send(responseApi);
   } catch (error) {
-      res.status(500).send(error.message);
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+    res.status(500).send(responseApi);
   }
 });
 
@@ -415,7 +469,7 @@ app.get('/GetUserReceivedTransactions/:userId', async (req, res) => {
       var responseApi = 
       {
         "statusCode": 200,
-        "objectValue": result
+        "objectValue": JSON.parse(result.toString())
       } 
       res.send(responseApi);
   } catch (error) {
@@ -441,7 +495,7 @@ app.get('/GetUserSentTransactions/:userId', async (req, res) => {
       var responseApi = 
       {
         "statusCode": 200,
-        "objectValue": result
+        "objectValue": JSON.parse(result.toString())
       } 
       res.send(responseApi);
   } catch (error) {
@@ -451,7 +505,7 @@ app.get('/GetUserSentTransactions/:userId', async (req, res) => {
         "objectValue": error.message
       } 
 
-      res.status(500).send(responseApi);
+    res.status(500).send(responseApi);
   }
 });
 
@@ -470,12 +524,21 @@ app.post('/Transaction', async (req, res) => {
       receiverPublicKey,
       amount
     );
+    
+    var responseApi = 
+      {
+        "statusCode": 200,
+        "objectValue": JSON.parse(result.toString())
+      } 
 
-    console.log(result);
-
-    res.send(result.toString());
+    res.send(responseApi);
   } catch (error) {
-    res.status(500).send(error.message);
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+    res.status(500).send(responseApi);
   }
 });
 
