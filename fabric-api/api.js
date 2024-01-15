@@ -579,7 +579,7 @@ app.post('/CreateTransaction', async (req, res) => {
 // Endpoint to create a new wallet
 app.post('/Transaction', async (req, res) => {
   
-  const { senderPrivateKey, receiverPublicKey, amount } = req.body;
+  const { SenderPrivateKey, ReceiverPublicKey, Amount } = req.body;
 
   try {
     const network = await connectToNetwork();
@@ -587,9 +587,9 @@ app.post('/Transaction', async (req, res) => {
 
     const result = await contract.submitTransaction(
       'Transaction',
-      senderPrivateKey,
-      receiverPublicKey,
-      amount
+      SenderPrivateKey,
+      ReceiverPublicKey,
+      Amount
     );
     
     var responseApi = 

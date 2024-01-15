@@ -448,11 +448,11 @@ class AssetTransfer extends Contract {
             const walletReceiverString = await this.GetWalletByPublicKey(ctx, receiverPublicKey);
             const walletReceiver = JSON.parse(walletReceiverString);
 
-            walletSender.Balance -= amount
+            walletSender.Balance -= parseFloat(amount)
             // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
             await ctx.stub.putState(walletSender.Id, Buffer.from(stringify(sortKeysRecursive(walletSender))));
 
-            walletReceiver.Balance += amount
+            walletReceiver.Balance += parseFloat(amount)
             // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
             await ctx.stub.putState(walletReceiver.Id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));
 
