@@ -208,7 +208,7 @@ class AssetTransfer extends Contract {
             Balance: parseFloat(balance),
             WalletType: parseInt(walletType),
             AssignedToId: assignedToId,
-            AssignedToType: assignedToType,
+            AssignedToType: parseInt(assignedToType),
             Status: parseInt(status),
             docType: 'Wallet'
         };
