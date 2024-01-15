@@ -105,13 +105,13 @@ app.get('/getWallet/:id', async (req, res) => {
 });
 
 // Endpoint to get a wallet by user Id
-app.get('/getWalletsByUserId/:assignToId', async (req, res) => {
+app.get('/getWalletsByUserId/:assignedToId', async (req, res) => {
   try {
-      const assignToId = req.params.assignToId;
+      const assignToId = req.params.assignedToId;
       
       const network = await connectToNetwork();
       const contract = network.getContract('basic');
-      const result = await contract.evaluateTransaction('GetWalletByUserId', assignToId);
+      const result = await contract.evaluateTransaction('GetWalletsByUserId', assignToId);
       var responseApi = 
       {
         "statusCode": 200,
@@ -129,9 +129,9 @@ app.get('/getWalletsByUserId/:assignToId', async (req, res) => {
 });
 
 // Endpoint to get a wallet by user Id and wallet Type
-app.get('/GetUserWalletByType/:assignToId/:walletType', async (req, res) => {
+app.get('/GetUserWalletByType/:assignedToId/:walletType', async (req, res) => {
   try {
-      const assignToId = req.params.assignToId;
+      const assignToId = req.params.assignedToId;
       const walletType = req.params.walletType;
 
       const network = await connectToNetwork();
@@ -162,7 +162,7 @@ app.get('/GetUserWalletByType/:assignToId/:walletType', async (req, res) => {
 // Endpoint to create a new wallet
 app.post('/createWallet', async (req, res) => {
   
-  const { id, privateKey, publicKey, walletType, assignToId, assignToType, status } = req.body;
+  const { id, privateKey, publicKey, walletType, assignedToId, assignedToType, status } = req.body;
 
   try {
     const network = await connectToNetwork();
@@ -176,8 +176,8 @@ app.post('/createWallet', async (req, res) => {
       publicKey, 
       balance,
       walletType, 
-      assignToId, 
-      assignToType, 
+      assignedToId, 
+      assignedToType, 
       status
     );
 
@@ -295,6 +295,34 @@ app.delete('/deleteWallet/:id', async (req, res) => {
     const id = req.params.id;
 
     const result = await contract.submitTransaction('DeleteWallet', id);
+
+    var responseApi = 
+    {
+      "statusCode": 200,
+      "objectValue": JSON.parse(result.toString())
+    }
+
+    res.status(200).send(responseApi);
+
+  } catch (error) {
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+    res.status(500).send(responseApi);
+  }
+});
+
+// Endpoint to delete all wallets for user id
+app.delete('/deleteWalletsbyUserId/:userId', async (req, res) => {
+  
+  try {
+    const network = await connectToNetwork();
+    const contract = network.getContract('basic');
+    const userId = req.params.userId;
+
+    const result = await contract.submitTransaction('deleteWalletsbyUserId', userId);
 
     var responseApi = 
     {
@@ -510,6 +538,44 @@ app.get('/GetUserSentTransactions/:userId', async (req, res) => {
 });
 
 // Endpoint to create a new wallet
+app.post('/CreateTransaction', async (req, res) => {
+  
+  const { id, senderWalletId, receiverWalletId, qrCodeId, amount, transactionDate, status } = req.body;
+
+  try {
+    const network = await connectToNetwork();
+    const contract = network.getContract('basic');
+
+    const result = await contract.submitTransaction(
+      'CreateTransaction',
+      id,
+      senderWalletId,
+      receiverWalletId, 
+      qrCodeId,
+      amount,
+      transactionDate,
+      status
+    );
+    
+    var responseApi = 
+      {
+        "statusCode": 200,
+        "objectValue": JSON.parse(result.toString())
+      } 
+
+    res.send(responseApi);
+  } catch (error) {
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "objectValue": error.message
+    }
+    res.status(500).send(responseApi);
+  }
+});
+
+
+// Endpoint to create a new wallet
 app.post('/Transaction', async (req, res) => {
   
   const { senderPrivateKey, receiverPublicKey, amount } = req.body;
@@ -541,7 +607,6 @@ app.post('/Transaction', async (req, res) => {
     res.status(500).send(responseApi);
   }
 });
-
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

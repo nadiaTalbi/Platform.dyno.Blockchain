@@ -21,8 +21,8 @@ class AssetTransfer extends Contract {
                 PublicKey: '@0000',          
                 Balance: 300,
                 WalletType: 0,
-                AssignToId: 'c23c03c2-a6f4-4423-842e-68b2c25711eb',
-                AssignToType: 2,
+                AssignedToId: 'c23c03c2-a6f4-4423-842e-68b2c25711eb',
+                AssignedToType: 2,
                 Status: 0
             },
             {
@@ -31,8 +31,8 @@ class AssetTransfer extends Contract {
                 PublicKey: '@0001',          
                 Balance: 200,
                 WalletType: 0,
-                AssignToId: 'cf346361-62d7-4c2e-bc3f-db9ab618e74a',
-                AssignToType: 2,
+                AssignedToId: 'cf346361-62d7-4c2e-bc3f-db9ab618e74a',
+                AssignedToType: 2,
                 Status: 0
             },
             {
@@ -41,8 +41,8 @@ class AssetTransfer extends Contract {
                 PublicKey: '@0002',          
                 Balance: 500,
                 WalletType: 0,
-                AssignToId: '11476ad4-ffbd-4c98-ab9d-5a71a331249e',
-                AssignToType: 2,
+                AssignedToId: '11476ad4-ffbd-4c98-ab9d-5a71a331249e',
+                AssignedToType: 2,
                 Status: 0
             },
             {
@@ -51,8 +51,8 @@ class AssetTransfer extends Contract {
                 PublicKey: '@0003',          
                 Balance: 700,
                 WalletType: 0,
-                AssignToId: 'e4283ad2-fbe9-4185-a402-f38c1ba46d02',
-                AssignToType: 2,
+                AssignedToId: 'e4283ad2-fbe9-4185-a402-f38c1ba46d02',
+                AssignedToType: 2,
                 Status: 0
             }
         ];
@@ -122,7 +122,7 @@ class AssetTransfer extends Contract {
         return assetJSON.toString();
     }
 
-    async GetWalletByUserId(ctx, assignToId) {
+    async GetWalletsByUserId(ctx, assignedToId) {
         const iterator = await ctx.stub.getStateByRange('', '');
         let result = await iterator.next();
         const wallets = [];
@@ -131,7 +131,7 @@ class AssetTransfer extends Contract {
             const walletString = Buffer.from(result.value.value.toString()).toString('utf8');
             const wallet = JSON.parse(walletString);
     
-            if (wallet.AssignToId === assignToId) {
+            if (wallet.AssignedToId === assignedToId) {
                 wallets.push(wallet);
             }
     
@@ -140,14 +140,14 @@ class AssetTransfer extends Contract {
         return JSON.stringify(wallets);
     }
 
-    async GetUserWalletByType(ctx, assignToId, walletType) {
+    async GetUserWalletByType(ctx, assignedToId, walletType) {
         const iterator = await ctx.stub.getStateByRange('', '');
         let result = await iterator.next();   
         while (!result.done) {
             const walletString = Buffer.from(result.value.value.toString()).toString('utf8');
             const wallet = JSON.parse(walletString);
     
-            if (wallet.AssignToId === assignToId && wallet.WalletType == walletType) {
+            if (wallet.AssignedToId === assignedToId && wallet.WalletType == walletType) {
                 return JSON.stringify(wallet);
             }  
             result = await iterator.next();
@@ -195,7 +195,7 @@ class AssetTransfer extends Contract {
     }
 
     // CreateWallet issues a new wallet to the world state with given details.
-    async CreateWallet(ctx, id, privateKey, publicKey, balance, walletType, assignToId, assignToType, status) {
+    async CreateWallet(ctx, id, privateKey, publicKey, balance, walletType, assignedToId, assignedToType, status) {
         const exists = await this.AssetExists(ctx, id);
         if (exists) {
             throw new Error(`The wallet ${id} already exists`);
@@ -207,8 +207,8 @@ class AssetTransfer extends Contract {
             PublicKey: publicKey,
             Balance: balance,
             WalletType: walletType,
-            AssignToId: assignToId,
-            AssignToType: assignToType,
+            AssignedToId: assignedToId,
+            AssignedToType: assignedToType,
             Status: status,
             docType: 'Wallet'
         };
@@ -219,7 +219,7 @@ class AssetTransfer extends Contract {
     }
 
     // UpdateAsset updates an existing asset in the world state with provided parameters.
-    async UpdateWallet(ctx, id, privateKey, publicKey, balance, walletType, assignToId, assignToType, status) {
+    async UpdateWallet(ctx, id, privateKey, publicKey, balance, walletType, assignedToId, assignedToType, status) {
         const exists = await this.AssetExists(ctx, id);
         if (!exists) {
             throw new Error(`The asset ${id} does not exist`);
@@ -232,8 +232,8 @@ class AssetTransfer extends Contract {
             PublicKey: publicKey,
             Balance: balance,
             WalletType: walletType,
-            AssignToId: assignToId,
-            AssignToType: assignToType,
+            AssignedToId: assignedToId,
+            AssignedToType: assignedToType,
             Status: status    
         };
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
@@ -249,6 +249,14 @@ class AssetTransfer extends Contract {
         return ctx.stub.deleteState(id);
     }
 
+    // DeleteWallet deletes an given asset from the world state.
+    async DeleteWalletsbyUserId(ctx, userId) {       
+        const wallets = await this.GetWalletsByUserId(ctx, userId);
+        for(const wallet in wallets) {
+            ctx.stub.deleteState(wallet.id);
+        }
+        return JSON.stringify("Wallet has been deleted for user !");
+    }
 
 
     // GetAllTransactions returns all transactions found in the world state.
@@ -430,7 +438,6 @@ class AssetTransfer extends Contract {
         await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(transaction))));
         return JSON.stringify(transaction);
     }
-
 
     // Transaction amount A(privateKey) => B(publicKey)
     async Transaction(ctx, senderPrivateKey, receiverPublicKey, amount) {
