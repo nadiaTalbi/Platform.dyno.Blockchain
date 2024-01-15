@@ -6,7 +6,7 @@ const FabricCAServices = require('fabric-ca-client');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3007;
+const port = 3000;
 
 app.use(bodyParser.json());
 
@@ -81,7 +81,7 @@ app.get('/GetAllWallets', async (req, res) => {
 });
 
 // Endpoint to get wallet by Id 
-app.get('/getWallet/:id', async (req, res) => {
+app.get('/GetWallet/:id', async (req, res) => {
   try {
       const id = req.params.id;
       const network = await connectToNetwork();
@@ -160,27 +160,27 @@ app.get('/GetUserWalletByType/:assignedToId/:walletType', async (req, res) => {
 });
 
 // Endpoint to create a new wallet
-app.post('/createWallet', async (req, res) => {
+app.post('/CreateWallet', async (req, res) => {
   
-  const { id, privateKey, publicKey, walletType, assignedToId, assignedToType, status } = req.body;
+  const { Id, PrivateKey, PublicKey, WalletType, AssignedToType, AssignedToName, AssignedToId, Balance, Status } = req.body;
 
   try {
     const network = await connectToNetwork();
     const contract = network.getContract('basic');
-    const balance = 0;
 
     const result = await contract.submitTransaction(
       'CreateWallet',
-      id,
-      privateKey, 
-      publicKey, 
-      balance,
-      walletType, 
-      assignedToId, 
-      assignedToType, 
-      status
+      Id,
+      PrivateKey, 
+      PublicKey, 
+      parseFloat(Balance),
+      parseInt(WalletType), 
+      AssignedToId, 
+      AssignedToType, 
+      parseInt(Status)
     );
-
+    
+    console.log(result.toString());
     var responseApi = 
     {
       "statusCode": 200,
@@ -200,44 +200,46 @@ app.post('/createWallet', async (req, res) => {
 });
 
 // Endpoint to create a new 4 wallets for users 
-app.post('/createDefaultWallets', async (req, res) => {
+app.post('/CreateDefaultWallets', async (req, res) => {
   
   const wallets = req.body;
-  console.log(wallets);
   try {
     const network = await connectToNetwork();
     const contract = network.getContract('basic');
-    const balance = 0;
-
-    var results = [];
 
     wallets.forEach(async (wallet) => {
-      const { id, privateKey, publicKey, walletType, assignToId, assignToType, status } = wallet;
-      
-      const result = await contract.submitTransaction(
+      try {
+        const { Id, PrivateKey, PublicKey, WalletType, AssignedToType, AssignedToName, AssignedToId, Balance, Status } = wallet;
+        console.log(wallet);
+        const result = await contract.submitTransaction(
         'CreateWallet',
-        id,
-        privateKey, 
-        publicKey, 
-        balance,
-        walletType, 
-        assignToId, 
-        assignToType, 
-        status
-      );    
+        Id,
+        PrivateKey, 
+        PublicKey, 
+        Balance,
+        WalletType, 
+        AssignedToId, 
+        AssignedToType, 
+        Status
+        ); 
+      }catch (error) {
 
-      results.push(result);
+        var responseApi = 
+        {
+          "statusCode": 500,
+          "objectValue": error.message
+        }
+        res.status(500).send(responseApi);
+      }        
     });
-    
+
     var responseApi = 
     {
-      "statusCode": 200,
-      "objectValue": JSON.parse(results.toString())
+      "statusCode": 200
     }
-
-    res.status(200).send(responseApi);
     
-  } catch (error) {
+    res.status(200).send(responseApi);
+  }catch (error) {
 
     var responseApi = 
     {
@@ -247,7 +249,6 @@ app.post('/createDefaultWallets', async (req, res) => {
     res.status(500).send(responseApi);
   }
 });
-
 
 // Endpoint to update The wallet
 app.put('/updateWallet', async (req, res) => {
