@@ -377,15 +377,15 @@ app.get('/GetTransaction/:id', async (req, res) => {
       const result = await contract.evaluateTransaction('GetTransaction', id);
       var responseApi = 
       {
-        "statusCode": 200,
-        "objectValue": JSON.parse(result.toString())
+        "StatusCode": 200,
+        "ObjectValue": JSON.parse(result.toString())
       } 
       res.send(responseApi);
   } catch (error) {
     var responseApi = 
     {
-      "statusCode": 500,
-      "objectValue": error.message
+      "StatusCode": 500,
+      "ExceptionMessage": error.message
     }
       res.status(500).send(responseApi);
   }
@@ -523,15 +523,15 @@ app.get('/GetUserSentTransactions/:userId', async (req, res) => {
       const result = await contract.evaluateTransaction('GetUserSentTransactions', userId);
       var responseApi = 
       {
-        "statusCode": 200,
-        "objectValue": JSON.parse(result.toString())
+        "StatusCode": 200,
+        "ObjectValue": JSON.parse(result.toString())
       } 
       res.send(responseApi);
   } catch (error) {
     var responseApi = 
       {
-        "statusCode": 500,
-        "objectValue": error.message
+        "StatusCode": 500,
+        "ExceptionMessage": error.message
       } 
 
     res.status(500).send(responseApi);
@@ -560,7 +560,7 @@ app.post('/CreateTransaction', async (req, res) => {
     
     var responseApi = 
       {
-        "statusCode": 200,
+        "StatusCode": 200,
         "objectValue": JSON.parse(result.toString())
       } 
 
@@ -594,8 +594,8 @@ app.post('/Transaction', async (req, res) => {
     
     var responseApi = 
       {
-        "statusCode": 200,
-        "objectValue": JSON.parse(result.toString())
+        "StatusCode": 200,
+        "ExceptionMessage": JSON.parse(result.toString())
       } 
 
     res.send(responseApi);
@@ -603,7 +603,7 @@ app.post('/Transaction', async (req, res) => {
     var responseApi = 
     {
       "statusCode": 500,
-      "objectValue": error.message
+      "ExceptionMessage": error.message
     }
     res.status(500).send(responseApi);
   }

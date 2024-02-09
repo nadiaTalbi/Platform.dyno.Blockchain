@@ -19,39 +19,9 @@ class AssetTransfer extends Contract {
                 Id: '2144e667-6c8d-4d95-8132-21b1d735e969',
                 PrivateKey: '@0000',
                 PublicKey: '@0000',          
-                Balance: 300,
+                Balance: 1000,
                 WalletType: 0,
-                AssignedToId: 'c23c03c2-a6f4-4423-842e-68b2c25711eb',
-                AssignedToType: 2,
-                Status: 0
-            },
-            {
-                Id: '2144e667-6c8d-4d95-8132-21b1d735a969',
-                PrivateKey: '@0001',
-                PublicKey: '@0001',          
-                Balance: 200,
-                WalletType: 0,
-                AssignedToId: 'cf346361-62d7-4c2e-bc3f-db9ab618e74a',
-                AssignedToType: 2,
-                Status: 0
-            },
-            {
-                Id: '9be3505b-0e15-4106-a56d-3cbfec1dc6b7',
-                PrivateKey: '@0002',
-                PublicKey: '@0002',          
-                Balance: 500,
-                WalletType: 0,
-                AssignedToId: '11476ad4-ffbd-4c98-ab9d-5a71a331249e',
-                AssignedToType: 2,
-                Status: 0
-            },
-            {
-                Id: 'f05944e8-f7ea-4c93-ad6c-09aa7dc07a07',
-                PrivateKey: '@0003',
-                PublicKey: '@0003',          
-                Balance: 700,
-                WalletType: 0,
-                AssignedToId: 'e4283ad2-fbe9-4185-a402-f38c1ba46d02',
+                AssignedToId: 'cfbc54c0-97ce-40ff-9281-79d09713cb71',
                 AssignedToType: 2,
                 Status: 0
             }
@@ -65,15 +35,6 @@ class AssetTransfer extends Contract {
                 QrCodeId: "bf45c9f1-f1ac-437e-b8d2-b3bfbfd803e3",
                 Amount: 50,
                 TransactionDate: new Date('1995-12-17T03:24:00'),
-                Status: 0
-            },
-            {
-                Id: "2f1cab86-957d-4b52-b13b-d1d8a2d6cea2",
-                SenderWalletId: "2144e667-6c8d-4d95-8132-21b1d735e969",
-                ReceiverWalletId: "2144e667-6c8d-4d95-8132-21b1d735a969",
-                QrCodeId: "bf45c9f1-f1ac-437e-b8d2-b3bfbfd803e3",
-                Amount: 60,
-                TransactionDate: new Date('1995-12-16T03:24:00'),
                 Status: 0
             }
         ]
