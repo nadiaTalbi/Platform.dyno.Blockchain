@@ -401,7 +401,7 @@ class AssetTransfer extends Contract {
     }
 
     // Transaction amount A(privateKey) => B(publicKey)
-    async Transaction(ctx, senderPrivateKey, receiverPublicKey, amount) {
+    async Transaction(ctx, id, senderPrivateKey, receiverPublicKey, amount, qrCodeId, transactionDate, status) {
 
         const walletSenderString = await this.GetWalletByPrivateKey(ctx, senderPrivateKey);
         const walletSender = JSON.parse(walletSenderString);
@@ -416,6 +416,20 @@ class AssetTransfer extends Contract {
             walletReceiver.Balance += parseFloat(amount)
             // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
             await ctx.stub.putState(walletReceiver.Id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));
+
+            const transaction = {
+                Id: id,
+                SenderWalletId: senderWalletId,
+                ReceiverWalletId: receiverWalletId,
+                QrCodeId: qrCodeId,
+                Amount: amount,
+                TransactionDate: transactionDate,
+                Status: status,
+                docType: 'Transaction'    
+            };
+    
+            // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
+            await ctx.stub.putState(id, Buffer.from(stringify(sortKeysRecursive(transaction))));
 
             return JSON.stringify(`Transaction created successfully !`);
         }
