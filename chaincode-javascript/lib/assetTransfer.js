@@ -419,8 +419,8 @@ class AssetTransfer extends Contract {
 
             const transaction = {
                 Id: id,
-                SenderWalletId: senderWalletId,
-                ReceiverWalletId: receiverWalletId,
+                SenderWalletId: walletSender.Id,
+                ReceiverWalletId: walletReceiver.Id,
                 QrCodeId: qrCodeId,
                 Amount: amount,
                 TransactionDate: transactionDate,
