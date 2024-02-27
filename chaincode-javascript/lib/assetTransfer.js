@@ -452,27 +452,30 @@ class AssetTransfer extends Contract {
         
         if(walletSender.Balance >= totalAmount) {
             for(const element of receiverTransactions){
-                const walletReceiverString = await this.GetWalletByPublicKey(ctx, element.receiverPublicKey);
+                const walletReceiverString = await this.GetWalletByPublicKey(ctx, element.ReceiverPublicKey);
+                if(walletReceiverString == null) {
+                    return JSON.stringify(`Wallet not found !`);
+                }
                 const walletReceiver = JSON.parse(walletReceiverString);
                 
                 if(walletReceiver.Id == walletSender.Id) {
                     return JSON.stringify(`sender and receiver are the same wallet!`);
                 }  
-                console.log(element);
+
+                walletReceiver.Balance = walletReceiver.Balance + parseFloat(element.Amount)
+                await ctx.stub.putState(walletReceiver.Id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));  
+
+
                 const transaction = {
                     Id: id,
                     SenderWalletId: walletSender.Id,
                     ReceiverWalletId: walletReceiver.Id,
                     QrCodeId: qrCodeId,
-                    Amount: parseFloat(element.amount),
+                    Amount: parseFloat(element.Amount),
                     TransactionDate: transactionDate,
                     Status: status,
                     docType: 'Transaction'    
-                };
-
-                walletReceiver.Balance = walletReceiver.Balance + parseFloat(element.amount)
-                await ctx.stub.putState(walletReceiver.Id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));    
-                
+                };                            
                 await ctx.stub.putState(transaction.Id, Buffer.from(stringify(sortKeysRecursive(transaction))));
             };
             
