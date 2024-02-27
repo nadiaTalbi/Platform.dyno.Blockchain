@@ -458,7 +458,7 @@ class AssetTransfer extends Contract {
                 if(walletReceiver.Id == walletSender.Id) {
                     return JSON.stringify(`sender and receiver are the same wallet!`);
                 }  
-
+                console.log(element);
                 const transaction = {
                     Id: id,
                     SenderWalletId: walletSender.Id,
