@@ -613,6 +613,42 @@ app.post('/Transaction', async (req, res) => {
   }
 });
 
+app.post('/ListTransaction', async (req, res) => {
+  
+  const { Id, SenderPrivateKey, ReceiverTransactions, TotalAmount, QrCodeId, TransactionDate, Status } = req.body;
+
+  try {
+    const network = await connectToNetwork();
+    const contract = network.getContract('basic');
+
+    const result = await contract.submitTransaction(
+      'ListTransactions',
+      Id,
+      SenderPrivateKey,
+      ReceiverTransactions,
+      TotalAmount, 
+      QrCodeId,
+      TransactionDate,
+      Status
+    );
+    
+    var responseApi = 
+      {
+        "StatusCode": 200,
+        "ExceptionMessage": JSON.parse(result.toString())
+      } 
+
+    res.send(responseApi);
+  } catch (error) {
+    var responseApi = 
+    {
+      "statusCode": 500,
+      "ExceptionMessage": error.message
+    }
+    res.status(500).send(responseApi);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

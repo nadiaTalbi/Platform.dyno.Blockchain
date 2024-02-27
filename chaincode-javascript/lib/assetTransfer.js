@@ -408,6 +408,9 @@ class AssetTransfer extends Contract {
         if(walletSender.Balance >= amount) {
             const walletReceiverString = await this.GetWalletByPublicKey(ctx, receiverPublicKey);
             const walletReceiver = JSON.parse(walletReceiverString);
+            if(walletReceiver.Id == walletSender.Id) {
+                return JSON.stringify(`sender and receiver are the same wallet!`);
+            }
 
             walletSender.Balance = walletSender.Balance - parseFloat(amount)
             // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
@@ -422,7 +425,7 @@ class AssetTransfer extends Contract {
                 SenderWalletId: walletSender.Id,
                 ReceiverWalletId: walletReceiver.Id,
                 QrCodeId: qrCodeId,
-                Amount: amount,
+                Amount: parseFloat(amount),
                 TransactionDate: transactionDate,
                 Status: status,
                 docType: 'Transaction'    
@@ -435,6 +438,51 @@ class AssetTransfer extends Contract {
         }
         
         return JSON.stringify(`Wallet not found !`);
+    }
+
+
+    async ListTransactions(ctx, id, senderPrivateKey, receiverTransactions, totalAmount, qrCodeId, transactionDate, status) {
+
+        const walletSenderString = await this.GetWalletByPrivateKey(ctx, senderPrivateKey);
+        if(walletSenderString == null) {
+            return JSON.stringify(`Wallet not found !`);
+        }
+        const walletSender = JSON.parse(walletSenderString);
+        
+        
+        if(walletSender.Balance >= totalAmount) {
+            for(const element of receiverTransactions){
+                const walletReceiverString = await this.GetWalletByPublicKey(ctx, element.receiverPublicKey);
+                const walletReceiver = JSON.parse(walletReceiverString);
+                
+                if(walletReceiver.Id == walletSender.Id) {
+                    return JSON.stringify(`sender and receiver are the same wallet!`);
+                }  
+
+                const transaction = {
+                    Id: id,
+                    SenderWalletId: walletSender.Id,
+                    ReceiverWalletId: walletReceiver.Id,
+                    QrCodeId: qrCodeId,
+                    Amount: parseFloat(element.amount),
+                    TransactionDate: transactionDate,
+                    Status: status,
+                    docType: 'Transaction'    
+                };
+
+                walletReceiver.Balance = walletReceiver.Balance + parseFloat(element.amount)
+                await ctx.stub.putState(walletReceiver.Id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));    
+                
+                await ctx.stub.putState(transaction.Id, Buffer.from(stringify(sortKeysRecursive(transaction))));
+            };
+            
+            //Update Sender wallet and list of receiver wallets in one step ?
+            walletSender.Balance = walletSender.Balance - parseFloat(totalAmount)
+            await ctx.stub.putState(walletSender.Id, Buffer.from(stringify(sortKeysRecursive(walletSender))));                             
+            return JSON.stringify(`Transaction created successfully !`);
+        }
+        
+        return JSON.stringify(`The amount of the wallet is insufficient!`);
     }
 
     // AssetExists returns true when asset with given ID exists in world state.
