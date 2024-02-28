@@ -419,7 +419,7 @@ class AssetTransfer extends Contract {
         
         
         if(walletSender.Balance >= totalAmount) {
-            receiverTransactionsJson = JSON.stringify(receiverTransactions);
+            const receiverTransactionsJson = JSON.stringify(receiverTransactions);
             console.log("Hi", JSON.stringify(receiverTransactions));
             for(const element of receiverTransactionsJson){
                 console.log("Amount", element.amount);
