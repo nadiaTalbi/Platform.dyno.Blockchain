@@ -420,9 +420,9 @@ class AssetTransfer extends Contract {
         
         if(walletSender.Balance >= totalAmount) {
             console.log(receiverTransactions);
-            receiverTransactions.forEach(async element => {
+            for(var element of receiverTransactions){
                 console.log("Amount", element.amount);
-                console.log("Amount", element.receiverPublicKey);
+                console.log("Receiver", element.receiverPublicKey);
                 const walletReceiverString = await this.GetWalletByPublicKey(ctx, element.receiverPublicKey);
                 
                 if(walletReceiverString == null) {
@@ -448,7 +448,7 @@ class AssetTransfer extends Contract {
                     docType: 'Transaction'    
                 };                            
                 await ctx.stub.putState(transaction.Id, Buffer.from(stringify(sortKeysRecursive(transaction))));
-            });
+            };
             
             walletSender.Balance = walletSender.Balance - parseFloat(totalAmount)
             await ctx.stub.putState(walletSender.Id, Buffer.from(stringify(sortKeysRecursive(walletSender))));                             
