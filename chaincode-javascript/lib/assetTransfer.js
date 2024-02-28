@@ -421,8 +421,8 @@ class AssetTransfer extends Contract {
         if(walletSender.Balance >= totalAmount) {
             console.log("Hi", receiverTransactions);
             for(const element of receiverTransactions){
-                console.log("Amount", element.Amount);
-                const walletReceiverString = await this.GetWalletByPublicKey(ctx, element.ReceiverPublicKey);
+                console.log("Amount", element.amount);
+                const walletReceiverString = await this.GetWalletByPublicKey(ctx, element.receiverPublicKey);
                 
                 if(walletReceiverString == null) {
                     return JSON.stringify(`Wallet not found !`);
@@ -433,14 +433,15 @@ class AssetTransfer extends Contract {
                     return JSON.stringify(`sender and receiver are the same wallet!`);
                 }  
 
-                walletReceiver.Balance = walletReceiver.Balance + parseFloat(element.Amount)
+                walletReceiver.Balance = walletReceiver.Balance + parseFloat(element.amount)
                 await ctx.stub.putState(walletReceiver.Id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));  
+                
                 const transaction = {
                     Id: uuidv4(),
                     SenderWalletId: walletSender.Id,
                     ReceiverWalletId: walletReceiver.Id,
                     QrCodeId: qrCodeId,
-                    Amount: parseFloat(element.Amount),
+                    Amount: parseFloat(element.amount),
                     TransactionDate: transactionDate,
                     Status: status,
                     docType: 'Transaction'    
