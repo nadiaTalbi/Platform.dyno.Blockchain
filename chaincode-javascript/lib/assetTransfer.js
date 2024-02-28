@@ -10,44 +10,11 @@
 const stringify  = require('json-stringify-deterministic');
 const sortKeysRecursive  = require('sort-keys-recursive');
 const { Contract } = require('fabric-contract-api');
+const { v4: uuidv4 } = require('uuid');
 
 class AssetTransfer extends Contract {
 
     async InitLedger(ctx) {
-        const wallets = [
-            {
-                Id: '2144e667-6c8d-4d95-8132-21b1d735e969',
-                PrivateKey: '@0000',
-                PublicKey: '@0000',          
-                Balance: 1000,
-                WalletType: 0,
-                AssignedToId: 'cfbc54c0-97ce-40ff-9281-79d09713cb71',
-                AssignedToType: 2,
-                Status: 0
-            }
-        ];
-
-        const transactions= [
-            {
-                Id: "ac57bb49-6e51-4c15-8cc9-8022b1689c7d",
-                SenderWalletId: "2144e667-6c8d-4d95-8132-21b1d735e969",
-                ReceiverWalletId: "2144e667-6c8d-4d95-8132-21b1d735a969",
-                QrCodeId: "bf45c9f1-f1ac-437e-b8d2-b3bfbfd803e3",
-                Amount: 50,
-                TransactionDate: new Date('1995-12-17T03:24:00'),
-                Status: 0
-            }
-        ]
-
-        for (const wallet of wallets) {
-            wallet.docType = 'Wallet';
-            await ctx.stub.putState(wallet.Id, Buffer.from(stringify(sortKeysRecursive(wallet))));
-        }
-
-        for (const transaction of transactions) {
-            transaction.docType = 'Transaction';
-            await ctx.stub.putState(transaction.Id, Buffer.from(stringify(sortKeysRecursive(transaction))));
-        }
     }
 
     // GetAllWallets returns all wallets found in the world state.
@@ -444,6 +411,7 @@ class AssetTransfer extends Contract {
     async ListTransactions(ctx, id, senderPrivateKey, receiverTransactions, totalAmount, qrCodeId, transactionDate, status) {
 
         const walletSenderString = await this.GetWalletByPrivateKey(ctx, senderPrivateKey);
+        
         if(walletSenderString == null) {
             return JSON.stringify(`Wallet not found !`);
         }
@@ -451,8 +419,11 @@ class AssetTransfer extends Contract {
         
         
         if(walletSender.Balance >= totalAmount) {
-            for(const element of receiverTransactions){
+            for(const elementString of receiverTransactions){
+                const element = JSON.parse(elementString);
+                console.log(element);
                 const walletReceiverString = await this.GetWalletByPublicKey(ctx, element.ReceiverPublicKey);
+                
                 if(walletReceiverString == null) {
                     return JSON.stringify(`Wallet not found !`);
                 }
@@ -464,10 +435,8 @@ class AssetTransfer extends Contract {
 
                 walletReceiver.Balance = walletReceiver.Balance + parseFloat(element.Amount)
                 await ctx.stub.putState(walletReceiver.Id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));  
-
-
                 const transaction = {
-                    Id: id,
+                    Id: uuidv4(),
                     SenderWalletId: walletSender.Id,
                     ReceiverWalletId: walletReceiver.Id,
                     QrCodeId: qrCodeId,
@@ -479,9 +448,9 @@ class AssetTransfer extends Contract {
                 await ctx.stub.putState(transaction.Id, Buffer.from(stringify(sortKeysRecursive(transaction))));
             };
             
-            //Update Sender wallet and list of receiver wallets in one step ?
             walletSender.Balance = walletSender.Balance - parseFloat(totalAmount)
             await ctx.stub.putState(walletSender.Id, Buffer.from(stringify(sortKeysRecursive(walletSender))));                             
+            
             return JSON.stringify(`Transaction created successfully !`);
         }
         
