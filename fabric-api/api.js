@@ -620,7 +620,7 @@ app.post('/ListTransaction', async (req, res) => {
   try {
     const network = await connectToNetwork();
     const contract = network.getContract('basic');
-
+    console.log(ReceiverTransactions);
     const result = await contract.submitTransaction(
       'ListTransactions',
       Id,
