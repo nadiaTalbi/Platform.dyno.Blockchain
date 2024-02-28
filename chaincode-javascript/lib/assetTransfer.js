@@ -419,23 +419,10 @@ class AssetTransfer extends Contract {
         
         
         if(walletSender.Balance >= totalAmount) {
-            $("input").val(JSON.stringify(receiverTransactions));
-            var savedArray = JSON.parse($("input").val());
-            console.log(savedArray);
-            for(var element of savedArray){
-                console.log("Amount", element.amount);
-                console.log("Receiver", element.receiverPublicKey);
+            for(var element of receiverTransactions){
+                console.log(element);
                 const walletReceiverString = await this.GetWalletByPublicKey(ctx, element.receiverPublicKey);
-                
-                if(walletReceiverString == null) {
-                    return JSON.stringify(`Wallet not found !`);
-                }
                 const walletReceiver = JSON.parse(walletReceiverString);
-                
-                if(walletReceiver.Id == walletSender.Id) {
-                    return JSON.stringify(`sender and receiver are the same wallet!`);
-                }  
-
                 walletReceiver.Balance = walletReceiver.Balance + parseFloat(element.amount)
                 await ctx.stub.putState(walletReceiver.Id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));  
                 
