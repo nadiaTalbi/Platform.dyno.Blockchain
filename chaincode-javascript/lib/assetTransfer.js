@@ -419,8 +419,9 @@ class AssetTransfer extends Contract {
         
         
         if(walletSender.Balance >= totalAmount) {
-            console.log("Hi", receiverTransactions);
-            for(const element of receiverTransactions){
+            receiverTransactionsJson = JSON.stringify(receiverTransactions);
+            console.log("Hi", JSON.stringify(receiverTransactions));
+            for(const element of receiverTransactionsJson){
                 console.log("Amount", element.amount);
                 const walletReceiverString = await this.GetWalletByPublicKey(ctx, element.receiverPublicKey);
                 
