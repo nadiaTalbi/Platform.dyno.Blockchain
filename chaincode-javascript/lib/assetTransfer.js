@@ -423,9 +423,9 @@ class AssetTransfer extends Contract {
         if(walletSender.Balance >= totalAmount) {
             for(var element of receiverTransactionsArray){
                 console.log(element);
-                const walletReceiverString = await this.GetWalletByPublicKey(ctx, element.receiverPublicKey);
+                const walletReceiverString = await this.GetWalletByPublicKey(ctx, element.ReceiverPublicKey);
                 const walletReceiver = JSON.parse(walletReceiverString);
-                walletReceiver.Balance = walletReceiver.Balance + parseFloat(element.amount)
+                walletReceiver.Balance = walletReceiver.Balance + parseFloat(element.Amount)
                 await ctx.stub.putState(walletReceiver.Id, Buffer.from(stringify(sortKeysRecursive(walletReceiver))));  
                 
                 const transaction = {
@@ -433,7 +433,7 @@ class AssetTransfer extends Contract {
                     SenderWalletId: walletSender.Id,
                     ReceiverWalletId: walletReceiver.Id,
                     QrCodeId: qrCodeId,
-                    Amount: parseFloat(element.amount),
+                    Amount: parseFloat(element.Amount),
                     TransactionDate: transactionDate,
                     Status: status,
                     docType: 'Transaction'    
