@@ -621,11 +621,12 @@ app.post('/ListTransaction', async (req, res) => {
     const network = await connectToNetwork();
     const contract = network.getContract('basic');
     console.log(ReceiverTransactions);
+    const receiverTransactionsJSON = JSON.stringify(ReceiverTransactions); 
     const result = await contract.submitTransaction(
       'ListTransactions',
       Id,
       SenderPrivateKey,
-      ReceiverTransactions,
+      receiverTransactionsJSON,
       TotalAmount, 
       QrCodeId,
       TransactionDate,

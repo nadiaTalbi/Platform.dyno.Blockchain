@@ -416,10 +416,12 @@ class AssetTransfer extends Contract {
             return JSON.stringify(`Wallet not found !`);
         }
         const walletSender = JSON.parse(walletSenderString);
-        
-        
+        const receiverTransactionsArray = JSON.parse(receiverTransactions);
+        console.log(receiverTransactionsArray);
+        console.log(walletSender.Balance);
+        console.log(totalAmount);
         if(walletSender.Balance >= totalAmount) {
-            for(var element of receiverTransactions){
+            for(var element of receiverTransactionsArray){
                 console.log(element);
                 const walletReceiverString = await this.GetWalletByPublicKey(ctx, element.receiverPublicKey);
                 const walletReceiver = JSON.parse(walletReceiverString);
