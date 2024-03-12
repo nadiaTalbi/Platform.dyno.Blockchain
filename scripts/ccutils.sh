@@ -60,7 +60,7 @@ function approveForMyOrg() {
   setGlobals $ORG
   set -x
   # --signature-policy "OR('DynoMSP.peer')"
-  peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name ${CC_NAME} --version 1.0 --init-required --package-id ${PACKAGE_ID} --sequence 1 >&log.txt
+  peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "./organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem" --channelID $CHANNEL_NAME --name ${CC_NAME} --version 1.0 --init-required --package-id ${PACKAGE_ID} --sequence 1 >&log.txt
   res=$?
   { set +x; } 2>/dev/null
   cat log.txt
@@ -177,7 +177,7 @@ function chaincodeInvokeInit() {
     # it using the "-o" option
     set -x
     infoln "invoke fcn call:${fcn_call}"
-    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" -C $CHANNEL_NAME -n ${CC_NAME} --peerAddresses localhost:7051 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt \
+    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "./organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem" -C $CHANNEL_NAME -n ${CC_NAME} --peerAddresses localhost:7051 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt \
     --peerAddresses localhost:7061 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt \
     --peerAddresses localhost:7071 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt --isInit -c ${fcn_call} >&log.txt
     
@@ -338,7 +338,7 @@ chaincodeInvoke() {
     sleep $DELAY
     infoln "Attempting to Invoke on peer0.org${ORG}, Retry after $DELAY seconds."
     set -x
-    peer chaincode invoke -o localhost:7050 -C $CHANNEL_NAME -n ${CC_NAME} -c ${CC_INVOKE_CONSTRUCTOR} --tls --cafile $ORDERER_CA  --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA  >&log.txt
+    peer chaincode invoke -o localhost:7050 -C $CHANNEL_NAME -n ${CC_NAME} -c ${CC_INVOKE_CONSTRUCTOR} --tls --cafile "./organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem"  --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA  >&log.txt
     res=$?
     { set +x; } 2>/dev/null
     let rc=$res
