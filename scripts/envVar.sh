@@ -12,10 +12,10 @@
 . scripts/scriptUtils.sh
 
 export CORE_PEER_TLS_ENABLED=true
-export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
-export PEER0_DYNO_CA=${PWD}/organizations/peerOrganizations/dyno.example.com/tlsca/tlsca.dyno.example.com-cert.pem
-export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
+export ORDERER_CA=./organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+export PEER0_DYNO_CA=./organizations/peerOrganizations/dyno.example.com/tlsca/tlsca.dyno.example.com-cert.pem
+export ORDERER_ADMIN_TLS_SIGN_CERT=./organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+export ORDERER_ADMIN_TLS_PRIVATE_KEY=./organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
 
 
 setGlobalsWithAdminKeys() {
@@ -26,7 +26,7 @@ setGlobalsWithAdminKeys() {
   infoln "Using organization ${USING_ORG}"
   export CORE_PEER_LOCALMSPID="DynoMSP"
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_DYNO_CA
-  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp
+  export CORE_PEER_MSPCONFIGPATH=./organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp
   
   if [ $USING_PEER -eq 0 ]; then
     export CORE_PEER_ADDRESS=localhost:7051
@@ -48,7 +48,7 @@ setGlobals() {
   local USING_ORG=$1
   infoln "Using organization ${USING_ORG}"
 
-  export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp
+  export CORE_PEER_MSPCONFIGPATH=./organizations/peerOrganizations/dyno.example.com/users/Admin@dyno.example.com/msp
   export CORE_PEER_LOCALMSPID="DynoMSP"
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_DYNO_CA
   export CORE_PEER_ADDRESS=localhost:7051
