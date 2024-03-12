@@ -112,7 +112,7 @@ function commitChaincodeDefinition() {
   -o localhost:7050 \
   --ordererTLSHostnameOverride orderer.example.com \
   --tls \
-  --cafile ./organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem \
+  --cafile /home/nadia/go/src/github.com/Platform.dyno.Blockchain/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem \
   --channelID mychannel \
   --name basic \
   --peerAddresses localhost:7051 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt \
@@ -338,7 +338,7 @@ chaincodeInvoke() {
     sleep $DELAY
     infoln "Attempting to Invoke on peer0.org${ORG}, Retry after $DELAY seconds."
     set -x
-    peer chaincode invoke -o localhost:7050 -C $CHANNEL_NAME -n ${CC_NAME} -c ${CC_INVOKE_CONSTRUCTOR} --tls --cafile "./organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem"  --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA  >&log.txt
+    peer chaincode invoke -o localhost:7050 -C $CHANNEL_NAME -n ${CC_NAME} -c ${CC_INVOKE_CONSTRUCTOR} --tls --cafile "/home/nadia/go/src/github.com/Platform.dyno.Blockchain/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem"  --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA  >&log.txt
     res=$?
     { set +x; } 2>/dev/null
     let rc=$res
