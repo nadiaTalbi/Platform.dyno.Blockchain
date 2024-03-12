@@ -72,7 +72,7 @@ checkPrereqs
 ./scripts/packageCC.sh basic ../chaincode-javascript javascript 1.0 
 
 PACKAGE_ID=$(peer lifecycle chaincode calculatepackageid basic.tar.gz)
-echo("Package ID : ${PACKAGE_ID}")
+echo "Package ID : ${PACKAGE_ID}"
 
 ## Install chaincode on peer0.org1 and peer0.org2
 infoln "Installing chaincode on peer0.dyno..."

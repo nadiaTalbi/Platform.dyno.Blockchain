@@ -13,7 +13,7 @@
 
 export CORE_PEER_TLS_ENABLED=true
 export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
-export PEER0_DYNO_CA=${PWD}/organizations/peerOrganizations/dyno.example.com/tlsca/tlsca.dyno.example.com-cert.pem
+export PEER0_DYNO_CA=/home/nadia/go/src/github.com/Platform.dyno.Blockchain//organizations/peerOrganizations/dyno.example.com/tlsca/tlsca.dyno.example.com-cert.pem
 export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
 export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key
 
