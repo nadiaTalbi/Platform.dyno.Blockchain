@@ -11,8 +11,6 @@ function installChaincode() {
   setGlobalsWithAdminKeys dyno $USING_PEER
 
   set -x
-  peer chaincode package -n basic -p ./chaincode-javascript -v 1.0 -s node -l node -o basic.tar.gz
-  PACKAGE_ID=$(tar -tzf basic.tar.gz | grep -oP '(?<=META-INF/statedb/couchdb/indexes/).*(?=.json)')
 
   peer lifecycle chaincode queryinstalled --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
   if test $? -ne 0; then
@@ -39,8 +37,6 @@ function queryInstalled() {
   infoln "Using organization ${USING_ORG}, $USING_PEER"
   setGlobalsWithAdminKeys dyno $USING_PEER
   set -x
-  peer chaincode package -n basic -p ./chaincode-javascript -v 1.0 -s node -l node -o basic.tar.gz
-  PACKAGE_ID=$(tar -tzf basic.tar.gz | grep -oP '(?<=META-INF/statedb/couchdb/indexes/).*(?=.json)')
   if [ $USING_PEER -eq 0 ]; then
     peer lifecycle chaincode queryinstalled --peerAddresses localhost:7051 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt 
   elif [ $USING_PEER -eq 1 ]; then
@@ -63,8 +59,6 @@ function approveForMyOrg() {
   infoln "Approve my org $ORG , peer : $PEER"
   setGlobals $ORG
   set -x
-  peer chaincode package -n basic -p ./chaincode-javascript -v 1.0 -s node -l node -o basic.tar.gz
-  PACKAGE_ID=$(tar -tzf basic.tar.gz | grep -oP '(?<=META-INF/statedb/couchdb/indexes/).*(?=.json)')
   # --signature-policy "OR('DynoMSP.peer')"
   peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name ${CC_NAME} --version 1.0 --init-required --package-id ${PACKAGE_ID} --sequence 1 >&log.txt
   res=$?

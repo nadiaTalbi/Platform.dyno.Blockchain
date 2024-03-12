@@ -71,7 +71,8 @@ checkPrereqs
 ## package the chaincode
 ./scripts/packageCC.sh basic ../chaincode-javascript javascript 1.0 
 
-PACKAGE_ID=$(peer lifecycle chaincode calculatepackageid basic.tar.gz)
+peer chaincode package -n basic -p ./chaincode-javascript -v 1.0 -s node -l node -o basic.tar.gz
+PACKAGE_ID=$(tar -tzf basic.tar.gz | grep -oP '(?<=META-INF/statedb/couchdb/indexes/).*(?=.json)')
 
 ## Install chaincode on peer0.org1 and peer0.org2
 infoln "Installing chaincode on peer0.dyno..."
