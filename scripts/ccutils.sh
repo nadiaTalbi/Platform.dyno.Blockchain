@@ -11,14 +11,17 @@ function installChaincode() {
   setGlobalsWithAdminKeys dyno $USING_PEER
 
   set -x
+  peer chaincode package -n basic -p ./chaincode-javascript -v 1.0 -s node -l node -o basic.tar.gz
+  PACKAGE_ID=$(tar -tzf basic.tar.gz | grep -oP '(?<=META-INF/statedb/couchdb/indexes/).*(?=.json)')
+
   peer lifecycle chaincode queryinstalled --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt
   if test $? -ne 0; then
     if [ $USING_PEER -eq 0 ]; then
-      peer lifecycle chaincode install ${CC_NAME}.tar.gz --peerAddresses localhost:7051 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt >&log.txt
+      peer lifecycle chaincode install ${CC_NAME}.tar.gz --peerAddresses localhost:7051 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt >&log.txt
     elif [ $USING_PEER -eq 1 ]; then
-      peer lifecycle chaincode install ${CC_NAME}.tar.gz --peerAddresses localhost:7061 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt >&log.txt
+      peer lifecycle chaincode install ${CC_NAME}.tar.gz --peerAddresses localhost:7061 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt >&log.txt
     elif [ $USING_PEER -eq 2 ]; then
-      peer lifecycle chaincode install ${CC_NAME}.tar.gz --peerAddresses localhost:7071 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt >&log.txt
+      peer lifecycle chaincode install ${CC_NAME}.tar.gz --peerAddresses localhost:7071 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt >&log.txt
     fi
     res=$?
   fi
@@ -37,11 +40,11 @@ function queryInstalled() {
   setGlobalsWithAdminKeys dyno $USING_PEER
   set -x
   if [ $USING_PEER -eq 0 ]; then
-    peer lifecycle chaincode queryinstalled --peerAddresses localhost:7051 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt 
+    peer lifecycle chaincode queryinstalled --peerAddresses localhost:7051 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt 
   elif [ $USING_PEER -eq 1 ]; then
-    peer lifecycle chaincode queryinstalled --peerAddresses localhost:7061 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt 
+    peer lifecycle chaincode queryinstalled --peerAddresses localhost:7061 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt 
   elif [ $USING_PEER -eq 2 ]; then
-    peer lifecycle chaincode queryinstalled --peerAddresses localhost:7071 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt 
+    peer lifecycle chaincode queryinstalled --peerAddresses localhost:7071 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt --output json | jq -r 'try (.installed_chaincodes[].package_id)' | grep ^${PACKAGE_ID}$ >&log.txt 
   fi
   res=$?
   { set +x; } 2>/dev/null
@@ -111,12 +114,12 @@ function commitChaincodeDefinition() {
   -o localhost:7050 \
   --ordererTLSHostnameOverride orderer.example.com \
   --tls \
-  --cafile /home/dyno/Platform.dyno.Blockchain/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem \
+  --cafile ./organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem \
   --channelID mychannel \
   --name basic \
-  --peerAddresses localhost:7051 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt \
-  --peerAddresses localhost:7061 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt \
-  --peerAddresses localhost:7071 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt \
+  --peerAddresses localhost:7051 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt \
+  --peerAddresses localhost:7061 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt \
+  --peerAddresses localhost:7071 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt \
   --version 1.0 --init-required \
   --sequence 1 \
   >&log.txt
@@ -176,9 +179,9 @@ function chaincodeInvokeInit() {
     # it using the "-o" option
     set -x
     infoln "invoke fcn call:${fcn_call}"
-    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" -C $CHANNEL_NAME -n ${CC_NAME} --peerAddresses localhost:7051 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt \
-    --peerAddresses localhost:7061 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt \
-    --peerAddresses localhost:7071 --tlsRootCertFiles /home/dyno/Platform.dyno.Blockchain/organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt --isInit -c ${fcn_call} >&log.txt
+    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA" -C $CHANNEL_NAME -n ${CC_NAME} --peerAddresses localhost:7051 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer0.dyno.example.com/tls/ca.crt \
+    --peerAddresses localhost:7061 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer1.dyno.example.com/tls/ca.crt \
+    --peerAddresses localhost:7071 --tlsRootCertFiles ./organizations/peerOrganizations/dyno.example.com/peers/peer2.dyno.example.com/tls/ca.crt --isInit -c ${fcn_call} >&log.txt
     
     res=$?
     { set +x; } 2>/dev/null
